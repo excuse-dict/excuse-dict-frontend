@@ -1,0 +1,11 @@
+.header{
+    background-color: var(--stonesmith);
+    height: var(--header-height);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.home_button{
+    margin-left: 35px;
+}

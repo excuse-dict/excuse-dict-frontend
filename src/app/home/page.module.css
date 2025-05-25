@@ -1,0 +1,14 @@
+.main{
+    display: flex;
+    height: calc(100% - var(--header-height));
+    align-items: center;
+    justify-content: center;
+}
+
+.container{
+    display: flex;
+}
+
+.home_background{
+    
+}
