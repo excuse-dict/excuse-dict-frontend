@@ -1,5 +1,5 @@
 import axios from "axios"
-import { API_URL } from "../constants/constants"
+import { API_URL } from "../app/constants/constants"
 import { onFailDefault } from "./onFail";
 
 export const apiGet = ({ endPoint, params, onSuccess, onFail }:

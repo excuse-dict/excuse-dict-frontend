@@ -5,13 +5,14 @@ import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, MAX_EMAIL_LENGTH } 
 import css from './page.module.css'
 import { InputProps } from './types'
 import { MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from '../constants/constants';
-import { apiGet } from '../axios/get';
+import { apiGet } from '../../axios/get';
 import Swal from 'sweetalert2';
 
 export default function register() {
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [passwordConfirmInput, setPasswordConfirmInput] = useState('');
+    const [isPwMatched, setPwMatched] = useState(false);
 
     return (
         <div className={css.reg_container}>
@@ -28,6 +29,8 @@ export default function register() {
                     placeholder='비밀번호를 입력해주세요.'
                     passwordInput={passwordInput}
                     setPasswordInput={setPasswordInput}
+                    passwordConfirmInput={passwordConfirmInput}
+                    setPwMatched={setPwMatched}
                 ></PasswordInput>
                 <PasswordConfirm
                     title='비밀번호 확인'
@@ -35,6 +38,8 @@ export default function register() {
                     passwordInput={passwordInput}
                     passwordConfirmInput={passwordConfirmInput}
                     setPasswordConfirmInput={setPasswordConfirmInput}
+                    isPwMatched={isPwMatched}
+                    setPwMatched={setPwMatched}
                 ></PasswordConfirm>
                 <button>회원가입</button>
             </div>
@@ -97,12 +102,14 @@ function EmailInput({ emailInput, setEmailInput }: {
 }
 
 // 비밀번호 입력창
-function PasswordInput({ title, placeholder, passwordInput, setPasswordInput }:
+function PasswordInput({ title, placeholder, passwordInput, setPasswordInput, passwordConfirmInput, setPwMatched }:
     {
         title: string,
         placeholder: string,
         passwordInput: string,
         setPasswordInput: (value: string) => void
+        passwordConfirmInput: string,
+        setPwMatched: (value: boolean) => void
     }) {
     const [isInputFocused, setInputFocused] = useState(false);
     const [isInputEmpty, setIsInputEmpty] = useState(true);
@@ -132,6 +139,9 @@ function PasswordInput({ title, placeholder, passwordInput, setPasswordInput }:
         const allowdCharactersRegex: RegExp = new RegExp(`^[a-zA-Z0-9${ALLOWED_SPECIAL_CHARS_REGEX.source.slice(1, -1)}]*$`);
         setIsAllCharactersValid(allowdCharactersRegex.test(input));
 
+        // 비밀번호 확인란 일치 여부 업데이트
+        setPwMatched(passwordConfirmInput === input);
+        // 자신 업데이트
         setPasswordInput(input);
     }
 
@@ -206,17 +216,18 @@ function PasswordInput({ title, placeholder, passwordInput, setPasswordInput }:
 }
 
 // 비밀번호 확인란
-function PasswordConfirm({ title, placeholder, passwordInput, passwordConfirmInput, setPasswordConfirmInput }:
+function PasswordConfirm({ title, placeholder, passwordInput, passwordConfirmInput, setPasswordConfirmInput, isPwMatched, setPwMatched }:
     {
         title: string,
         placeholder: string,
         passwordInput: string,
         passwordConfirmInput: string,
         setPasswordConfirmInput: (value: string) => void
+        isPwMatched: boolean,
+        setPwMatched: (value: boolean) => void
     }
 ) {
     const [isInputEmpty, setInputEmpty] = useState(true);
-    const [isPwMatched, setPwMatched] = useState(false);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input: string = e.target.value;
