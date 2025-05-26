@@ -1,0 +1,71 @@
+.modal_background{
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal_container{
+    position: relative;
+    background-color: white;
+    border-radius: 8px;
+    width: 50%;
+    min-width: 500px;
+    height: 50%;
+    min-height: 500px;
+
+    /* 자식 중앙 정렬 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+
+    animation: modalShow 0.3s ease-out;
+}
+
+/* 모달 팝업 애니메이션 */
+@keyframes modalShow{
+    0% {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.modal_close{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 40px;
+    cursor: pointer;
+    color: #666;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.modal_close:hover{
+    background-color: #f0f0f0;
+    color: #333;
+}

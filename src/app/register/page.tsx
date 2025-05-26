@@ -3,16 +3,20 @@
 import { useState } from 'react';
 import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, MAX_EMAIL_LENGTH } from '../constants/constants';
 import css from './page.module.css'
-import { InputProps } from './types'
 import { MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from '../constants/constants';
-import { apiGet } from '../../axios/get';
+import { apiGet } from '../../axios/apiGet';
 import Swal from 'sweetalert2';
+import { apiPost } from '@/axios/apiPost';
+import Modal from '@/components/modal/modal';
+import ModalContent from '@/components/modal/content/ModalContent';
 
 export default function register() {
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const [passwordConfirmInput, setPasswordConfirmInput] = useState('');
     const [isPwMatched, setPwMatched] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState<React.ReactNode>("");
 
     return (
         <div className={css.reg_container}>
@@ -23,6 +27,8 @@ export default function register() {
                 <EmailInput
                     emailInput={emailInput}
                     setEmailInput={setEmailInput}
+                    setModalOpen={setModalOpen}
+                    setModalContents={setModalContent}
                 ></EmailInput>
                 <PasswordInput
                     title='비밀번호'
@@ -43,28 +49,63 @@ export default function register() {
                 ></PasswordConfirm>
                 <button>회원가입</button>
             </div>
+            <Modal
+                isOpen={isModalOpen}
+                setOpen={setModalOpen}
+                children={modalContent}
+            ></Modal>
         </div>
     )
 }
 
 // 이메일 입력창
-function EmailInput({ emailInput, setEmailInput }: {
+function EmailInput({ emailInput, setEmailInput, setModalOpen, setModalContents }: {
     emailInput: string,
     setEmailInput: (value: string) => void
+    setModalOpen: (value: boolean) => void
+    setModalContents: (value: React.ReactNode) => void
 }) {
 
     const smtpRequest = () => {
-        Swal.fire({
-            title: "사용 가능",
-            html: "입력하신 이메일로 인증 번호를 전송하였습니다.<br>확인 후 입력해 주세요",
-            icon: "success"
+          const response: any = apiPost({
+            endPoint: "/api/v1/email/verification-code",
+            body: { email: emailInput },
+            /* onSuccess: () => {
+                Swal.fire({
+                    title: "사용 가능",
+                    html: "입력하신 이메일로 인증 번호를 전송하였습니다.<br>확인 후 입력해 주세요",
+                    icon: "success"
+                });
+            } */
         });
+    }
+
+    const updateModal = () => {
+        setModalContents(
+            <ModalContent align='center'>
+                <h2 className={`${css.modal_text} ${css.modal_title}`}>인증 번호 입력</h2>
+                <span className={css.modal_text}>입력하신 이메일로 인증 번호를 전송하였습니다. 복사하여 입력해 주세요.</span>
+                <div className={css.code_input_container}>
+                    <div className={css.code_input_unit}></div>
+                    <div className={css.code_input_unit}></div>
+                    <div className={css.code_input_unit}></div>
+                    <div className={css.code_input_unit}></div>
+                    <div className={css.code_input_unit}></div>
+                    <div className={css.code_input_unit}></div>
+                </div>
+                <button className={css.modal_confirm_button}>확인</button>
+            </ModalContent>
+        );
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
 
         setEmailInput(input);
+    }
+
+    const isEmailValidSimple = () => {
+        return emailInput.length > 0 && emailInput.includes('@');
     }
 
     return (
@@ -81,19 +122,25 @@ function EmailInput({ emailInput, setEmailInput }: {
                 ></input>
                 <button
                     className={css.email_dupl_check}
-                    onClick={() => {
-                        console.log("버튼 클릭!");
-                        apiGet({
-                            endPoint: "/api/v1/auth/check-email",
-                            params: { email: emailInput },
-                            onSuccess: (data) => {
-                                if (data.data) { // 사용 가능 이메일
-                                    smtpRequest();
-                                } else { // 이미 사용중
-                                    Swal.fire("오류", "이미 가입하신 이메일입니다.", "error");
-                                }
-                            },
-                        })
+                    onClick={async () => {
+                        if (isEmailValidSimple()) {
+                            await apiGet({
+                                endPoint: "/api/v1/auth/check-email",
+                                params: { email: emailInput },
+                                onSuccess: (data) => {
+                                    if (data.data) { // 사용 가능 이메일
+                                        updateModal(); // 모달 내용물 바꾸기
+                                        setModalOpen(true);
+                                        smtpRequest();
+                                    } else { // 이미 사용중
+                                        setModalOpen(false);
+                                        Swal.fire("오류", "이미 가입하신 이메일입니다.", "error");
+                                    }
+                                },
+                            })
+                        }else{
+                            Swal.fire("오류", "이메일을 올바르게 입력해주세요", "warning");
+                        }
                     }}
                 >인증</button>
             </div>

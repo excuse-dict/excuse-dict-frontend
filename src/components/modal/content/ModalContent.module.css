@@ -1,0 +1,23 @@
+.modal_inner_container{
+    width: 80%;
+    height: 80%;
+    /* background-color: rgba(100, 100, 100, 0.5); */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.align_left {
+    align-items: flex-start;
+    text-align: left;
+}
+
+.align_center {
+    align-items: center;
+    text-align: center;
+}
+
+.align_right {
+    align-items: flex-end;
+    text-align: right;
+}
