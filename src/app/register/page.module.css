@@ -161,27 +161,3 @@
     z-index: 3000;
     transition: opacity 0.3s;
 }
-
-/* 모달 관련 설정 */
-
-.modal_text{
-    color: black;
-}
-
-.modal_title{
-}
-
-.modal_confirm_button{
-    border: none;
-    border-radius: 8px;
-    color: antiquewhite;
-    background-color: var(--stonesmith);
-    min-width: 100px;
-    min-height: 50px;
-    font-size: 20px;
-    cursor: pointer;
-}
-
-.modal_confirm_button:hover{
-    background-color: var(--stonesmith-highlighted);
-}

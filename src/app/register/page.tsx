@@ -11,6 +11,7 @@ import ModalContent from '@/components/modal/content/ModalContent';
 import CodeInput from '@/components/input/code/CodeInput';
 import Modal from '@/components/modal/Modal';
 import LoadingWidget from '@/components/loading/LoadingWidget';
+import VerificationModalContent from '@/components/modal/content/verification/VerificationModalContent';
 
 export default function register() {
     const [emailInput, setEmailInput] = useState('');
@@ -18,8 +19,8 @@ export default function register() {
     const [passwordConfirmInput, setPasswordConfirmInput] = useState('');
     const [isPwMatched, setPwMatched] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState<React.ReactNode>("");
-    const [isEmailSending, setIsEmailSending] = useState(false);
+    const [isEmailSending, setEmailSending] = useState(false);
+    const [timeLeft, setTimeLeft] = useState(-1); // -1: 메일 안 보낸 상태
 
     return (
         <div className={css.reg_container}>
@@ -32,9 +33,9 @@ export default function register() {
                     setEmailInput={setEmailInput}
                     isModalOpen={isModalOpen}
                     setModalOpen={setModalOpen}
-                    setModalContents={setModalContent}
-                    isEmailSending={isEmailSending}
-                    setIsEmailSending={setIsEmailSending}
+                    setEmailSending={setEmailSending}
+                    timeLeft={timeLeft}
+                    setTimeLeft={setTimeLeft}
                 ></EmailInput>
                 <PasswordInput
                     title='비밀번호'
@@ -58,55 +59,62 @@ export default function register() {
             <Modal
                 isOpen={isModalOpen}
                 setOpen={setModalOpen}
-                children={modalContent}
+                children={
+                    <VerificationModalContent
+                        emailInput={emailInput}
+                        isEmailSending={isEmailSending}
+                        timeLeft={timeLeft}
+                    ></VerificationModalContent>
+                }
             ></Modal>
         </div>
     )
 }
 
 // 이메일 입력창
-function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setModalContents, isEmailSending, setIsEmailSending }: {
+function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setEmailSending, timeLeft, setTimeLeft }: {
     emailInput: string,
-    setEmailInput: (value: string) => void
+    setEmailInput: (value: string) => void,
     isModalOpen: boolean,
-    setModalOpen: (value: boolean) => void
-    setModalContents: (value: React.ReactNode) => void
-    isEmailSending: boolean,
-    setIsEmailSending: (value: boolean) => void
+    setModalOpen: (value: boolean) => void,
+    setEmailSending: (value: boolean) => void,
+    timeLeft: number,
+    setTimeLeft: (value: number) => void
 }) {
 
     const smtpRequest = () => {
         // 이메일 보내는 중...
-        setIsEmailSending(true);
+        setEmailSending(true);
         const response: any = apiPost({
             endPoint: "/api/v1/email/verification-code",
             body: { email: emailInput },
-            onSuccess: () => setIsEmailSending(false) // 이메일 전송 완료!
+            onSuccess: (response) => {
+                setEmailSending(false); // 이메일 전송 완료!
+                setTimeLeft(calculateTimeLeft(response.data.expiryTime));
+            }
         });
     }
 
+    // 1초마다 코드 만료까지 남은 시간 업데이트
     useEffect(() => {
-        if(isModalOpen) updateModal();
-    }, [isEmailSending])
+        if (timeLeft <= 0) return;
 
-    const updateModal = () => {
+        const timer = setTimeout(() => {
+            setTimeLeft(timeLeft - 1);
+        }, 1000);
 
-        console.log("isEmailSending in updateModal: ", isEmailSending);
+        return () => clearTimeout(timer); // 클린업
+    }, [timeLeft]);
 
-        setModalContents(
-            <ModalContent align='center'>
-                <h2 className={`${css.modal_text} ${css.modal_title}`}>인증 번호 입력</h2>
-                <LoadingWidget
-                    color='grey'
-                    isLoading={isEmailSending}
-                    loadingTitle='메일 전송 중...'
-                    completeTitle='메일 전송 완료!'
-                ></LoadingWidget>
-                <span className={css.modal_text}>입력하신 이메일로 인증 번호 요청을 전송하였습니다. 복사하여 입력해 주세요.</span>
-                <CodeInput size={6}></CodeInput>
-                <button className={css.modal_confirm_button}>확인</button>
-            </ModalContent>
-        );
+    // 메일 만료시간을 받아 남은 시간을 초 수로 계산
+    const calculateTimeLeft = (expiryTime: string) => {
+        const now = new Date();
+        const expiry = new Date(expiryTime);
+
+        const diffMinute = expiry.getTime() - now.getTime();
+        const diffSec = Math.floor(diffMinute / 1000);
+
+        return Math.max(0, diffSec);
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -141,7 +149,6 @@ function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setM
                                 onSuccess: (data) => {
                                     if (data.data) { // 사용 가능 이메일
                                         smtpRequest();
-                                        /* updateModal(); // 모달 내용물 바꾸기 */ // 수동 말고 useEffect로 자동
                                         setModalOpen(true);
                                     } else { // 이미 사용중
                                         setModalOpen(false);

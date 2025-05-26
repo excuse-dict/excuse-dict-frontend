@@ -11,8 +11,8 @@ export default function LoadingWidget({ color, isLoading, loadingTitle, complete
     const label = isLoading ? loadingTitle : completeTitle;
     const iconClass = isLoading ? css.loading_spinner : css.check_icon;
 
-    console.log("isLoading: ", isLoading);
-    console.log("label: ", label);
+    /* console.log("isLoading: ", isLoading);
+    console.log("label: ", label); */
 
     return (
         <div className={css.loading_container}>
