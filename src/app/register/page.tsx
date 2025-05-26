@@ -22,6 +22,11 @@ export default function register() {
     const [isEmailSending, setEmailSending] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1); // -1: 메일 안 보낸 상태
 
+    // 모달 열 때마다 남은 시간 초기화
+    useEffect(() => {
+        setTimeLeft(-1);
+    }, [isModalOpen]);
+
     return (
         <div className={css.reg_container}>
             <div className={css.reg_header}>
@@ -147,7 +152,8 @@ function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setE
                                 endPoint: "/api/v1/auth/check-email",
                                 params: { email: emailInput },
                                 onSuccess: (data) => {
-                                    if (data.data) { // 사용 가능 이메일
+                                    // 사용 가능 이메일 - 모달 오픈
+                                    if (data.data) { 
                                         smtpRequest();
                                         setModalOpen(true);
                                     } else { // 이미 사용중
