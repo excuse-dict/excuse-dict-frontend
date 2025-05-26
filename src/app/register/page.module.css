@@ -68,6 +68,11 @@
     color: var(--error-color);
     font-size: small;
     margin-left: var(--reg-input-label-margin);
+    visibility: hidden;
+}
+
+.pw_error.show{
+    visibility: visible;
 }
 
 .email_dupl_check{

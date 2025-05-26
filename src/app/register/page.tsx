@@ -153,7 +153,7 @@ function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setE
                                 params: { email: emailInput },
                                 onSuccess: (data) => {
                                     // 사용 가능 이메일 - 모달 오픈
-                                    if (data.data) { 
+                                    if (data.data) {
                                         smtpRequest();
                                         setModalOpen(true);
                                     } else { // 이미 사용중
@@ -319,7 +319,9 @@ function PasswordConfirm({ title, placeholder, passwordInput, passwordConfirmInp
                     onChange={handleChange}
                     type='password'
                 ></input>
-                {(isInputEmpty || isPwMatched) ? <div /> : <span className={css.pw_error}>비밀번호가 일치하지 않습니다.</span>}
+                <span
+                    className={`${css.pw_error} ${!(isInputEmpty || isPwMatched) ? css.show : ''}`}
+                >비밀번호가 일치하지 않습니다.</span>
             </div>
         </div>
     );
