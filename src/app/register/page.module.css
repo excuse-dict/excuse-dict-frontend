@@ -10,7 +10,6 @@
     --reg-header-height: 10%;
     --reg-input-height: 35px;
     --reg-input-label-margin: 10px;
-    --reg-error-color: rgb(255, 100, 100);
 }
 
 .reg_header{
@@ -66,7 +65,7 @@
 }
 
 .pw_error{
-    color: var(--reg-error-color);
+    color: var(--error-color);
     font-size: small;
     margin-left: var(--reg-input-label-margin);
 }
@@ -170,21 +169,6 @@
 }
 
 .modal_title{
-}
-
-.code_input_container{
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    max-height: 30%;
-}
-
-.code_input_unit{
-    min-width: 50px;
-    min-height: 70px;
-    border-radius: 5px;
-    background-color: var(--stonesmith-light);
-    border: 1px solid var(--stonesmith-highlighted)
 }
 
 .modal_confirm_button{

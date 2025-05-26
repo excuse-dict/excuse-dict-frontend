@@ -1,14 +1,16 @@
 'use client'
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, MAX_EMAIL_LENGTH } from '../constants/constants';
 import css from './page.module.css'
 import { MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from '../constants/constants';
 import { apiGet } from '../../axios/apiGet';
 import Swal from 'sweetalert2';
 import { apiPost } from '@/axios/apiPost';
-import Modal from '@/components/modal/modal';
 import ModalContent from '@/components/modal/content/ModalContent';
+import CodeInput from '@/components/input/code/CodeInput';
+import Modal from '@/components/modal/Modal';
+import LoadingWidget from '@/components/loading/LoadingWidget';
 
 export default function register() {
     const [emailInput, setEmailInput] = useState('');
@@ -17,6 +19,7 @@ export default function register() {
     const [isPwMatched, setPwMatched] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState<React.ReactNode>("");
+    const [isEmailSending, setIsEmailSending] = useState(false);
 
     return (
         <div className={css.reg_container}>
@@ -27,8 +30,11 @@ export default function register() {
                 <EmailInput
                     emailInput={emailInput}
                     setEmailInput={setEmailInput}
+                    isModalOpen={isModalOpen}
                     setModalOpen={setModalOpen}
                     setModalContents={setModalContent}
+                    isEmailSending={isEmailSending}
+                    setIsEmailSending={setIsEmailSending}
                 ></EmailInput>
                 <PasswordInput
                     title='비밀번호'
@@ -59,40 +65,45 @@ export default function register() {
 }
 
 // 이메일 입력창
-function EmailInput({ emailInput, setEmailInput, setModalOpen, setModalContents }: {
+function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setModalContents, isEmailSending, setIsEmailSending }: {
     emailInput: string,
     setEmailInput: (value: string) => void
+    isModalOpen: boolean,
     setModalOpen: (value: boolean) => void
     setModalContents: (value: React.ReactNode) => void
+    isEmailSending: boolean,
+    setIsEmailSending: (value: boolean) => void
 }) {
 
     const smtpRequest = () => {
-          const response: any = apiPost({
+        // 이메일 보내는 중...
+        setIsEmailSending(true);
+        const response: any = apiPost({
             endPoint: "/api/v1/email/verification-code",
             body: { email: emailInput },
-            /* onSuccess: () => {
-                Swal.fire({
-                    title: "사용 가능",
-                    html: "입력하신 이메일로 인증 번호를 전송하였습니다.<br>확인 후 입력해 주세요",
-                    icon: "success"
-                });
-            } */
+            onSuccess: () => setIsEmailSending(false) // 이메일 전송 완료!
         });
     }
 
+    useEffect(() => {
+        if(isModalOpen) updateModal();
+    }, [isEmailSending])
+
     const updateModal = () => {
+
+        console.log("isEmailSending in updateModal: ", isEmailSending);
+
         setModalContents(
             <ModalContent align='center'>
                 <h2 className={`${css.modal_text} ${css.modal_title}`}>인증 번호 입력</h2>
-                <span className={css.modal_text}>입력하신 이메일로 인증 번호를 전송하였습니다. 복사하여 입력해 주세요.</span>
-                <div className={css.code_input_container}>
-                    <div className={css.code_input_unit}></div>
-                    <div className={css.code_input_unit}></div>
-                    <div className={css.code_input_unit}></div>
-                    <div className={css.code_input_unit}></div>
-                    <div className={css.code_input_unit}></div>
-                    <div className={css.code_input_unit}></div>
-                </div>
+                <LoadingWidget
+                    color='grey'
+                    isLoading={isEmailSending}
+                    loadingTitle='메일 전송 중...'
+                    completeTitle='메일 전송 완료!'
+                ></LoadingWidget>
+                <span className={css.modal_text}>입력하신 이메일로 인증 번호 요청을 전송하였습니다. 복사하여 입력해 주세요.</span>
+                <CodeInput size={6}></CodeInput>
                 <button className={css.modal_confirm_button}>확인</button>
             </ModalContent>
         );
@@ -129,16 +140,16 @@ function EmailInput({ emailInput, setEmailInput, setModalOpen, setModalContents 
                                 params: { email: emailInput },
                                 onSuccess: (data) => {
                                     if (data.data) { // 사용 가능 이메일
-                                        updateModal(); // 모달 내용물 바꾸기
-                                        setModalOpen(true);
                                         smtpRequest();
+                                        /* updateModal(); // 모달 내용물 바꾸기 */ // 수동 말고 useEffect로 자동
+                                        setModalOpen(true);
                                     } else { // 이미 사용중
                                         setModalOpen(false);
                                         Swal.fire("오류", "이미 가입하신 이메일입니다.", "error");
                                     }
                                 },
                             })
-                        }else{
+                        } else {
                             Swal.fire("오류", "이메일을 올바르게 입력해주세요", "warning");
                         }
                     }}
