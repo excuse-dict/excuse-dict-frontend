@@ -1,5 +1,8 @@
 // axios
 export const API_URL: string = 'http://localhost:8080';
+export const EP_VERIFICATION_CODE_REQ = "/api/v1/email/verification-code";
+export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/email/check-availability"
+export const EP_VERIFY = "/api/v1/auth/verify";
 
 // 회원가입
 export const MAX_EMAIL_LENGTH: number = 30;

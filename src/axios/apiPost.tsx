@@ -33,6 +33,7 @@ export const apiPost = async ({ endPoint, body, onSuccess, onFail }: {
 
     } catch (error: any) { // 오류 발생
         console.log("POST요청 실패: ", error);
+        console.log("onFail: ", onFail);
         // 전달된 onFail() 있으면 그거 실행
         if (onFail) {
             onFail(error);

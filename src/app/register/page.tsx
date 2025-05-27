@@ -1,16 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, MAX_EMAIL_LENGTH } from '../constants/constants';
+import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH } from '../constants/constants';
 import css from './page.module.css'
 import { MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH } from '../constants/constants';
 import { apiGet } from '../../axios/apiGet';
 import Swal from 'sweetalert2';
 import { apiPost } from '@/axios/apiPost';
-import ModalContent from '@/components/modal/content/ModalContent';
-import CodeInput from '@/components/input/code/CodeInput';
 import Modal from '@/components/modal/Modal';
-import LoadingWidget from '@/components/loading/LoadingWidget';
 import VerificationModalContent from '@/components/modal/content/verification/VerificationModalContent';
 
 export default function register() {
@@ -20,12 +17,44 @@ export default function register() {
     const [isPwMatched, setPwMatched] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
     const [isEmailSending, setEmailSending] = useState(false);
+    const [isSendingSucceed, setSendingSucceed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1); // -1: 메일 안 보낸 상태
 
     // 모달 열 때마다 남은 시간 초기화
     useEffect(() => {
         setTimeLeft(-1);
     }, [isModalOpen]);
+
+    // 이메일 전송
+    const smtpRequest = () => {
+        // 이메일 보내는 중...
+        setEmailSending(true);
+        const response: any = apiPost({
+            endPoint: EP_VERIFICATION_CODE_REQ,
+            body: { email: emailInput },
+            onSuccess: (response) => {
+                setEmailSending(false); // 이메일 전송 완료!
+                setSendingSucceed(true);
+                setTimeLeft(calculateTimeLeft(response.data.expiryTime));
+            },
+            onFail: () => {
+                setEmailSending(false);
+                setSendingSucceed(false);
+                setTimeLeft(-1);
+            }
+        });
+    }
+
+    // 메일 만료시간을 받아 남은 시간을 초 수로 계산
+    const calculateTimeLeft = (expiryTime: string) => {
+        const now = new Date();
+        const expiry = new Date(expiryTime);
+
+        const diffMinute = expiry.getTime() - now.getTime();
+        const diffSec = Math.floor(diffMinute / 1000);
+
+        return Math.max(0, diffSec);
+    }
 
     return (
         <div className={css.reg_container}>
@@ -36,9 +65,10 @@ export default function register() {
                 <EmailInput
                     emailInput={emailInput}
                     setEmailInput={setEmailInput}
-                    isModalOpen={isModalOpen}
+                    smtpRequest={smtpRequest}
                     setModalOpen={setModalOpen}
                     setEmailSending={setEmailSending}
+                    setSendingSucceed={setSendingSucceed}
                     timeLeft={timeLeft}
                     setTimeLeft={setTimeLeft}
                 ></EmailInput>
@@ -64,41 +94,33 @@ export default function register() {
             <Modal
                 isOpen={isModalOpen}
                 setOpen={setModalOpen}
-                children={
-                    <VerificationModalContent
-                        emailInput={emailInput}
-                        isEmailSending={isEmailSending}
-                        timeLeft={timeLeft}
-                    ></VerificationModalContent>
-                }
-            ></Modal>
+            >
+                <VerificationModalContent
+                    smtpRequest={smtpRequest}
+                    emailInput={emailInput}
+                    isEmailSending={isEmailSending}
+                    setEmailSending={setEmailSending}
+                    isSendingSucceed={isSendingSucceed}
+                    timeLeft={timeLeft}
+                    setTimeLeft={setTimeLeft}
+                    setModalOpen={setModalOpen}
+                ></VerificationModalContent>
+            </Modal>
         </div>
     )
 }
 
 // 이메일 입력창
-function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setEmailSending, timeLeft, setTimeLeft }: {
+function EmailInput({ emailInput, setEmailInput, smtpRequest, setModalOpen, timeLeft, setTimeLeft }: {
     emailInput: string,
     setEmailInput: (value: string) => void,
-    isModalOpen: boolean,
+    smtpRequest: (value: string) => void,
+    setSendingSucceed: (value: boolean) => void,
     setModalOpen: (value: boolean) => void,
     setEmailSending: (value: boolean) => void,
     timeLeft: number,
     setTimeLeft: (value: number) => void
 }) {
-
-    const smtpRequest = () => {
-        // 이메일 보내는 중...
-        setEmailSending(true);
-        const response: any = apiPost({
-            endPoint: "/api/v1/email/verification-code",
-            body: { email: emailInput },
-            onSuccess: (response) => {
-                setEmailSending(false); // 이메일 전송 완료!
-                setTimeLeft(calculateTimeLeft(response.data.expiryTime));
-            }
-        });
-    }
 
     // 1초마다 코드 만료까지 남은 시간 업데이트
     useEffect(() => {
@@ -110,17 +132,6 @@ function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setE
 
         return () => clearTimeout(timer); // 클린업
     }, [timeLeft]);
-
-    // 메일 만료시간을 받아 남은 시간을 초 수로 계산
-    const calculateTimeLeft = (expiryTime: string) => {
-        const now = new Date();
-        const expiry = new Date(expiryTime);
-
-        const diffMinute = expiry.getTime() - now.getTime();
-        const diffSec = Math.floor(diffMinute / 1000);
-
-        return Math.max(0, diffSec);
-    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
@@ -149,12 +160,12 @@ function EmailInput({ emailInput, setEmailInput, isModalOpen, setModalOpen, setE
                     onClick={async () => {
                         if (isEmailValidSimple()) {
                             await apiGet({
-                                endPoint: "/api/v1/auth/check-email",
+                                endPoint: EP_CHECK_EMAIL_AVAILABILITY,
                                 params: { email: emailInput },
                                 onSuccess: (data) => {
                                     // 사용 가능 이메일 - 모달 오픈
                                     if (data.data) {
-                                        smtpRequest();
+                                        smtpRequest(emailInput);
                                         setModalOpen(true);
                                     } else { // 이미 사용중
                                         setModalOpen(false);

@@ -1,14 +1,14 @@
 import { useState, useRef, useEffect } from 'react';
 import css from './CodeInput.module.css'
 
-export default function CodeInput({ size }: {
-    size: number
+export default function CodeInput({ legnth, codes, setCodes }: {
+    legnth: number,
+    codes: Array<string>,
+    setCodes: (value: Array<string>) => void
 }) {
-
-    const [codes, setCodes] = useState<string[]>(new Array(size).fill(''));
     const [isErrorVisible, setErrorVisible] = useState(false);
 
-    const inputRefs = useRef<(HTMLInputElement | null)[]>(new Array(size).fill(null));
+    const inputRefs = useRef<(HTMLInputElement | null)[]>(new Array(legnth).fill(null));
 
     useEffect(() => {
         if (isErrorVisible) { // 에러는 항상 3초 후 사라짐
@@ -22,7 +22,7 @@ export default function CodeInput({ size }: {
     const handleChange = (index: number, value: string) => {
         // 마지막 자 가져오기
         const input: string = value.slice(-1);
-        // 한글아 제발 입력되지 말아다오...
+        // 한글 입력을 막기 위한 몸부림
         if (/[^a-zA-Z0-9]/.test(input)) {
             setErrorVisible(true);
             return;
@@ -33,9 +33,9 @@ export default function CodeInput({ size }: {
         setCodes(newCodes);
 
         // 다음 칸으로 포커스 이동
-        if (input && index < size - 1) {
+        if (input && index < legnth - 1) {
             inputRefs.current[index + 1]?.focus();
-        } else if (input && index === size - 1) {
+        } else if (input && index === legnth - 1) {
             // 마지막 칸일 땐 포커스 해제
             inputRefs.current[index]?.blur();
         }
@@ -43,8 +43,8 @@ export default function CodeInput({ size }: {
 
     // 붙여넣기
     const handlePaste = (pastedText: string) => {
-        const newArr = new Array(size).fill('');
-        const range = Math.min(pastedText.length, size);
+        const newArr = new Array(legnth).fill('');
+        const range = Math.min(pastedText.length, legnth);
 
         for (let i = 0; i < range; i++) {
             newArr[i] = pastedText.charAt(i);

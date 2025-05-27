@@ -46,3 +46,47 @@
     transform: rotate(45deg);
     animation: checkDraw 0.3s ease-in-out 0.2s both;
 }
+
+/* 로딩 실패 시 아이콘 */
+.failed_icon {
+   width: 20px;
+   height: 20px;
+   border-radius: 50%;
+   background-color: #e74c3c;
+   position: relative;
+   animation: failAppear 0.5s ease-in-out;
+}
+
+.failed_icon::before,
+.failed_icon::after {
+   content: '';
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   width: 10px;
+   height: 2px;
+   background-color: white;
+   border-radius: 1px;
+}
+
+.failed_icon::before {
+   transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.failed_icon::after {
+   transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+@keyframes failAppear {
+   0% { 
+       transform: scale(0);
+       opacity: 0;
+   }
+   50% {
+       transform: scale(1.2);
+   }
+   100% { 
+       transform: scale(1);
+       opacity: 1;
+   }
+}

@@ -1,23 +1,30 @@
 import { useEffect } from 'react';
 import css from './LoadingWidget.module.css'
 
-export default function LoadingWidget({ color, isLoading, loadingTitle, completeTitle }:{
+export default function LoadingWidget({ color, isLoading, isSucceed, loadingTitle, successTitle, failTitle }:{
     color?: string,
     isLoading: boolean,
+    isSucceed: boolean,
     loadingTitle: string,
-    completeTitle: string
+    successTitle: string,
+    failTitle: string,
 }){
 
-    const label = isLoading ? loadingTitle : completeTitle;
-    const iconClass = isLoading ? css.loading_spinner : css.check_icon;
+    const getLabel = () => {
+        if(isLoading) return loadingTitle;
+        return isSucceed ? successTitle : failTitle;
 
-    /* console.log("isLoading: ", isLoading);
-    console.log("label: ", label); */
+    }
+
+    const getIcon = () => {
+        if(isLoading) return css.loading_spinner;
+        return isSucceed ? css.check_icon : css.failed_icon;
+    }
 
     return (
         <div className={css.loading_container}>
-            <div className={iconClass}></div>
-            <h3 className={css.loading_text} style={{color: color}}>{label}</h3>
+            <div className={getIcon()}></div>
+            <h3 className={css.loading_text} style={{color: color}}>{getLabel()}</h3>
         </div>
     );
 }

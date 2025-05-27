@@ -5,7 +5,7 @@
     height: 100vh;
     top: 0;
     left: 0;
-    z-index: 9999;
+    z-index: 1059; /* swal 기본 z-index: 1060 -> 이거보다 낮게 */
 
     display: flex;
     justify-content: center;
