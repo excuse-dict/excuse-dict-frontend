@@ -1,0 +1,32 @@
+.email_input_container{
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    /* border:1px solid black; */
+}
+
+/* 이메일 인증 버튼 */
+.email_dupl_check{
+    position: absolute;
+    display: flex;
+    right: 4px;
+    background-color: var(--stonesmith);
+    height: 85%;
+    min-width: 60px;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    font-size: 12px;
+    border-radius: 30px;
+    border: 1px solid var(--stonesmith-highlighted);
+
+    cursor: pointer;
+    z-index: 10;
+}
+/* disabled 상태이면 호버도 비활성화 */
+.email_dupl_check:not(:disabled):hover{
+    background-color: var(--stonesmith-highlighted);
+}
+.email_dupl_check:disabled{
+    cursor:default;
+}

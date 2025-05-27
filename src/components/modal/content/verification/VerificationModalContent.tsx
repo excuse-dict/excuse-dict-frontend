@@ -7,7 +7,7 @@ import { apiPost } from "@/axios/apiPost";
 import { EP_VERIFY } from "@/app/constants/constants";
 import Swal from "sweetalert2";
 
-export default function VerificationModalContent({ smtpRequest, emailInput, isEmailSending, setEmailSending, isSendingSucceed, timeLeft, setTimeLeft, setModalOpen }: {
+export default function VerificationModalContent({ smtpRequest, emailInput, isEmailSending, setEmailSending, isSendingSucceed, timeLeft, setTimeLeft, setModalOpen, setEmailVerified }: {
     smtpRequest: (value: string) => void,
     emailInput: string,
     isEmailSending: boolean,
@@ -16,6 +16,7 @@ export default function VerificationModalContent({ smtpRequest, emailInput, isEm
     timeLeft: number,
     setTimeLeft: (value: number) => void,
     setModalOpen: (value: boolean) => void,
+    setEmailVerified: (value: boolean) => void 
 }) {
     const codeLength = 6;
     const [codes, setCodes] = useState<string[]>(new Array(codeLength).fill(''));
@@ -54,6 +55,8 @@ export default function VerificationModalContent({ smtpRequest, emailInput, isEm
             },
             onSuccess: () => {
                 setModalOpen(false);
+                Swal.fire("인증 완료", "인증 코드가 확인되었습니다.", 'success');
+                setEmailVerified(true);
             },
             onFail: () => {
                 Swal.fire('오류', '코드가 일치하지 않거나 만료되었습니다.<br>다시 확인해 주세요.', 'error');
