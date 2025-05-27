@@ -4,6 +4,7 @@ export const EP_VERIFICATION_CODE_REQ = "/api/v1/email/verification-code";
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/email/check-availability"
 export const EP_VERIFY = "/api/v1/auth/verify";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
+export const EP_MEMBERS = "/api/v1/members";
 
 // 회원가입
 export const MAX_EMAIL_LENGTH: number = 30;

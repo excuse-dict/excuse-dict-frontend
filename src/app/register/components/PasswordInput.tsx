@@ -4,7 +4,7 @@ import css from './PasswordInput.module.css'
 import pageCss from '../page.module.css'
 
 // 비밀번호 입력창
-export default function PasswordInput({ title, placeholder, passwordInput, setPasswordInput, passwordConfirmInput, setPwMatched }:
+export default function PasswordInput({ title, placeholder, passwordInput, setPasswordInput, passwordConfirmInput, setPwMatched, setPasswordValid }:
     {
         title: string,
         placeholder: string,
@@ -12,6 +12,7 @@ export default function PasswordInput({ title, placeholder, passwordInput, setPa
         setPasswordInput: (value: string) => void
         passwordConfirmInput: string,
         setPwMatched: (value: boolean) => void
+        setPasswordValid: (value: boolean) => void
     }) {
     const [isInputFocused, setInputFocused] = useState(false);
     const [isInputEmpty, setIsInputEmpty] = useState(true);
@@ -45,6 +46,11 @@ export default function PasswordInput({ title, placeholder, passwordInput, setPa
         setPwMatched(passwordConfirmInput === input);
         // 자신 업데이트
         setPasswordInput(input);
+
+        // 비밀번호 유효 여부 업데이트
+        const isPasswordValid = isLengthValid && isLowerCaseIncluded && isUpperCaseIncluded
+        && isDigitIncluded && isSpecialCharacterIncluded && isAllCharactersValid;
+        setPasswordValid(isPasswordValid);
     }
 
     const validColor: string = 'rgb(100, 210, 100)';

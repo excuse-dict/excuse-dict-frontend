@@ -62,13 +62,8 @@ export default function EmailInput({ isEmailVerified, emailInput, setEmailInput,
                                 params: { email: emailInput },
                                 onSuccess: (data) => {
                                     // 사용 가능 이메일 - 모달 오픈
-                                    if (data.data) {
-                                        smtpRequest(emailInput);
-                                        setModalOpen(true);
-                                    } else { // 이미 사용중
-                                        setModalOpen(false);
-                                        Swal.fire("오류", "이미 가입하신 이메일입니다.", "error");
-                                    }
+                                    smtpRequest(emailInput);
+                                    setModalOpen(true);
                                 },
                             })
                         } else {

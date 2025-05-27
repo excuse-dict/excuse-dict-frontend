@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH } from '../constants/constants';
+import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH } from '../constants/constants';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
 import EmailInput from './components/EmailInput';
@@ -11,11 +11,13 @@ import { apiGet } from '@/axios/apiGet';
 import VerificationModalContent from '@/global_components/modal/content/verification/VerificationModalContent';
 import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/NicknameInput';
+import Swal from 'sweetalert2';
 
 export default function register() {
     const [isEmailVerified, setEmailVerified] = useState(false);
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
+    const [isPasswordValid, setPasswordValid] = useState(false);
     const [passwordConfirmInput, setPasswordConfirmInput] = useState('');
     const [isPwMatched, setPwMatched] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
@@ -23,7 +25,6 @@ export default function register() {
     const [isSendingSucceed, setSendingSucceed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1); // -1: 메일 안 보낸 상태
     const [nicknameInput, setNicknameInput] = useState('');
-    const [isNicknameChecked, setNicknameChecked] = useState(false);
 
     // 모달 열 때마다 남은 시간 초기화
     useEffect(() => {
@@ -34,7 +35,7 @@ export default function register() {
     const smtpRequest = () => {
         // 이메일 보내는 중...
         setEmailSending(true);
-        const response: any = apiPost({
+        apiPost({
             endPoint: EP_VERIFICATION_CODE_REQ,
             body: { email: emailInput },
             onSuccess: (response) => {
@@ -65,15 +66,43 @@ export default function register() {
     const sendNicknameCheckRequest = () => {
         apiGet({
             endPoint: EP_NICKNAME_CHECK,
-
-        })
+            params: { nickname: nicknameInput },
+            onSuccess: () => {
+                // 사용 가능 이메일 - 모달 오픈
+                Swal.fire(nicknameInput, "사용 가능한 닉네임입니다.", "success");
+            },
+        });
     }
 
     // 회원가입 요청 전송
     const sendRegisterRequest = () => {
-        /* apiPost(
-
-        ); */
+        // 이메일이 인증 상태여야 함
+        if (!isEmailVerified) {
+            Swal.fire('오류', "이메일 인증 절차를 진행해주세요.", "warning");
+            return;
+        }
+        // 비밀번호 형식이 유효해야 함
+        if (!isPasswordValid) {
+            Swal.fire('오류', "비밀번호 형식이 유효해야 합니다.", "warning");
+            return;
+        }
+        // 비밀번호 확인란이 일치해야 함
+        if(!isPwMatched){
+            Swal.fire('오류', "비밀번호를 한번 더 확인해주세요.", "warning");
+            return;
+        }
+        // 가입 요청 전송
+        apiPost({
+            endPoint: EP_MEMBERS,
+            body: {
+                email: emailInput,
+                nickname: nicknameInput,
+                rawPassword: passwordInput,
+            },
+            onSuccess: () => {
+                Swal.fire("회원가입 완료", `${nicknameInput}님 환영합니다!`, "success");
+            }
+        });
     }
 
     return (
@@ -94,7 +123,7 @@ export default function register() {
                 <NicknameInput
                     nicknameInput={nicknameInput}
                     setNicknameInput={setNicknameInput}
-                    isNicknameChecked={isNicknameChecked}
+                    sendNicknameCheckRequest={sendNicknameCheckRequest}
                 ></NicknameInput>
                 <PasswordInput
                     title='비밀번호'
@@ -103,6 +132,7 @@ export default function register() {
                     setPasswordInput={setPasswordInput}
                     passwordConfirmInput={passwordConfirmInput}
                     setPwMatched={setPwMatched}
+                    setPasswordValid={setPasswordValid}
                 ></PasswordInput>
                 <PasswordConfirmInput
                     title='비밀번호 확인'
@@ -113,7 +143,7 @@ export default function register() {
                     isPwMatched={isPwMatched}
                     setPwMatched={setPwMatched}
                 ></PasswordConfirmInput>
-                <button 
+                <button
                     className={css.register_button}
                     onClick={sendRegisterRequest}
                 >가입</button>
@@ -135,5 +165,5 @@ export default function register() {
                 ></VerificationModalContent>
             </Modal>
         </div>
-    )
+    );
 }

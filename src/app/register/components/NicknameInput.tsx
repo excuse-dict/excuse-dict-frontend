@@ -6,10 +6,10 @@ import { apiGet } from "@/axios/apiGet";
 import Swal from "sweetalert2";
 
 // 이메일 입력창
-export default function NicknameInput({ isNicknameChecked, nicknameInput, setNicknameInput }: {
-    isNicknameChecked: boolean,
+export default function NicknameInput({ nicknameInput, setNicknameInput, sendNicknameCheckRequest }: {
     nicknameInput: string,
     setNicknameInput: (value: string) => void,
+    sendNicknameCheckRequest: (value: string) => void,
 }) {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,15 +27,8 @@ export default function NicknameInput({ isNicknameChecked, nicknameInput, setNic
             Swal.fire("오류", `닉네임은 ${MIN_NICKNAME_LENGTH}~${MAX_NICKNAME_LENGTH}자 사이여야 합니다.`, 'warning');
             return;
         }
-
-        apiGet({
-            endPoint: EP_NICKNAME_CHECK,
-            params: { nickname: nicknameInput },
-            onSuccess: () => {
-                // 사용 가능 이메일 - 모달 오픈
-                Swal.fire(nicknameInput, "사용 가능한 닉네임입니다.", "success");
-            },
-        });
+        // 유효성 검증 요청 서버에 전송
+        sendNicknameCheckRequest(nicknameInput);
     }
 
     return (
@@ -51,9 +44,8 @@ export default function NicknameInput({ isNicknameChecked, nicknameInput, setNic
                 ></input>
                 <button
                     className={css.email_dupl_check}
-                    disabled={isNicknameChecked}
                     onClick={handleClick}
-                >{isNicknameChecked ? '인증 완료' : '인증'}</button>
+                >중복 확인</button>
             </div>
         </div>
     );
