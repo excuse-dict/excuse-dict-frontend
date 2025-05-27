@@ -25,10 +25,10 @@ export default function PasswordConfirm({ title, placeholder, passwordInput, pas
 
     return (
         <div className={pageCss.reg_input_container}>
-            <label className={pageCss.reg_input_label}>{title}</label>
+            <label className='global_input_label'>{title}</label>
             <div className={css.pw_input_container}>
                 <input
-                    className={pageCss.reg_input}
+                    className='global_input'
                     placeholder={placeholder}
                     value={passwordConfirmInput}
                     onChange={handleChange}

@@ -86,10 +86,10 @@ export default function PasswordInput({ title, placeholder, passwordInput, setPa
 
     return (
         <div className={pageCss.reg_input_container}>
-            <label className={pageCss.reg_input_label}>{title}</label>
+            <label className='global_input_label'>{title}</label>
             <div className={css.pw_input_container}>
                 <input
-                    className={pageCss.reg_input}
+                    className='global_input'
                     placeholder={placeholder}
                     value={passwordInput}
                     onChange={handleChange}

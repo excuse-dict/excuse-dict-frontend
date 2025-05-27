@@ -41,10 +41,10 @@ export default function EmailInput({ isEmailVerified, emailInput, setEmailInput,
 
     return (
         <div className={pageCss.reg_input_container}>
-            <div className={pageCss.reg_input_label}>이메일</div>
+            <div className='global_input_label'>이메일</div>
             <div className={css.email_input_container}>
                 <input
-                    className={pageCss.reg_input}
+                    className='global_input'
                     placeholder={`이메일을 입력해 주세요 (최대 ${MAX_EMAIL_LENGTH}자)`}
                     type='email'
                     readOnly={isEmailVerified}

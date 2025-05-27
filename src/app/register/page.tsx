@@ -13,7 +13,7 @@ import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/NicknameInput';
 import Swal from 'sweetalert2';
 
-export default function register() {
+export default function RegisterPage() {
     const [isEmailVerified, setEmailVerified] = useState(false);
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');

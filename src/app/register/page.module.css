@@ -34,26 +34,6 @@
     position: relative;
     overflow: visible;
 }
-/* 입력란 */
-.reg_input{
-    width: 100%;
-    height: var(--reg-input-height);
-    background-color: var(--stonesmith-light);
-    border-radius: 20px;
-    padding-left: 10px;
-    color: black;
-    border: 2px solid var(--stonesmith);
-}
-
-.reg_input:read-only{
-    background-color: var(--stonesmith-highlighted);
-    cursor: default;
-}
-
-.reg_input_label{
-    color: black;
-    margin-left: var(--reg-input-label-margin);
-}
 
 /* 회원가입 버튼 */
 .register_button{

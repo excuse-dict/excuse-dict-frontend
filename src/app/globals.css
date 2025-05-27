@@ -1,6 +1,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --stonesmith-dark: rgb(110, 130, 140);
   --stonesmith: rgb(130, 153, 167);
   --stonesmith-highlighted: rgb(164, 186, 199);
   --stonesmith-light: rgb(195, 208, 221);
@@ -59,4 +60,25 @@ a {
   display: flex;
   flex-direction: column;
   background-color: rgb(210, 210, 210);
+}
+
+/* 입력란 */
+.global_input{
+    width: 100%;
+    height: var(--reg-input-height);
+    background-color: var(--stonesmith-light);
+    border-radius: 20px;
+    padding-left: 10px;
+    color: black;
+    border: 2px solid var(--stonesmith);
+}
+
+.global_input:read-only{
+    background-color: var(--stonesmith-highlighted);
+    cursor: default;
+}
+
+.global_input_label{
+    color: black;
+    margin-left: var(--reg-input-label-margin);
 }
