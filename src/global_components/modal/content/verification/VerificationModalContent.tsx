@@ -1,11 +1,11 @@
-import LoadingWidget from "@/components/loading/LoadingWidget";
 import ModalContent from "../ModalContent";
 import css from './VerificationModalContent.module.css'
-import CodeInput from "@/components/input/code/CodeInput";
 import { useState } from "react";
 import { apiPost } from "@/axios/apiPost";
 import { EP_VERIFY } from "@/app/constants/constants";
 import Swal from "sweetalert2";
+import LoadingWidget from "@/global_components/loading/LoadingWidget";
+import CodeInput from "@/global_components/input/code/CodeInput";
 
 export default function VerificationModalContent({ smtpRequest, emailInput, isEmailSending, setEmailSending, isSendingSucceed, timeLeft, setTimeLeft, setModalOpen, setEmailVerified }: {
     smtpRequest: (value: string) => void,

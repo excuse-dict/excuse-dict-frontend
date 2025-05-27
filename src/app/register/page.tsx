@@ -1,14 +1,16 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH } from '../constants/constants';
+import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH } from '../constants/constants';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
-import Modal from '@/components/modal/Modal';
-import VerificationModalContent from '@/components/modal/content/verification/VerificationModalContent';
 import EmailInput from './components/EmailInput';
 import PasswordInput from './components/PasswordInput';
 import PasswordConfirmInput from './components/PasswordConfirmInput'
+import { apiGet } from '@/axios/apiGet';
+import VerificationModalContent from '@/global_components/modal/content/verification/VerificationModalContent';
+import Modal from '@/global_components/modal/Modal';
+import NicknameInput from './components/NicknameInput';
 
 export default function register() {
     const [isEmailVerified, setEmailVerified] = useState(false);
@@ -20,6 +22,8 @@ export default function register() {
     const [isEmailSending, setEmailSending] = useState(false);
     const [isSendingSucceed, setSendingSucceed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1); // -1: 메일 안 보낸 상태
+    const [nicknameInput, setNicknameInput] = useState('');
+    const [isNicknameChecked, setNicknameChecked] = useState(false);
 
     // 모달 열 때마다 남은 시간 초기화
     useEffect(() => {
@@ -57,12 +61,20 @@ export default function register() {
         return Math.max(0, diffSec);
     }
 
-    // 회원가입 요청 전송
-    /* const sendRegisterRequest = () => {
-        apiPost(
+    // 닉네임 유효성 검사 요청 전송
+    const sendNicknameCheckRequest = () => {
+        apiGet({
+            endPoint: EP_NICKNAME_CHECK,
 
-        );
-    } */
+        })
+    }
+
+    // 회원가입 요청 전송
+    const sendRegisterRequest = () => {
+        /* apiPost(
+
+        ); */
+    }
 
     return (
         <div className={css.reg_container}>
@@ -79,6 +91,11 @@ export default function register() {
                     setTimeLeft={setTimeLeft}
                     isEmailVerified={isEmailVerified}
                 ></EmailInput>
+                <NicknameInput
+                    nicknameInput={nicknameInput}
+                    setNicknameInput={setNicknameInput}
+                    isNicknameChecked={isNicknameChecked}
+                ></NicknameInput>
                 <PasswordInput
                     title='비밀번호'
                     placeholder='비밀번호를 입력해주세요.'
@@ -98,7 +115,7 @@ export default function register() {
                 ></PasswordConfirmInput>
                 <button 
                     className={css.register_button}
-                    /* onClick={sendRegisterRequest} */
+                    onClick={sendRegisterRequest}
                 >가입</button>
             </div>
             <Modal
