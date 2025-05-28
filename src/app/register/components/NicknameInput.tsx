@@ -1,34 +1,77 @@
-import { useEffect } from "react";
-import css from './EmailInput.module.css'
+import { useEffect, useRef, useState } from "react";
+import css from './PasswordInput.module.css'
 import pageCss from '../page.module.css';
 import { EP_CHECK_EMAIL_AVAILABILITY, EP_NICKNAME_CHECK, MAX_EMAIL_LENGTH, MAX_NICKNAME_LENGTH, MIN_NICKNAME_LENGTH } from "@/app/constants/constants";
 import { apiGet } from "@/axios/apiGet";
 import Swal from "sweetalert2";
+import TextLoadingWidget from "@/global_components/loading/TextLoadingWidget";
+import { getErrorMessage } from "@/axios/handleFailure";
 
 // 이메일 입력창
-export default function NicknameInput({ nicknameInput, setNicknameInput, sendNicknameCheckRequest }: {
+export default function NicknameInput({ nicknameInput, setNicknameInput }: {
     nicknameInput: string,
     setNicknameInput: (value: string) => void,
-    sendNicknameCheckRequest: (value: string) => void,
 }) {
+
+    const [isNicknameCheckLoading, setNicknameCheckLoading] = useState(false);
+    const [isNicknameAvailable, setNicknameAvailable] = useState(false);
+    const [nicknameCondition, setNicknameCondition] = useState('');
+
+    // 사용자 입력 대기시간 (ms)
+    const waitTime = 800;
+
+    const timeRef = useRef<NodeJS.Timeout>(null);
+    const inputRef = useRef<string>(nicknameInput);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
+        inputRef.current = input;
 
         setNicknameInput(input);
+        handleTimer(e);
     }
 
     const isNicknameLengthValid = () => {
-        return nicknameInput.length >= MIN_NICKNAME_LENGTH && nicknameInput.length <= MAX_EMAIL_LENGTH;
+        return inputRef.current.length >= MIN_NICKNAME_LENGTH && inputRef.current.length <= MAX_NICKNAME_LENGTH;
     }
 
-    const handleClick = () => {
-        if(!isNicknameLengthValid()){
-            Swal.fire("오류", `닉네임은 ${MIN_NICKNAME_LENGTH}~${MAX_NICKNAME_LENGTH}자 사이여야 합니다.`, 'warning');
-            return;
-        }
-        // 유효성 검증 요청 서버에 전송
-        sendNicknameCheckRequest(nicknameInput);
+    const handleTimer = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const input = e.target.value;
+        if(!isNicknameLengthValid()) return;
+
+        // 기존 타이머가 있다면 초기화
+        if (timeRef.current) clearTimeout(timeRef.current);
+
+        // 새로 카운트 시작
+        timeRef.current = setTimeout(() => {
+            // 유효성 검증 요청 서버에 전송
+            sendNicknameCheckRequest();
+        }, waitTime);
+    }
+
+    // 사용 가능 닉네임
+    const handleSuccess = () => {
+        setNicknameAvailable(true);
+        setNicknameCheckLoading(false);
+        setNicknameCondition("닉네임 사용 가능")
+    }
+
+    const handleFailure = (error: any) => {
+        setNicknameAvailable(false);
+        setNicknameCheckLoading(false);
+        setNicknameCondition(getErrorMessage(error));
+    }
+
+    // 닉네임 유효성 검사 요청 전송
+    const sendNicknameCheckRequest = () => {
+        console.log("nicknameInput: ", inputRef.current);
+        setNicknameCheckLoading(true);
+        apiGet({
+            endPoint: EP_NICKNAME_CHECK,
+            params: { nickname: inputRef.current },
+            onSuccess: handleSuccess,
+            onFail: (error) => handleFailure(error)
+        });
     }
 
     return (
@@ -42,11 +85,16 @@ export default function NicknameInput({ nicknameInput, setNicknameInput, sendNic
                     value={nicknameInput}
                     onChange={handleChange}
                 ></input>
-                <button
-                    className={css.email_dupl_check}
-                    onClick={handleClick}
-                >중복 확인</button>
+                <TextLoadingWidget
+                    isLoading={isNicknameCheckLoading}
+                    isSucceed={isNicknameAvailable}
+                    loadingText="닉네임 확인 중"
+                    successText="사용 가능한 닉네임입니다."
+                    failText={nicknameCondition}
+                    shouldHidden={!isNicknameLengthValid()}
+                ></TextLoadingWidget>
             </div>
         </div>
     );
 }
+

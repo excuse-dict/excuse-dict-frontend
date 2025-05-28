@@ -1,7 +1,11 @@
 import Swal from "sweetalert2"
 
+export const getErrorMessage = (error: any) => {
+    return error.response?.data?.message ?? "오류가 발생하였습니다.";
+}
+
 export const onFailDefault = (error: any) => {
-    const message:string = error.response?.data?.message ?? "오류가 발생하였습니다.";
+    const message:string = getErrorMessage(error);
 
     Swal.fire("오류", message, 'error');
 }

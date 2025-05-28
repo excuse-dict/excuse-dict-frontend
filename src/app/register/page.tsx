@@ -62,18 +62,6 @@ export default function RegisterPage() {
         return Math.max(0, diffSec);
     }
 
-    // 닉네임 유효성 검사 요청 전송
-    const sendNicknameCheckRequest = () => {
-        apiGet({
-            endPoint: EP_NICKNAME_CHECK,
-            params: { nickname: nicknameInput },
-            onSuccess: () => {
-                // 사용 가능 이메일 - 모달 오픈
-                Swal.fire(nicknameInput, "사용 가능한 닉네임입니다.", "success");
-            },
-        });
-    }
-
     // 회원가입 요청 전송
     const sendRegisterRequest = () => {
         // 이메일이 인증 상태여야 함
@@ -123,7 +111,6 @@ export default function RegisterPage() {
                 <NicknameInput
                     nicknameInput={nicknameInput}
                     setNicknameInput={setNicknameInput}
-                    sendNicknameCheckRequest={sendNicknameCheckRequest}
                 ></NicknameInput>
                 <PasswordInput
                     title='비밀번호'

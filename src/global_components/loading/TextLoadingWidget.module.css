@@ -1,0 +1,17 @@
+.nickname_condition{
+    color: var(--error-color);
+    font-size: small;
+    margin-left: var(--reg-input-label-margin);
+}
+
+.loading{
+    color: black;
+}
+
+.succeed{
+    color: var(--success-color);
+}
+
+.failed{
+    color: var(--error-color);
+}
