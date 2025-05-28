@@ -29,8 +29,17 @@ export default function LoginPage(){
                 <div className={css.login_inner_box}>
                     <div className={css.login_input_container}>
                         <div className={css.login_id_pw_container}>
-                            <LoginInput placeholder='이메일'></LoginInput>
-                            <LoginInput placeholder='비밀번호' type='password'></LoginInput>
+                            <LoginInput 
+                                placeholder='이메일'
+                                input={emailInput}
+                                setInput={setEmailInput}
+                            ></LoginInput>
+                            <LoginInput 
+                                placeholder='비밀번호' 
+                                type='password'
+                                input={passwordInput}
+                                setInput={setPasswordInput}
+                            ></LoginInput>
                         </div>
                         <button className={css.login_button} onClick={sendLoginRequest}>로그인</button>
                     </div>
