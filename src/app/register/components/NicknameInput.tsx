@@ -15,13 +15,19 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
 
     const [isNicknameCheckLoading, setNicknameCheckLoading] = useState(false);
     const [isNicknameAvailable, setNicknameAvailable] = useState(false);
-    const [nicknameCondition, setNicknameCondition] = useState('');
+    const [failText, setFailText] = useState('');
+    const [shouldTextHidden, setShouldTextHidden] = useState(true);
 
     // 사용자 입력 대기시간 (ms)
     const waitTime = 800;
 
     const timeRef = useRef<NodeJS.Timeout>(null);
     const inputRef = useRef<string>(nicknameInput);
+
+    const resetStates = () => {
+        setNicknameCheckLoading(false);
+        setNicknameAvailable(false);
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
@@ -35,17 +41,24 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
         return inputRef.current.length >= MIN_NICKNAME_LENGTH && inputRef.current.length <= MAX_NICKNAME_LENGTH;
     }
 
+    // 이 안의 로직은 사용자가 입력을 멈추고 ${waitTime}ms 후에 실행됨
     const handleTimer = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const input = e.target.value;
-        if(!isNicknameLengthValid()) return;
-
         // 기존 타이머가 있다면 초기화
         if (timeRef.current) clearTimeout(timeRef.current);
 
         // 새로 카운트 시작
         timeRef.current = setTimeout(() => {
-            // 유효성 검증 요청 서버에 전송
-            sendNicknameCheckRequest();
+            // 상태 리셋
+            resetStates();
+            // 문구 표시 여부 변경
+            console.log("inputRef: ", inputRef);
+            if(isNicknameLengthValid()){
+                setShouldTextHidden(false);
+                // 유효성 검증 요청 서버에 전송
+                sendNicknameCheckRequest();
+            }else{ // 길이 안 맞으면 문구 숨기기
+                setShouldTextHidden(true);
+            }          
         }, waitTime);
     }
 
@@ -53,13 +66,13 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
     const handleSuccess = () => {
         setNicknameAvailable(true);
         setNicknameCheckLoading(false);
-        setNicknameCondition("닉네임 사용 가능")
+        setFailText("닉네임 사용 가능");
     }
 
     const handleFailure = (error: any) => {
         setNicknameAvailable(false);
         setNicknameCheckLoading(false);
-        setNicknameCondition(getErrorMessage(error));
+        setFailText(getErrorMessage(error));
     }
 
     // 닉네임 유효성 검사 요청 전송
@@ -90,8 +103,8 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
                     isSucceed={isNicknameAvailable}
                     loadingText="닉네임 확인 중"
                     successText="사용 가능한 닉네임입니다."
-                    failText={nicknameCondition}
-                    shouldHidden={!isNicknameLengthValid()}
+                    failText={failText}
+                    shouldHidden={shouldTextHidden}
                 ></TextLoadingWidget>
             </div>
         </div>

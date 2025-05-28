@@ -13,6 +13,7 @@ export default function TextLoadingWidget({ isLoading, isSucceed, loadingText, s
 
     const [dotCount, setDotCount] = useState(0);
     const [minTimePassed, setMinTimePassed] = useState(false);
+
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const minTimeRef = useRef<NodeJS.Timeout | null>(null);
 
