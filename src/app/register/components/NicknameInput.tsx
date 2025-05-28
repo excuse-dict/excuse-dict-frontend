@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import TextLoadingWidget from "@/global_components/loading/TextLoadingWidget";
 import { getErrorMessage } from "@/axios/handleFailure";
 
-// 이메일 입력창
+// 닉네임 입력창
 export default function NicknameInput({ nicknameInput, setNicknameInput }: {
     nicknameInput: string,
     setNicknameInput: (value: string) => void,

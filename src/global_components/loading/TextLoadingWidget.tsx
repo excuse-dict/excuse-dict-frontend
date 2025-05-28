@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import css from './TextLoadingWidget.module.css'
 
-export default function TextLoadingWidget({ isLoading, isSucceed, loadingText, successText, failText, minTimeLength = 1000, shouldHidden }: {
+export default function TextLoadingWidget({ isLoading, isSucceed, loadingText, successText, failText, minTimeLength = 500, shouldHidden }: {
     isLoading: boolean,
     isSucceed: boolean,
     loadingText: string,
@@ -16,6 +16,8 @@ export default function TextLoadingWidget({ isLoading, isSucceed, loadingText, s
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
     const minTimeRef = useRef<NodeJS.Timeout | null>(null);
+
+    const dotAnimationTimeInterval = 200; // 점 애니메이션 업데이트 주기 (단위: ms)
 
     useEffect(() => {
         if (isLoading) { // 로딩이 false -> true로 바뀔 때만 실행
@@ -53,7 +55,7 @@ export default function TextLoadingWidget({ isLoading, isSucceed, loadingText, s
 
         timerRef.current = setTimeout(() => {
             setDotCount(prev => (prev + 1) % 4); // 0,1,2,3 순환
-        }, 300);
+        }, dotAnimationTimeInterval);
 
         return () => {
             if (timerRef.current) {
