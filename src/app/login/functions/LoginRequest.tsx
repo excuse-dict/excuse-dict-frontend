@@ -1,10 +1,11 @@
 import { EP_LOGIN } from "@/app/constants/constants"
 import { apiPost } from "@/axios/apiPost"
 
-export const sendLoginRequest = async ({ email, password, onSuccess }: {
+export const sendLoginRequest = async ({ email, password, onSuccess, onFail }: {
     email: string,
     password: string,
     onSuccess?: () => void
+    onFail?: () => void
 }) => {
     return await apiPost({
         endPoint: EP_LOGIN,
@@ -12,6 +13,7 @@ export const sendLoginRequest = async ({ email, password, onSuccess }: {
             email: email,
             password: password,
         },
-        onSuccess: onSuccess
+        onSuccess: onSuccess,
+        onFail: onFail
     })
 }

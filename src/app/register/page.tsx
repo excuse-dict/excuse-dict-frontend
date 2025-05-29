@@ -102,7 +102,8 @@ export default function RegisterPage() {
                 sendLoginRequest({
                     email: emailInput,
                     password: passwordInput,
-                    onSuccess: () => router.push('/home')
+                    onSuccess: () => router.push('/home'),
+                    onFail: () => router.push('/login')
                 });
             });
     }
