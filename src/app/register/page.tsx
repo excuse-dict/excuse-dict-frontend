@@ -12,6 +12,8 @@ import VerificationModalContent from '@/global_components/modal/content/verifica
 import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/NicknameInput';
 import Swal from 'sweetalert2';
+import { sendLoginRequest } from '../login/functions/LoginRequest';
+import { useRouter } from 'next/navigation';
 
 export default function RegisterPage() {
     const [isEmailVerified, setEmailVerified] = useState(false);
@@ -25,6 +27,8 @@ export default function RegisterPage() {
     const [isSendingSucceed, setSendingSucceed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1); // -1: 메일 안 보낸 상태
     const [nicknameInput, setNicknameInput] = useState('');
+
+    const router = useRouter();
 
     // 모달 열 때마다 남은 시간 초기화
     useEffect(() => {
@@ -75,7 +79,7 @@ export default function RegisterPage() {
             return;
         }
         // 비밀번호 확인란이 일치해야 함
-        if(!isPwMatched){
+        if (!isPwMatched) {
             Swal.fire('오류', "비밀번호를 한번 더 확인해주세요.", "warning");
             return;
         }
@@ -87,10 +91,20 @@ export default function RegisterPage() {
                 nickname: nicknameInput,
                 rawPassword: passwordInput,
             },
-            onSuccess: () => {
-                Swal.fire("회원가입 완료", `${nicknameInput}님 환영합니다!`, "success");
-            }
+            onSuccess: () => handleRegisterSucceed()
         });
+    }
+
+    const handleRegisterSucceed = () => {
+        Swal.fire("회원가입 완료", `${nicknameInput}님 환영합니다!`, "success")
+            .then(() => {
+                // 자동 로그인 요청 전송
+                sendLoginRequest({
+                    email: emailInput,
+                    password: passwordInput,
+                    onSuccess: () => router.push('/home')
+                });
+            });
     }
 
     return (
