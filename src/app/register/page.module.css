@@ -40,12 +40,12 @@
     width: 50%;
     height: 45px;
     border-radius: 8px;
-    background-color: var(--stonesmith);
+    background-color: var(--purple-grey);
     font-size: 20px;
     margin-top: 10%;
     margin-bottom: 10%;
     cursor: pointer;
 }
 .register_button:hover{
-    background-color: var(--stonesmith-highlighted);
+    background-color: var(--purple-grey-highlighted);
 }

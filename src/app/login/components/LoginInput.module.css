@@ -1,8 +1,8 @@
 .login_input{
     height: 30px;
-    background-color: var(--stonesmith-light);
+    background-color: var(--purple-grey-light);
     outline: none;
     padding-left: 6px;
     color: black;
-    border: 1px solid var(--stonesmith-dark);
+    border: 1px solid var(--purple-grey-dark);
 }

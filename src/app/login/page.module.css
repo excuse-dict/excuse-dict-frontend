@@ -23,7 +23,7 @@
     align-items: center;
     width: 50%;
     height: 80%;
-    border: 1px solid var(--stonesmith);
+    border: 1px solid var(--purple-grey);
     margin: auto;
     /* justify-content: space-between; */
 }
@@ -63,13 +63,13 @@
 
 .login_button{
     flex: 1;
-    background-color: var(--stonesmith);
-    border: 1px solid var(--stonesmith-dark);
+    background-color: var(--purple-grey);
+    border: 1px solid var(--purple-grey-dark);
     cursor: pointer;
 }
 
 .login_button:hover{
-    background-color: var(--stonesmith-highlighted);
+    background-color: var(--purple-grey-highlighted);
 }
 
 /* '비밀번호 재설정' 문구 */

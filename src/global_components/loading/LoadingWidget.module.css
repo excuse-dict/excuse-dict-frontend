@@ -14,7 +14,7 @@
     width: 20px;
     height: 20px;
     border: 3px solid #e3e3e3;
-    border-top: 3px solid var(--stonesmith);
+    border-top: 3px solid var(--purple-grey);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }

@@ -8,12 +8,17 @@ export default function Header(){
 
     return (
         <header className={css.header}>
-            <button className={css.home_button} onClick={() => router.push('/home')}>
-                돌장장이
+            <button 
+                className="rounded p-1.5 border-none cursor-pointer text-lg"
+                style={{"backgroundColor": 'var(--purple-grey-dark)'}}
+                onClick={() => router.push('/home')}>
+                108핑계
             </button>
             <nav>
-                <button onClick={(() => router.push('/register'))}>회원가입</button>
-                <button onClick={(() => router.push('/login'))}>로그인</button>
+                <button
+                    className={css.header_button}
+                    onClick={(() => router.push('/login'))}
+                >로그인</button>
             </nav>
         </header>
     );

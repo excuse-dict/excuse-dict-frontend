@@ -6,11 +6,13 @@ import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
 import { EP_LOGIN } from '../constants/constants';
 import { sendLoginRequest } from './functions/LoginRequest';
+import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
 
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
+    const router = useRouter();
 
     return (
         <div className={css.login_container}>
@@ -42,8 +44,13 @@ export default function LoginPage() {
                         >로그인</button>
                     </div>
                     <div className={css.button_container}>
-                        <button className={css.pw_reset}>비밀번호 변경</button>
-                        <button className={css.pw_reset}>회원가입</button>
+                        <button
+                            className={css.pw_reset}
+                        >비밀번호 변경</button>
+                        <button 
+                            className={css.pw_reset}
+                            onClick={() => router.push("/register")}
+                        >회원가입</button>
                     </div>
                 </div>
             </div>

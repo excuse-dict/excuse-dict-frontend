@@ -9,7 +9,7 @@
     border: none;
     border-radius: 8px;
     color: antiquewhite;
-    background-color: var(--stonesmith);
+    background-color: var(--purple-grey);
     min-width: 100px;
     min-height: 50px;
     font-size: 20px;
@@ -17,7 +17,7 @@
 }
 
 .modal_confirm_button:hover{
-    background-color: var(--stonesmith-highlighted);
+    background-color: var(--purple-grey-highlighted);
 }
 
 .modal_button_container{

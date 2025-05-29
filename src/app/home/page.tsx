@@ -6,7 +6,7 @@ export default function Home() {
         <div className={css.main}>
             <section className={css.section}>
                 <header className={css.section_header}>
-                    <h3>최근 인기 카드</h3>
+                    <h3>최근 인기 핑계</h3>
                     <button className={css.more_button}>+ 더보기</button>
                 </header>
             </section>
@@ -17,5 +17,5 @@ export default function Home() {
                 </header>
             </section>
         </div>
-    )
+    );
 }
