@@ -7,19 +7,16 @@ import { useState } from "react";
 import { EP_VERIFICATION_CODE_REQ } from "../constants/constants";
 import EmailInput from "../register/components/EmailInput";
 import sendVerificationCode from "@/axios/requests/post/verificationCode";
+import { useEmailVerification } from "@/global_components/modal/content/verification/useEmailVerification";
 
 export default function PasswordResetPage() {
 
     const [isModalOpen, setModalOpen] = useState(false);
-    const [emailInput, setEmailInput] = useState('');
-    const [isEmailSending, setEmailSending] = useState(false);
+    const emailVerification = useEmailVerification();
 
-    const smtpRequest = () => {
-        setEmailSending(true);
-        sendVerificationCode({
-            email: emailInput,
-        })
-    }
+    const {
+        emailInput, setEmailInput,
+    } =  emailVerification;
 
     return (
         <div className="inner_container">
@@ -30,22 +27,20 @@ export default function PasswordResetPage() {
                 value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
             ></input>
-            {/* <button
+            <button
                 className="global_button w-[10%] h-[30px] text-[16px] rounded-[6px] mt-[3%]"
-                onClick={ }
-            >확인</button> */}
-            {/* <Modal
+                onClick={() => setModalOpen(true)}
+            >확인</button>
+            <Modal
                 isOpen={isModalOpen}
                 setOpen={setModalOpen}
             >
                 <VerificationModalContent
-                    smtpRequest={smtpRequest}
-                    emailInput={emailInput}
-                    isEmailSending={isEmailSending}
-                    setEmailSending={setEmailSending}
+                    emailVerification={emailVerification}
+                    setModalOpen={setModalOpen}
                 >
                 </VerificationModalContent>
-            </Modal> */}
+            </Modal>
         </div>
     );
 }

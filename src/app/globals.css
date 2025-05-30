@@ -107,3 +107,10 @@ a {
   cursor: pointer;
   color: white;
 }
+
+/* swal 확인 버튼 */
+.swal2-popup .swal2-actions button {
+    background-color: var(--purple-grey-dark) !important; 
+    color: white !important;
+    opacity: 1 !important;
+}
