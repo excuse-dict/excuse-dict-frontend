@@ -1,8 +1,9 @@
 import { EP_VERIFICATION_CODE_REQ } from "@/app/constants/constants";
 import { apiPost } from "@/axios/apiPost";
 
-export default async function sendVerificationCode({ email, onSuccess, onFail }:{
+export default async function sendVerificationCode({ email, purpose, onSuccess, onFail }:{
     email: string,
+    purpose: string,
     onSuccess?: (value: any) => void,
     onFail?: (value: any) => void,
 }){
@@ -10,6 +11,7 @@ export default async function sendVerificationCode({ email, onSuccess, onFail }:
         endPoint: EP_VERIFICATION_CODE_REQ,
         body: {
             email: email,
+            purpose: purpose
         },
         onSuccess: onSuccess,
         onFail: onFail

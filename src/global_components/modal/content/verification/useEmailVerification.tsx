@@ -1,7 +1,8 @@
+import { apiPost } from "@/axios/apiPost";
 import sendVerificationCode from "@/axios/requests/post/verificationCode";
 import { useEffect, useState } from "react";
 
-export function useEmailVerification() {
+export function useEmailVerification(verificationPurpose: string) {
     const [emailInput, setEmailInput] = useState('');
     const [isEmailVerified, setEmailVerified] = useState(false);
     const [isEmailSending, setEmailSending] = useState(false);
@@ -14,6 +15,7 @@ export function useEmailVerification() {
         setEmailSending(true);
         sendVerificationCode({
             email: emailInput,
+            purpose: verificationPurpose,
             onSuccess: (response) => {
                 setEmailSending(false); // 이메일 전송 완료!
                 setSendingSucceed(true);
@@ -55,7 +57,7 @@ export function useEmailVerification() {
         isEmailSending, setEmailSending,
         isSendingSucceed,
         smtpRequest,
-        timeLeft, setTimeLeft
+        timeLeft, setTimeLeft,
+        verificationPurpose
     }
-
 }

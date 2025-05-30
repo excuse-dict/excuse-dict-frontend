@@ -4,7 +4,7 @@ import { useState } from 'react';
 import LoginInput from './components/LoginInput';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
-import { EP_LOGIN } from '../constants/constants';
+import { EP_LOGIN, PG_PASSWORD_RESET, PG_REGISTER } from '../constants/constants';
 import { sendLoginRequest } from './functions/LoginRequest';
 import { useRouter } from 'next/navigation';
 
@@ -44,11 +44,11 @@ export default function LoginPage() {
                 <div className={css.button_container}>
                     <button
                         className={css.pw_reset}
-                        onClick={() => router.push("/password-reset")}
+                        onClick={() => router.push(PG_PASSWORD_RESET)}
                     >비밀번호를 잊어버리셨나요?</button>
                     <button
                         className={css.pw_reset}
-                        onClick={() => router.push("/register")}
+                        onClick={() => router.push(PG_REGISTER)}
                     >회원가입</button>
                 </div>
             </div>

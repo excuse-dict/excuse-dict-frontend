@@ -8,16 +8,16 @@ import LoadingWidget from "@/global_components/loading/LoadingWidget";
 import CodeInput from "@/global_components/input/code/CodeInput";
 import { useEmailVerification } from "./useEmailVerification";
 
-export default function VerificationModalContent({ emailVerification, setModalOpen }: {
+export default function VerificationModalContent({ emailVerification, onSuccess }: {
     emailVerification: ReturnType<typeof useEmailVerification>
-    setModalOpen: (value: boolean) => void,
+    onSuccess: (value: any) => void,
 }) {
 
     const {
         timeLeft, setTimeLeft,
         emailInput,
         isEmailSending, setEmailSending,
-        setEmailVerified,
+        verificationPurpose,
         isSendingSucceed,
         smtpRequest
     } = emailVerification;
@@ -34,11 +34,12 @@ export default function VerificationModalContent({ emailVerification, setModalOp
             smtpRequest();
             setInitialSend(false);
         }
-    }, [isInitialSend]);
+    }, []);
 
     const getTimeText = (): string => {
-        if (timeLeft === 0) return "(만료됨!)";
-        return timeLeft >= 0 ? `(${timeLeft}초 후 만료)` : '';
+        if(isEmailSending) return '';
+        if (timeLeft <= 0) return "(만료됨!)";
+        return `(${timeLeft}초 후 만료)`;
     }
 
     const resetContent = () => {
@@ -54,6 +55,7 @@ export default function VerificationModalContent({ emailVerification, setModalOp
         return code;
     }
 
+    // 인증코드 서버에 전송
     const submitCode = async () => {
         const code: string = getCode();
 
@@ -67,12 +69,9 @@ export default function VerificationModalContent({ emailVerification, setModalOp
             body: {
                 email: emailInput,
                 verificationCode: code,
+                purpose: verificationPurpose
             },
-            onSuccess: () => {
-                setModalOpen(false);
-                Swal.fire("인증 완료", "인증 코드가 확인되었습니다.", 'success');
-                setEmailVerified(true);
-            },
+            onSuccess: onSuccess,
             onFail: () => {
                 Swal.fire('오류', '코드가 일치하지 않거나 만료되었습니다.<br>다시 확인해 주세요.', 'error');
             }

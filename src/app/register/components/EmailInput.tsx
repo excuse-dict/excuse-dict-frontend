@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import css from './EmailInput.module.css'
 import pageCss from '../page.module.css';
-import { EP_CHECK_EMAIL_AVAILABILITY, MAX_EMAIL_LENGTH } from "@/app/constants/constants";
+import { EMAIL_VERIFICATION_PURPOSE, EP_CHECK_EMAIL_AVAILABILITY, MAX_EMAIL_LENGTH } from "@/app/constants/constants";
 import { apiGet } from "@/axios/apiGet";
 import Swal from "sweetalert2";
 import { useEmailVerification } from "@/global_components/modal/content/verification/useEmailVerification";

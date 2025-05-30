@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH } from '../constants/constants';
+import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EMAIL_VERIFICATION_PURPOSE, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH, PG_HOME } from '../constants/constants';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
 import EmailInput from './components/EmailInput';
@@ -26,12 +26,17 @@ export default function RegisterPage() {
     const [nicknameInput, setNicknameInput] = useState('');
 
     const router = useRouter();
-    const emailVerification = useEmailVerification();
+    const emailVerification = useEmailVerification(EMAIL_VERIFICATION_PURPOSE.REGISTER);
+
+    const {
+        emailInput,
+        isEmailVerified, setEmailVerified
+    } = emailVerification;
 
     // 회원가입 요청 전송
     const sendRegisterRequest = () => {
         // 이메일이 인증 상태여야 함
-        if (!emailVerification.isEmailVerified) {
+        if (!isEmailVerified) {
             Swal.fire('오류', "이메일 인증 절차를 진행해주세요.", "warning");
             return;
         }
@@ -49,7 +54,7 @@ export default function RegisterPage() {
         apiPost({
             endPoint: EP_MEMBERS,
             body: {
-                email: emailVerification.emailInput,
+                email: emailInput,
                 nickname: nicknameInput,
                 rawPassword: passwordInput,
             },
@@ -62,9 +67,9 @@ export default function RegisterPage() {
             .then(() => {
                 // 자동 로그인 요청 전송
                 sendLoginRequest({
-                    email: emailVerification.emailInput,
+                    email: emailInput,
                     password: passwordInput,
-                    onSuccess: () => router.push('/home'),
+                    onSuccess: () => router.push(PG_HOME),
                     onFail: () => router.push('/login')
                 });
             });
@@ -111,7 +116,11 @@ export default function RegisterPage() {
             >
                 <VerificationModalContent
                     emailVerification={emailVerification}
-                    setModalOpen={setModalOpen}
+                    onSuccess={() => {
+                        setModalOpen(false);
+                        Swal.fire("인증 완료", "인증 코드가 확인되었습니다.", 'success');
+                        setEmailVerified(true);
+                    }}
                 ></VerificationModalContent>
             </Modal>
         </div>
