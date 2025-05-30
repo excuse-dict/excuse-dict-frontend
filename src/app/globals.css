@@ -54,13 +54,13 @@ a {
   }
 }
 
-.app-container{
+.app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
 }
 
-.app-background{
+.app-background {
   width: 100%;
   min-height: calc(100vh - var(--header-height));
   display: flex;
@@ -69,22 +69,41 @@ a {
 }
 
 /* 입력란 */
-.global_input{
-    width: 100%;
-    height: var(--reg-input-height);
-    background-color: var(--purple-grey-light);
-    border-radius: 20px;
-    padding-left: 10px;
-    color: black;
-    border: 2px solid var(--purple-grey);
+.global_input {
+  height: var(--reg-input-height);
+  background-color: var(--purple-grey-light);
+  border-radius: 20px;
+  padding-left: 10px;
+  color: black;
+  border: 2px solid var(--purple-grey);
 }
 
-.global_input:read-only{
-    background-color: var(--purple-grey-highlighted);
-    cursor: default;
+.global_input:read-only {
+  background-color: var(--purple-grey-highlighted);
+  cursor: default;
 }
 
-.global_input_label{
-    color: black;
-    margin-left: var(--reg-input-label-margin);
+.global_input_label {
+  color: black;
+  margin-left: var(--reg-input-label-margin);
+}
+
+.inner_container{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  margin: auto;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+
+  @apply w-full sm:w-[640px];
+  @apply h-[80vh];
+}
+
+.global_button{
+  background-color: var(--purple-grey);
+  border: none;
+  cursor: pointer;
+  color: white;
 }

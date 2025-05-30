@@ -14,6 +14,7 @@ import NicknameInput from './components/NicknameInput';
 import Swal from 'sweetalert2';
 import { sendLoginRequest } from '../login/functions/LoginRequest';
 import { useRouter } from 'next/navigation';
+import sendVerificationCode from '@/axios/requests/post/verificationCode';
 
 export default function RegisterPage() {
     const [isEmailVerified, setEmailVerified] = useState(false);
@@ -38,10 +39,9 @@ export default function RegisterPage() {
     // 이메일 전송
     const smtpRequest = () => {
         // 이메일 보내는 중...
-        setEmailSending(true);
-        apiPost({
-            endPoint: EP_VERIFICATION_CODE_REQ,
-            body: { email: emailInput },
+        setEmailSending(true);        
+        sendVerificationCode({
+            email: emailInput,
             onSuccess: (response) => {
                 setEmailSending(false); // 이메일 전송 완료!
                 setSendingSucceed(true);

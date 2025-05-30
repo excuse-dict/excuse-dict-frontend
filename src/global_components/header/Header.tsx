@@ -12,7 +12,7 @@ export default function Header(){
                 className="rounded p-1.5 border-none cursor-pointer text-lg"
                 style={{"backgroundColor": 'var(--purple-grey-dark)'}}
                 onClick={() => router.push('/home')}>
-                108핑계
+                핑계보따리
             </button>
             <nav>
                 <button
