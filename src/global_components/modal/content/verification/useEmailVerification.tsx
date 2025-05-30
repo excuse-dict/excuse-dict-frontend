@@ -74,5 +74,6 @@ export function useEmailVerification(purpose: string) {
         isSendingSucceed,
         smtpRequest,
         timeLeft, setTimeLeft,
+        verifyEndpoint,
     }
 }

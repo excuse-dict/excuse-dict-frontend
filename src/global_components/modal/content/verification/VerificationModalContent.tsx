@@ -18,7 +18,8 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
         emailInput,
         isEmailSending, setEmailSending,
         isSendingSucceed,
-        smtpRequest
+        smtpRequest,
+        verifyEndpoint,
     } = emailVerification;
 
     const codeLength = 6;
@@ -64,15 +65,12 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
         }
 
         apiPost({
-            endPoint: EP_VERIFY_SIGNUP,
+            endPoint: verifyEndpoint,
             body: {
                 email: emailInput,
                 verificationCode: code,
             },
             onSuccess: onSuccess,
-            onFail: () => {
-                Swal.fire('오류', '코드가 일치하지 않거나 만료되었습니다.<br>다시 확인해 주세요.', 'error');
-            }
         });
     }
 
