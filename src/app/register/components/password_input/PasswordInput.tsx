@@ -1,19 +1,23 @@
 import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from "@/app/constants/constants";
 import { useState } from "react";
 import css from './PasswordInput.module.css'
-import pageCss from '../page.module.css'
+import pageCss from '../../page.module.css';
+import { usePasswordInput } from "./usePasswordInput";
 
 // 비밀번호 입력창
-export default function PasswordInput({ title, placeholder, passwordInput, setPasswordInput, passwordConfirmInput, setPwMatched, setPasswordValid }:
+export default function PasswordInput({ title, placeholder, password }:
     {
         title: string,
         placeholder: string,
-        passwordInput: string,
-        setPasswordInput: (value: string) => void
-        passwordConfirmInput: string,
-        setPwMatched: (value: boolean) => void
-        setPasswordValid: (value: boolean) => void
+        password: ReturnType<typeof usePasswordInput>
     }) {
+    const {
+        passwordInput, setPasswordInput,
+        passwordConfirmInput,
+        setPasswordValid,
+        setPwMatched,
+    } = password;
+
     const [isInputFocused, setInputFocused] = useState(false);
     const [isInputEmpty, setIsInputEmpty] = useState(true);
     const [isLengthValid, setIsLengthValid] = useState(false);
@@ -49,7 +53,7 @@ export default function PasswordInput({ title, placeholder, passwordInput, setPa
 
         // 비밀번호 유효 여부 업데이트
         const isPasswordValid = isLengthValid && isLowerCaseIncluded && isUpperCaseIncluded
-        && isDigitIncluded && isSpecialCharacterIncluded && isAllCharactersValid;
+            && isDigitIncluded && isSpecialCharacterIncluded && isAllCharactersValid;
         setPasswordValid(isPasswordValid);
     }
 

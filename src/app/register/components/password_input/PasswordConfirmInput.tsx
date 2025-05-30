@@ -1,18 +1,21 @@
 import { useState } from "react";
 import css from './PasswordInput.module.css'
-import pageCss from '../page.module.css'
+import pageCss from '../../page.module.css';
+import { usePasswordInput } from "./usePasswordInput";
 
-export default function PasswordConfirm({ title, placeholder, passwordInput, passwordConfirmInput, setPasswordConfirmInput, isPwMatched, setPwMatched }:
+export default function PasswordConfirm({ title, placeholder, password }:
     {
         title: string,
         placeholder: string,
-        passwordInput: string,
-        passwordConfirmInput: string,
-        setPasswordConfirmInput: (value: string) => void
-        isPwMatched: boolean,
-        setPwMatched: (value: boolean) => void
+        password: ReturnType<typeof usePasswordInput>
     }
 ) {
+    const {
+        passwordInput,
+        passwordConfirmInput, setPasswordConfirmInput,
+        isPwMatched, setPwMatched
+    } = password;
+
     const [isInputEmpty, setInputEmpty] = useState(true);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

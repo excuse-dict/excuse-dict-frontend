@@ -13,6 +13,7 @@
   --header-height: 6vh;
   --success-color: rgb(100, 210, 100);
   --error-color: rgb(255, 100, 100);
+  --global-font: #3d393c ;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -105,7 +106,8 @@ a {
   background-color: var(--purple-grey);
   border: none;
   cursor: pointer;
-  color: white;
+  color: var(--global-font);
+  /* -webkit-text-stroke: 0.3px rgba(0, 0, 0, 0.3); */
 }
 
 /* swal 확인 버튼 */

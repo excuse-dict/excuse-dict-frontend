@@ -4,8 +4,8 @@ import { apiPost } from "@/axios/apiPost";
 import VerificationModalContent from "@/global_components/modal/content/verification/VerificationModalContent";
 import Modal from "@/global_components/modal/Modal";
 import { useState } from "react";
-import { EMAIL_VERIFICATION_PURPOSE, EP_CHECK_EMAIL_AVAILABILITY, EP_CHECK_EMAIL_REGISTERED, EP_VERIFICATION_CODE_REQ,  PG_PASSWORD_RESET_VERIFIED } from "../constants/constants";
-import EmailInput from "../register/components/EmailInput";
+import { EP_CHECK_EMAIL_AVAILABILITY, EP_CHECK_EMAIL_REGISTERED, EP_VERIFICATION_CODE_REQ,  PG_PASSWORD_RESET_VERIFIED, VERIFICATION_CODE_PURPOSE } from "../constants/constants";
+import EmailInput from "../register/components/email_input/EmailInput";
 import sendVerificationCode from "@/axios/requests/post/verificationCode";
 import { useEmailVerification } from "@/global_components/modal/content/verification/useEmailVerification";
 import Swal from "sweetalert2";
@@ -16,7 +16,7 @@ export default function PasswordResetPage() {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const router = useRouter();
-    const emailVerification = useEmailVerification(EMAIL_VERIFICATION_PURPOSE.PASSWORD_RESET);
+    const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.RESET_PASSWORD);
 
     const {
         emailInput, setEmailInput,

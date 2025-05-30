@@ -3,7 +3,8 @@ export const API_URL: string = 'http://localhost:8080';
 export const EP_VERIFICATION_CODE_REQ = "/api/v1/emails/verification-code";
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/emails/check-availability"
 export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";
-export const EP_VERIFY = "/api/v1/auth/verify";
+export const EP_VERIFY_SIGNUP = "/api/v1/auth/verify/signup";
+export const EP_VERIFY_RESET_PASSWORD = "/api/v1/auth/verify/reset-password";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_LOGIN = "/api/v1/auth/login"
@@ -24,8 +25,8 @@ export const MAX_PASSWORD_LENGTH: number = 128;
 export const ALLOWED_SPECIAL_CHARS = '!@#$%&*';
 export const ALLOWED_SPECIAL_CHARS_REGEX = new RegExp(`[${ALLOWED_SPECIAL_CHARS}]`);
 
-// 이메일 인증코드 요청 시 purpose 필드
-export const EMAIL_VERIFICATION_PURPOSE = {
-    REGISTER: "REGISTER",
-    PASSWORD_RESET: "PASSWORD_RESET"
-};
+// 인증코드 발급 목적
+export const VERIFICATION_CODE_PURPOSE = {
+    REGISTRATION : "REGISTRATION",
+    RESET_PASSWORD : "RESET_PASSWORD"
+}

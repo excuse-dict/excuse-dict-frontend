@@ -67,12 +67,7 @@ export default function CodeInput({ legnth, codes, setCodes }: {
                             onPaste={(e) => { handlePaste(e.clipboardData.getData('text')) }}
 
                             // 브라우저 자동 채우기 방지
-                            autoComplete="off"
-                            autoCorrect="off"
-                            autoCapitalize="off"
-                            data-lpignore="true"        // LastPass 무시
-                            data-1p-ignore="true"       // 1Password 무시
-                            data-bwignore="true"        // Bitwarden 무시
+                            autoComplete="new-password"
                         ></input>
                     </div>
                 ))}

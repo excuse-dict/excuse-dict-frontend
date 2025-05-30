@@ -1,21 +1,37 @@
+import { EP_VERIFY_RESET_PASSWORD, EP_VERIFY_SIGNUP, VERIFICATION_CODE_PURPOSE } from "@/app/constants/constants";
 import { apiPost } from "@/axios/apiPost";
 import sendVerificationCode from "@/axios/requests/post/verificationCode";
 import { useEffect, useState } from "react";
 
-export function useEmailVerification(verificationPurpose: string) {
+export function useEmailVerification(purpose: string) {
     const [emailInput, setEmailInput] = useState('');
     const [isEmailVerified, setEmailVerified] = useState(false);
     const [isEmailSending, setEmailSending] = useState(false);
     const [isSendingSucceed, setSendingSucceed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1);
 
+    // 인증코드 검증 API 엔드포인트 결정
+    const getVerifyEndpoint = (purpose: string) => {
+        switch(purpose){
+            case VERIFICATION_CODE_PURPOSE.REGISTRATION:
+                return EP_VERIFY_SIGNUP;
+            case VERIFICATION_CODE_PURPOSE.RESET_PASSWORD:
+                return EP_VERIFY_RESET_PASSWORD;
+            default:
+                return "";
+        };
+    }
+
+    const verifyEndpoint: string = getVerifyEndpoint(purpose);
+
     // 이메일 전송
     const smtpRequest = () => {
         // 이메일 보내는 중...
         setEmailSending(true);
         sendVerificationCode({
+            endPoint: verifyEndpoint,
             email: emailInput,
-            purpose: verificationPurpose,
+            purpose: purpose,
             onSuccess: (response) => {
                 setEmailSending(false); // 이메일 전송 완료!
                 setSendingSucceed(true);
@@ -58,6 +74,5 @@ export function useEmailVerification(verificationPurpose: string) {
         isSendingSucceed,
         smtpRequest,
         timeLeft, setTimeLeft,
-        verificationPurpose
     }
 }

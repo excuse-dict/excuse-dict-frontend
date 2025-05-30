@@ -1,37 +1,42 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EMAIL_VERIFICATION_PURPOSE, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH, PG_HOME } from '../constants/constants';
+import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH, PG_HOME, VERIFICATION_CODE_PURPOSE } from '../constants/constants';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
-import EmailInput from './components/EmailInput';
-import PasswordInput from './components/PasswordInput';
-import PasswordConfirmInput from './components/PasswordConfirmInput'
+import EmailInput from './components/email_input/EmailInput';
+import PasswordInput from './components/password_input/PasswordInput';
+import PasswordConfirmInput from './components/password_input/PasswordConfirmInput'
 import { apiGet } from '@/axios/apiGet';
 import VerificationModalContent from '@/global_components/modal/content/verification/VerificationModalContent';
 import Modal from '@/global_components/modal/Modal';
-import NicknameInput from './components/NicknameInput';
+import NicknameInput from './components/nickname_input/NicknameInput';
 import Swal from 'sweetalert2';
 import { sendLoginRequest } from '../login/functions/LoginRequest';
 import { useRouter } from 'next/navigation';
 import sendVerificationCode from '@/axios/requests/post/verificationCode';
 import { useEmailVerification } from '@/global_components/modal/content/verification/useEmailVerification';
+import { usePasswordInput } from './components/password_input/usePasswordInput';
 
 export default function RegisterPage() {
-    const [passwordInput, setPasswordInput] = useState('');
-    const [isPasswordValid, setPasswordValid] = useState(false);
-    const [passwordConfirmInput, setPasswordConfirmInput] = useState('');
-    const [isPwMatched, setPwMatched] = useState(false);
+
     const [isModalOpen, setModalOpen] = useState(false);
     const [nicknameInput, setNicknameInput] = useState('');
 
     const router = useRouter();
-    const emailVerification = useEmailVerification(EMAIL_VERIFICATION_PURPOSE.REGISTER);
+    const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.REGISTRATION);
+    const password = usePasswordInput();
 
     const {
         emailInput,
         isEmailVerified, setEmailVerified
     } = emailVerification;
+
+    const {
+        passwordInput,
+        isPasswordValid,
+        isPwMatched
+    } = password;
 
     // 회원가입 요청 전송
     const sendRegisterRequest = () => {
@@ -90,20 +95,12 @@ export default function RegisterPage() {
                 <PasswordInput
                     title='비밀번호'
                     placeholder='비밀번호를 입력해주세요.'
-                    passwordInput={passwordInput}
-                    setPasswordInput={setPasswordInput}
-                    passwordConfirmInput={passwordConfirmInput}
-                    setPwMatched={setPwMatched}
-                    setPasswordValid={setPasswordValid}
+                    password={password}
                 ></PasswordInput>
                 <PasswordConfirmInput
                     title='비밀번호 확인'
                     placeholder='비밀번호를 한 번 더 입력해주세요.'
-                    passwordInput={passwordInput}
-                    passwordConfirmInput={passwordConfirmInput}
-                    setPasswordConfirmInput={setPasswordConfirmInput}
-                    isPwMatched={isPwMatched}
-                    setPwMatched={setPwMatched}
+                    password={password}
                 ></PasswordConfirmInput>
                 <button
                     className={css.register_button}

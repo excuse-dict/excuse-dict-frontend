@@ -2,7 +2,7 @@ import ModalContent from "../ModalContent";
 import css from './VerificationModalContent.module.css'
 import { useEffect, useState } from "react";
 import { apiPost } from "@/axios/apiPost";
-import { EP_VERIFY } from "@/app/constants/constants";
+import { EP_VERIFY_SIGNUP } from "@/app/constants/constants";
 import Swal from "sweetalert2";
 import LoadingWidget from "@/global_components/loading/LoadingWidget";
 import CodeInput from "@/global_components/input/code/CodeInput";
@@ -17,7 +17,6 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
         timeLeft, setTimeLeft,
         emailInput,
         isEmailSending, setEmailSending,
-        verificationPurpose,
         isSendingSucceed,
         smtpRequest
     } = emailVerification;
@@ -65,11 +64,10 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
         }
 
         apiPost({
-            endPoint: EP_VERIFY,
+            endPoint: EP_VERIFY_SIGNUP,
             body: {
                 email: emailInput,
                 verificationCode: code,
-                purpose: verificationPurpose
             },
             onSuccess: onSuccess,
             onFail: () => {
