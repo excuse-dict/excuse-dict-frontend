@@ -5,11 +5,11 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --purple-grey-black: rgb(153, 156, 180);
-  --purple-grey-dark: rgb(177, 182, 209);
-  --purple-grey: rgb(199, 206, 234);
-  --purple-grey-highlighted: rgb(211, 218, 246);
-  --purple-grey-light: rgb(195, 208, 221);
+  --purple-grey-black: rgb(121, 120, 139);
+  --purple-grey-dark: rgb(153, 156, 180);
+  --purple-grey: rgb(177, 178, 209);
+  --purple-grey-highlighted: rgb(219, 211, 246);
+  --purple-grey-light: rgb(230, 224, 247);
   --header-height: 70px;
   --success-color: rgb(100, 210, 100);
   --error-color: rgb(255, 100, 100);

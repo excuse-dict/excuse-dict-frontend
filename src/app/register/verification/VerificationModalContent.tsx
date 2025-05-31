@@ -1,12 +1,12 @@
-import ModalContent from "../ModalContent";
+
 import css from './VerificationModalContent.module.css'
 import { useEffect, useState } from "react";
 import { apiPost } from "@/axios/apiPost";
-import { EP_VERIFY_SIGNUP } from "@/app/constants/constants";
 import Swal from "sweetalert2";
 import LoadingWidget from "@/global_components/loading/LoadingWidget";
 import CodeInput from "@/global_components/input/code/CodeInput";
 import { useEmailVerification } from "./useEmailVerification";
+import ModalContent from '@/global_components/modal/content/ModalContent';
 
 export default function VerificationModalContent({ emailVerification, onSuccess }: {
     emailVerification: ReturnType<typeof useEmailVerification>

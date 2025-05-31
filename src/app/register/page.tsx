@@ -8,15 +8,15 @@ import EmailInput from './components/email_input/EmailInput';
 import PasswordInput from './components/password_input/PasswordInput';
 import PasswordConfirmInput from './components/password_input/PasswordConfirmInput'
 import { apiGet } from '@/axios/apiGet';
-import VerificationModalContent from '@/global_components/modal/content/verification/VerificationModalContent';
 import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/nickname_input/NicknameInput';
 import Swal from 'sweetalert2';
 import { sendLoginRequest } from '../login/functions/LoginRequest';
 import { useRouter } from 'next/navigation';
 import sendVerificationCode from '@/axios/requests/post/verificationCode';
-import { useEmailVerification } from '@/global_components/modal/content/verification/useEmailVerification';
 import { usePasswordInput } from './components/password_input/usePasswordInput';
+import VerificationModalContent from './verification/VerificationModalContent';
+import { useEmailVerification } from './verification/useEmailVerification';
 
 export default function RegisterPage() {
 

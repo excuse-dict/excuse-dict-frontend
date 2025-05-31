@@ -8,7 +8,7 @@
 .modal_confirm_button{
     border: none;
     border-radius: 8px;
-    color: antiquewhite;
+    color: white;
     background-color: var(--purple-grey);
     min-width: 100px;
     min-height: 50px;
