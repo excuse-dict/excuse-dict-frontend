@@ -40,10 +40,8 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
         }
         // 리캡챠 토큰 검증
         const recaptchaToken = await executeRecaptcha();
-        if (!recaptchaToken) {
-            Swal.fire("오류", "보안 검증에 실패했습니다. 다시 시도해주세요.", "warning");
-            return;
-        }
+        if (!recaptchaToken) return;
+
         // 이메일 중복 확인
         apiGet({
             endPoint: EP_CHECK_EMAIL_AVAILABILITY,

@@ -147,6 +147,7 @@ a:hover {
 
 /* 내부 컨테이너 (카드 형태) */
 .inner_container {
+  position: relative;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   padding: 40px;
@@ -155,9 +156,14 @@ a:hover {
   width: 100%;
   max-width: 500px;
   margin: auto;
-  position: relative;
   transition: var(--transition);
   border: 1px solid rgba(255, 255, 255, 0.2);
+
+  /* 중앙 정렬 */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .inner_container:hover {

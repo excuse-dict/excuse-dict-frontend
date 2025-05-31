@@ -36,8 +36,9 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
         }
     }, []);
 
+    // 만료까지 남은 시간 안내
     const getTimeText = (): string => {
-        if(isEmailSending) return '';
+        if(isEmailSending || !isSendingSucceed) return '';
         if (timeLeft <= 0) return "(만료됨!)";
         return `(${timeLeft}초 후 만료)`;
     }
