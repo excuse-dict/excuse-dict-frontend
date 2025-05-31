@@ -1,6 +1,6 @@
 // axios
 export const API_URL: string = 'http://localhost:8080';
-export const EP_VERIFICATION_CODE_REQ = "/api/v1/emails/verification-code";
+export const EP_VERIFICATION_CODE_REQ = "/api/v1/auth/verify/codes";
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/emails/check-availability"
 export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";
 export const EP_VERIFY_SIGNUP = "/api/v1/auth/verify/signup";
