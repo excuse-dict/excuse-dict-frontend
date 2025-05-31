@@ -8,6 +8,7 @@ export const useRecaptcha = () => {
     const executeRecaptcha = async (): Promise<string | null> => {
         try {
             if (recaptchaRef.current) {
+                recaptchaRef.current.reset(); // 먼저 자동으로 항상 리셋
                 const token = await recaptchaRef.current.executeAsync();
                 return token;
             } else {
@@ -19,13 +20,8 @@ export const useRecaptcha = () => {
         }
     };
 
-    const resetRecaptcha = () => {
-        recaptchaRef.current?.reset();
-    };
-
     return {
         recaptchaRef,
         executeRecaptcha,
-        resetRecaptcha
     };
 };

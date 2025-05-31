@@ -8,7 +8,7 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
         params?: object,
         onSuccess?: (value: any) => void,
         onFail?: (error?: any) => void,
-        overwriteDefaultOnFail: boolean,
+        overwriteDefaultOnFail?: boolean,
     }) => {
 
     console.log("GET 요청 전송: " + API_URL + endPoint);

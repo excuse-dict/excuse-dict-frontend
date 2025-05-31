@@ -1,7 +1,12 @@
 'use client'
 
-import {useEffect, useRef, useState} from 'react';
-import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH, PG_HOME, VERIFICATION_CODE_PURPOSE } from '../constants/constants';
+import {useState} from 'react';
+import {
+    EP_MEMBERS,
+    PG_HOME,
+    PG_LOGIN,
+    VERIFICATION_CODE_PURPOSE
+} from '../constants/constants';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
 import EmailInput from './components/email_input/EmailInput';
@@ -15,8 +20,6 @@ import { useRouter } from 'next/navigation';
 import { usePasswordInput } from './components/password_input/usePasswordInput';
 import VerificationModalContent from './verification/VerificationModalContent';
 import { useEmailVerification } from './verification/useEmailVerification';
-import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
-import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function RegisterPage() {
 
@@ -26,8 +29,6 @@ export default function RegisterPage() {
     const router = useRouter();
     const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.REGISTRATION);
     const password = usePasswordInput();
-
-    const { recaptchaRef, executeRecaptcha, resetRecaptcha } = useRecaptcha();
 
     const {
         emailInput,
@@ -58,27 +59,15 @@ export default function RegisterPage() {
             return;
         }
 
-        // 리캡챠 검증
-        const recaptchaToken = await executeRecaptcha();
-        if(!recaptchaToken) {
-            Swal.fire("오류", "reCAPTCHA 보안 검증에 실패했습니다. 다시 시도해주세요.", "warning");
-            return;
-        }
-
         // 가입 요청 전송
         apiPost({
             endPoint: EP_MEMBERS,
             body: {
                 email: emailInput,
                 nickname: nicknameInput,
-                rawPassword: passwordInput,
-                recaptchaToken: recaptchaToken
+                rawPassword: passwordInput
             },
             onSuccess: () => handleRegisterSucceed(),
-            overwriteDefaultOnFail: false,
-            onFail: () => {
-                resetRecaptcha();
-            }
         });
     }
 
@@ -90,7 +79,7 @@ export default function RegisterPage() {
                     email: emailInput,
                     password: passwordInput,
                     onSuccess: () => router.push(PG_HOME),
-                    onFail: () => router.push('/login')
+                    onFail: () => router.push(PG_LOGIN)
                 });
             });
     }
@@ -135,11 +124,6 @@ export default function RegisterPage() {
                     }}
                 ></VerificationModalContent>
             </Modal>
-            <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                size="invisible"
-            />
         </div>
     );
 }

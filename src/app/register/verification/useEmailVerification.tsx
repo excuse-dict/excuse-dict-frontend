@@ -9,6 +9,7 @@ export function useEmailVerification(purpose: string) {
     const [isEmailSending, setEmailSending] = useState(false);
     const [isSendingSucceed, setSendingSucceed] = useState(false);
     const [timeLeft, setTimeLeft] = useState(-1);
+    const [recaptchaToken, setRecaptchaToken] = useState('');
 
     // 인증코드 검증 API 엔드포인트 결정
     const getVerifyEndpoint = (purpose: string) => {
@@ -32,6 +33,7 @@ export function useEmailVerification(purpose: string) {
             endPoint: verifyEndpoint,
             email: emailInput,
             purpose: purpose,
+            recaptchaToken: recaptchaToken,
             onSuccess: (response) => {
                 setEmailSending(false); // 이메일 전송 완료!
                 setSendingSucceed(true);
@@ -75,5 +77,6 @@ export function useEmailVerification(purpose: string) {
         smtpRequest,
         timeLeft, setTimeLeft,
         verifyEndpoint,
+        recaptchaToken, setRecaptchaToken
     }
 }
