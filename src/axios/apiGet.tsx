@@ -2,12 +2,13 @@ import axios from "axios"
 import { API_URL } from "../app/constants/constants"
 import { handleError } from "./handleFailure";
 
-export const apiGet = async ({ endPoint, params, onSuccess, onFail }:
+export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDefaultOnFail = true }:
     {
         endPoint: string,
         params?: object,
         onSuccess?: (value: any) => void,
-        onFail?: (error?: any) => void
+        onFail?: (error?: any) => void,
+        overwriteDefaultOnFail: boolean,
     }) => {
 
     console.log("GET 요청 전송: " + API_URL + endPoint);
@@ -26,6 +27,7 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail }:
     } catch (error: any) { // 요청 실패(에러)
         handleError({
             error: error,
+            overwriteDefaultOnFail: overwriteDefaultOnFail,
             onFail: onFail
         });    
         return null;

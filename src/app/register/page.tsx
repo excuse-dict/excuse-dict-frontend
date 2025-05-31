@@ -1,22 +1,22 @@
 'use client'
 
-import { useEffect, useState } from 'react';
+import {useEffect, useRef, useState} from 'react';
 import { ALLOWED_SPECIAL_CHARS, ALLOWED_SPECIAL_CHARS_REGEX, EP_CHECK_EMAIL_AVAILABILITY, EP_MEMBERS, EP_NICKNAME_CHECK, EP_VERIFICATION_CODE_REQ, MAX_EMAIL_LENGTH, PG_HOME, VERIFICATION_CODE_PURPOSE } from '../constants/constants';
 import css from './page.module.css'
 import { apiPost } from '@/axios/apiPost';
 import EmailInput from './components/email_input/EmailInput';
 import PasswordInput from './components/password_input/PasswordInput';
 import PasswordConfirmInput from './components/password_input/PasswordConfirmInput'
-import { apiGet } from '@/axios/apiGet';
 import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/nickname_input/NicknameInput';
 import Swal from 'sweetalert2';
 import { sendLoginRequest } from '../login/functions/LoginRequest';
 import { useRouter } from 'next/navigation';
-import sendVerificationCode from '@/axios/requests/post/verificationCode';
 import { usePasswordInput } from './components/password_input/usePasswordInput';
 import VerificationModalContent from './verification/VerificationModalContent';
 import { useEmailVerification } from './verification/useEmailVerification';
+import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
+import ReCAPTCHA from 'react-google-recaptcha';
 
 export default function RegisterPage() {
 
@@ -26,6 +26,8 @@ export default function RegisterPage() {
     const router = useRouter();
     const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.REGISTRATION);
     const password = usePasswordInput();
+
+    const { recaptchaRef, executeRecaptcha, resetRecaptcha } = useRecaptcha();
 
     const {
         emailInput,
@@ -39,7 +41,7 @@ export default function RegisterPage() {
     } = password;
 
     // 회원가입 요청 전송
-    const sendRegisterRequest = () => {
+    const sendRegisterRequest = async () => {
         // 이메일이 인증 상태여야 함
         if (!isEmailVerified) {
             Swal.fire('오류', "이메일 인증 절차를 진행해주세요.", "warning");
@@ -55,6 +57,14 @@ export default function RegisterPage() {
             Swal.fire('오류', "비밀번호를 한번 더 확인해주세요.", "warning");
             return;
         }
+
+        // 리캡챠 검증
+        const recaptchaToken = await executeRecaptcha();
+        if(!recaptchaToken) {
+            Swal.fire("오류", "reCAPTCHA 보안 검증에 실패했습니다. 다시 시도해주세요.", "warning");
+            return;
+        }
+
         // 가입 요청 전송
         apiPost({
             endPoint: EP_MEMBERS,
@@ -62,8 +72,13 @@ export default function RegisterPage() {
                 email: emailInput,
                 nickname: nicknameInput,
                 rawPassword: passwordInput,
+                recaptchaToken: recaptchaToken
             },
-            onSuccess: () => handleRegisterSucceed()
+            onSuccess: () => handleRegisterSucceed(),
+            overwriteDefaultOnFail: false,
+            onFail: () => {
+                resetRecaptcha();
+            }
         });
     }
 
@@ -120,6 +135,11 @@ export default function RegisterPage() {
                     }}
                 ></VerificationModalContent>
             </Modal>
+            <ReCAPTCHA
+                ref={recaptchaRef}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                size="invisible"
+            />
         </div>
     );
 }

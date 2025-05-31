@@ -13,16 +13,17 @@ export const onFailDefault = (error: any) => {
     Swal.fire("오류", message, 'error');
 }
 
-export const handleError = ({ error, onFail }: {
-    error: any,
-    onFail: any
+export const handleError = ({ error, onFail, overwriteDefaultOnFail = true }:{
+    error: unknown;
+    onFail?: (error: any) => void;
+    overwriteDefaultOnFail?: boolean;
 }) => {
 
     console.log("GET요청 실패(에러): ", error);
-    // 전달된 onFail() 있으면 그거 실행
-    if (onFail) {
-        onFail(error);
-    } else { // 없으면 기본함수 실행
-        onFailDefault(error);
-    }
+
+    // 기본 핸들러 처리
+    if(!overwriteDefaultOnFail || !onFail) onFailDefault(error);
+
+    // 전달된 onFail() 실행
+    if (onFail) onFail(error);
 }

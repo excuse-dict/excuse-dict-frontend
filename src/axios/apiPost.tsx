@@ -1,13 +1,13 @@
 import { API_URL } from "@/app/constants/constants";
 import { handleError } from "./handleFailure";
 import axios from "axios";
-import { headers } from "next/headers";
 
-export const apiPost = async ({ endPoint, body, onSuccess, onFail }: {
+export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true }: {
     endPoint: string,
     body?: any,
     onSuccess?: (value: any) => void,
-    onFail?: (value: any) => void
+    onFail?: (error: any) => void,
+    overwriteDefaultOnFail?: boolean,
 }) => {
 
     console.log("POST 요청 전송: " + API_URL + endPoint);
@@ -30,6 +30,7 @@ export const apiPost = async ({ endPoint, body, onSuccess, onFail }: {
     } catch (error: any) { // 오류 발생
         handleError({
             error: error,
+            overwriteDefaultOnFail: overwriteDefaultOnFail,
             onFail: onFail
         })
         return null;
