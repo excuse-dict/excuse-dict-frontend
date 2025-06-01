@@ -67,7 +67,7 @@ export default function PasswordResetPage() {
             checkEmail();
         } else {
             // 인증 후라면 비밀번호 재설정 요청
-
+            resetPassword();
         }
     }
 
@@ -88,7 +88,7 @@ export default function PasswordResetPage() {
 
                 {/* 비밀번호 입력창에 트랜지션 적용 */}
                 <section
-                    className={`transition-all duration-300 ease-in-out ${
+                    className={`transition-all duration-1000 ease-in-out ${
                         isEmailVerified
                             ? 'opacity-100 transform translate-y-0 mb-4'
                             : 'opacity-0 transform translate-y-2 mb-0 h-0'
@@ -129,10 +129,10 @@ export default function PasswordResetPage() {
                 <VerificationModalContent
                     emailVerification={emailVerification}
                     onSuccess={() => {
+                        setModalOpen(false); // 모달 먼저 닫기
                         Swal.fire("인증 성공", "이메일 인증이 완료되었습니다.", "success")
                             .then(() => {
                                 setEmailVerified(true);
-                                setModalOpen(false);
                             });
                     }}
                 >

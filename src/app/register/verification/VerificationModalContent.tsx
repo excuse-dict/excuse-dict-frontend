@@ -25,7 +25,8 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
     } = emailVerification;
 
     const codeLength = 6;
-    const [codes, setCodes] = useState<string[]>(new Array(codeLength).fill(''));
+    const emptyCodes = new Array(codeLength).fill('');
+    const [codes, setCodes] = useState<string[]>(emptyCodes);
     const [isInitialSend, setInitialSend] = useState(true);
 
     // 모달 열릴 때 자동으로 코드 전송 요청
@@ -48,6 +49,7 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
     const resetContent = () => {
         setEmailSending(true);
         setTimeLeft(-1);
+        setCodes(emptyCodes);
     }
 
     const getCode = () => {

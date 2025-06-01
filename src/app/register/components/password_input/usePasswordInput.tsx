@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 import Swal from "sweetalert2";
 import {ALLOWED_SPECIAL_CHARS_REGEX, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH} from "@/app/constants/constants";
 
@@ -69,6 +69,15 @@ export function usePasswordInput(){
             return;
         }
     }
+    // 무한 리렌더링 방지
+    const validations = useMemo(() => ({
+        isLengthValid,
+        isLowerCaseIncluded,
+        isUpperCaseIncluded,
+        isDigitIncluded,
+        isSpecialCharacterIncluded,
+        isAllCharactersValid
+    }), [isLengthValid, isLowerCaseIncluded, isUpperCaseIncluded, isDigitIncluded, isSpecialCharacterIncluded, isAllCharactersValid]);
 
     return {
         passwordInput, setPasswordInput,
@@ -77,13 +86,6 @@ export function usePasswordInput(){
         isPwMatched, setPwMatched,
         validatePassword, validatePwMatched,
         handlePasswordChange,
-        validations: {
-            isLengthValid,
-            isLowerCaseIncluded,
-            isUpperCaseIncluded,
-            isDigitIncluded,
-            isSpecialCharacterIncluded,
-            isAllCharactersValid
-        }
+        validations: validations
     };
 }

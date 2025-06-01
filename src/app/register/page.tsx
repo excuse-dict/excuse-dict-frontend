@@ -8,18 +8,18 @@ import {
     VERIFICATION_CODE_PURPOSE
 } from '../constants/constants';
 import css from './page.module.css'
-import { apiPost } from '@/axios/apiPost';
+import {apiPost} from '@/axios/apiPost';
 import EmailInput from './components/email_input/EmailInput';
 import PasswordInput from './components/password_input/PasswordInput';
 import PasswordConfirmInput from './components/password_input/PasswordConfirmInput'
 import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/nickname_input/NicknameInput';
 import Swal from 'sweetalert2';
-import { sendLoginRequest } from '../login/functions/LoginRequest';
-import { useRouter } from 'next/navigation';
-import { usePasswordInput } from './components/password_input/usePasswordInput';
+import {sendLoginRequest} from '../login/functions/LoginRequest';
+import {useRouter} from 'next/navigation';
+import {usePasswordInput} from './components/password_input/usePasswordInput';
 import VerificationModalContent from './verification/VerificationModalContent';
-import { useEmailVerification } from './verification/useEmailVerification';
+import {useEmailVerification} from './verification/useEmailVerification';
 import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 
 export default function RegisterPage() {
@@ -83,31 +83,53 @@ export default function RegisterPage() {
     }
 
     return (
-        <div className={css.reg_container}>
-            <h2 className={css.reg_label}>회원가입</h2>
-            <div className={css.reg_main}>
-                <EmailInput
-                    emailVerification={emailVerification}
-                    setModalOpen={setModalOpen}
-                ></EmailInput>
-                <NicknameInput
-                    nicknameInput={nicknameInput}
-                    setNicknameInput={setNicknameInput}
-                ></NicknameInput>
-                <PasswordInput
-                    title='비밀번호'
-                    placeholder='비밀번호를 입력해주세요.'
-                    password={password}
-                ></PasswordInput>
-                <PasswordConfirmInput
-                    title='비밀번호 확인'
-                    placeholder='비밀번호를 한 번 더 입력해주세요.'
-                    password={password}
-                ></PasswordConfirmInput>
-                <button
-                    className={css.register_button}
-                    onClick={sendRegisterRequest}
-                >가입</button>
+        <>
+            <div className={"global_inner_container"}>
+                <h1 className={css.reg_label}>회원가입</h1>
+                <h2 className='mb-6 font-light text-sm'>환영합니다</h2>
+                <div className={css.reg_main}>
+                    <EmailInput
+                        emailVerification={emailVerification}
+                        setModalOpen={setModalOpen}
+                    />
+                    <div  // section을 div로 변경
+                        className={`transition-all duration-1000 ease-in-out ${
+                            isEmailVerified
+                                ? 'opacity-100 transform translate-y-0 mb-4 max-h-[1000px]'
+                                : 'opacity-0 transform translate-y-2 mb-0 h-0 max-h-0'
+                        }`}
+                        style={{
+                            width: '100%',
+                            maxWidth: '28rem',
+                            margin: '0 auto'
+                        }}
+                    >
+                        {isEmailVerified && (
+                            <>
+                                <NicknameInput
+                                    nicknameInput={nicknameInput}
+                                    setNicknameInput={setNicknameInput}
+                                />
+                                <PasswordInput
+                                    title='비밀번호'
+                                    placeholder='비밀번호를 입력해주세요.'
+                                    password={password}
+                                />
+                                <PasswordConfirmInput
+                                    title='비밀번호 확인'
+                                    placeholder='비밀번호를 한 번 더 입력해주세요.'
+                                    password={password}
+                                />
+                                <button
+                                    className={css.register_button}
+                                    onClick={sendRegisterRequest}
+                                >
+                                    가입
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </div>
             </div>
             <Modal
                 isOpen={isModalOpen}
@@ -117,12 +139,14 @@ export default function RegisterPage() {
                     emailVerification={emailVerification}
                     onSuccess={() => {
                         setModalOpen(false);
-                        Swal.fire("인증 완료", "인증 코드가 확인되었습니다.", 'success');
-                        setEmailVerified(true);
+                        Swal.fire("인증 완료", "인증 코드가 확인되었습니다.", 'success')
+                            .then(() => {
+                                setEmailVerified(true);
+                            });
                     }}
-                ></VerificationModalContent>
+                />
             </Modal>
-            <ReCAPTCHAComponent recaptchaRef={recaptchaRef}></ReCAPTCHAComponent>
-        </div>
+            <ReCAPTCHAComponent recaptchaRef={recaptchaRef} />
+        </>
     );
 }
