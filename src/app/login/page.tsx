@@ -37,7 +37,8 @@ export default function LoginPage() {
                         onClick={
                             () => sendLoginRequest({
                                 email: emailInput,
-                                password: passwordInput
+                                password: passwordInput,
+                                onSuccess: () => router.push('/home')
                             })}
                     >로그인</button>
                 </div>

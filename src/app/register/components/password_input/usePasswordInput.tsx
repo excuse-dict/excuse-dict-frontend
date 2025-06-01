@@ -55,20 +55,6 @@ export function usePasswordInput(){
         setPasswordValid(isPasswordValid);
     }, [passwordConfirmInput]);
 
-    // 제출 전 비밀번호 형식 유효한지 확인
-    const validatePassword = () => {
-        if (!isPasswordValid) {
-            Swal.fire('오류', "비밀번호 형식이 유효해야 합니다.", "warning");
-            return;
-        }
-    }
-    // 제출 전 비밀번호 확인란이 일치하는지 확인
-    const validatePwMatched = () => {
-        if (!isPwMatched) {
-            Swal.fire('오류', "비밀번호를 한번 더 확인해주세요.", "warning");
-            return;
-        }
-    }
     // 무한 리렌더링 방지
     const validations = useMemo(() => ({
         isLengthValid,
@@ -84,7 +70,6 @@ export function usePasswordInput(){
         isPasswordValid, setPasswordValid,
         passwordConfirmInput, setPasswordConfirmInput,
         isPwMatched, setPwMatched,
-        validatePassword, validatePwMatched,
         handlePasswordChange,
         validations: validations
     };

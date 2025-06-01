@@ -7,7 +7,8 @@ export const EP_VERIFY_SIGNUP: string = "/api/v1/auth/verify/signup";
 export const EP_VERIFY_RESET_PASSWORD: string = "/api/v1/auth/verify/reset-password";
 export const EP_NICKNAME_CHECK: string = "/api/v1/members/nicknames/check-availability";
 export const EP_MEMBERS: string = "/api/v1/members";
-export const EP_LOGIN: string = "/api/v1/auth/login"
+export const EP_LOGIN: string = "/api/v1/auth/login";
+export const EP_RESET_PASSWORD: string = "/api/v1/members/passwords/reset";
 
 // 페이지
 export const PG_HOME: string = '/home';

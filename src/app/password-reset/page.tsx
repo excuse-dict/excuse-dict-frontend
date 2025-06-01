@@ -14,12 +14,14 @@ import PasswordInput from "@/app/register/components/password_input/PasswordInpu
 import PasswordConfirm from "@/app/register/components/password_input/PasswordConfirmInput";
 import {usePasswordInput} from "@/app/register/components/password_input/usePasswordInput";
 import {
+    EP_RESET_PASSWORD,
     EP_CHECK_EMAIL_AVAILABILITY,
     EP_CHECK_EMAIL_REGISTERED,
     EP_VERIFICATION_CODE_REQ,
     PG_PASSWORD_RESET_VERIFIED,
     VERIFICATION_CODE_PURPOSE
 } from "../constants/constants";
+import {apiPatch} from "@/axios/requests/apiPatch";
 
 export default function PasswordResetPage() {
 
@@ -30,12 +32,12 @@ export default function PasswordResetPage() {
     const {
         emailInput, setEmailInput,
         isEmailVerified, setEmailVerified,
-        recaptchaRef
+        recaptchaRef, executeRecaptcha
     } = emailVerification;
 
     const password = usePasswordInput();
 
-    const { validatePassword, validatePwMatched } = password;
+    const { passwordInput, isPasswordValid, isPwMatched } = password;
 
     // 입력한 이메일로 가입된 회원이 있는지 조회
     const checkEmail = async () => {
@@ -53,12 +55,33 @@ export default function PasswordResetPage() {
         });
     }
 
-    const resetPassword = () => {
+    const resetPassword = async() => {
         // 비밀번호 유효성 검증
-        validatePassword();
+        if(!isPasswordValid){
+            Swal.fire('오류', "비밀번호 형식이 유효해야 합니다.", "warning");
+            return false;
+        }
 
         // 비밀번호 확인란 일치 여부 검증
-        validatePwMatched();
+        if (!isPwMatched) {
+            Swal.fire('오류', "비밀번호를 한번 더 확인해주세요.", "warning");
+            return false;
+        }
+
+        // 비밀번호 변경 요청
+        const recaptchaToken = await executeRecaptcha();
+        apiPatch({
+            endPoint: EP_RESET_PASSWORD,
+            body: {
+                email: emailInput,
+                newPassword: passwordInput,
+                recaptchaToken: recaptchaToken
+            },
+            onSuccess: () => {
+                Swal.fire("성공", "비밀번호가 변경되었습니다.", 'success')
+                    .then(() => router.push('/login'));
+            },
+        })
     }
 
     const handleConfirm = () => {
