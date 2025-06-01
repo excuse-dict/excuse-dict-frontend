@@ -22,16 +22,12 @@
 .reg_main{
     display: flex;
     flex-direction: column;
+    width: 60%;
+    margin: auto;
     align-items: center;
     height: calc(100% - var(--reg-header-height));
     justify-content: center;
     gap: 5px;
-}
-
-.reg_input_container{
-    width: 60%;
-    position: relative;
-    overflow: visible;
 }
 
 /* 회원가입 버튼 */

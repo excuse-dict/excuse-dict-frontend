@@ -88,9 +88,9 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
     }
 
     return (
-        <div className={pageCss.reg_input_container}>
+        <div className='global_input_container'>
             <div className='global_input_label'>닉네임</div>
-            <div className={css.email_input_container}>
+            <div className='global_input_inner_container'>
                 <input
                     className='global_input w-[100%]'
                     placeholder={`닉네임을 입력해 주세요 (${MIN_NICKNAME_LENGTH}~${MAX_NICKNAME_LENGTH}자)`}

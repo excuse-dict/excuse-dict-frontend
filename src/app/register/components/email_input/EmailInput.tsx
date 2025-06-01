@@ -49,9 +49,9 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
     }
 
     return (
-        <div className={pageCss.reg_input_container}>
+        <div className='global_input_container'>
             <div className='global_input_label'>이메일</div>
-            <div className={css.email_input_container}>
+            <div className='global_input_inner_container'>
                 <input
                     className='global_input w-[100%]'
                     placeholder={`이메일을 입력해 주세요 (최대 ${MAX_EMAIL_LENGTH}자)`}

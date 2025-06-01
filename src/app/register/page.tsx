@@ -39,8 +39,8 @@ export default function RegisterPage() {
 
     const {
         passwordInput,
-        isPasswordValid,
-        isPwMatched
+        validatePassword,
+        validatePwMatched,
     } = password;
 
     // 회원가입 요청 전송
@@ -50,16 +50,12 @@ export default function RegisterPage() {
             Swal.fire('오류', "이메일 인증 절차를 진행해주세요.", "warning");
             return;
         }
-        // 비밀번호 형식이 유효해야 함
-        if (!isPasswordValid) {
-            Swal.fire('오류', "비밀번호 형식이 유효해야 합니다.", "warning");
-            return;
-        }
-        // 비밀번호 확인란이 일치해야 함
-        if (!isPwMatched) {
-            Swal.fire('오류', "비밀번호를 한번 더 확인해주세요.", "warning");
-            return;
-        }
+
+        // 비밀번호 유효성 검증
+        validatePassword();
+
+        // 비밀번호 확인란 일치 여부 검증
+        validatePwMatched();
 
         // 가입 요청 전송
         apiPost({

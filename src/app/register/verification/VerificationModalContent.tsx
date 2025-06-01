@@ -30,8 +30,8 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
 
     // 모달 열릴 때 자동으로 코드 전송 요청
     useEffect(() =>{
-        // 남은 시간 초기화
-        setTimeLeft(-1);
+        // 모달 상태 초기화
+        resetContent();
         if(isInitialSend) {
             smtpRequest();
             setInitialSend(false);

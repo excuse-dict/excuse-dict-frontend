@@ -1,4 +1,5 @@
 import {
+    EP_VERIFICATION_CODE_REQ,
     EP_VERIFY_RESET_PASSWORD,
     EP_VERIFY_SIGNUP,
     VERIFICATION_CODE_COOLDOWN,
@@ -46,7 +47,6 @@ export function useEmailVerification(purpose: string) {
 
     // 이메일 전송
     const smtpRequest = async () => {
-
         // 쿨다운 경과했는지 검증
         if(timeToResend > 0){
             Swal.fire("오류", `연달아 코드를 발급하실 수 없습니다. ${timeToResend}초 후에 다시 시도해주세요.`, 'warning');
@@ -55,14 +55,16 @@ export function useEmailVerification(purpose: string) {
 
         // 리캡챠 토큰 검증
         const recaptchaToken = await executeRecaptcha();
-        if (!recaptchaToken) return;
+        if (!recaptchaToken) {
+            console.log("오류: reCAPTCHA 토큰 검증 실패");
+            return;
+        };
 
         // 이메일 전송 시작
         setTimeToResend(VERIFICATION_CODE_COOLDOWN);
         setEmailSending(true);
 
-        sendVerificationCode({
-            endPoint: verifyEndpoint,
+        await sendVerificationCode({
             email: emailInput,
             purpose: purpose,
             recaptchaToken: recaptchaToken,
