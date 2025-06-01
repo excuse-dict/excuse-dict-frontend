@@ -4,7 +4,7 @@ import css from './LoadingWidget.module.css'
 export default function LoadingWidget({ color, isLoading, isSucceed, loadingTitle, successTitle, failTitle }:{
     color?: string,
     isLoading: boolean,
-    isSucceed: boolean,
+    isSucceed: boolean | null,
     loadingTitle: string,
     successTitle: string,
     failTitle: string,

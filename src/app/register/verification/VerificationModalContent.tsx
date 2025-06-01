@@ -7,6 +7,7 @@ import LoadingWidget from "@/global_components/loading/LoadingWidget";
 import CodeInput from "@/global_components/input/code/CodeInput";
 import { useEmailVerification } from "./useEmailVerification";
 import ModalContent from '@/global_components/modal/content/ModalContent';
+import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 
 export default function VerificationModalContent({ emailVerification, onSuccess }: {
     emailVerification: ReturnType<typeof useEmailVerification>
@@ -20,6 +21,7 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
         isSendingSucceed,
         smtpRequest,
         verifyEndpoint,
+        timeToResend
     } = emailVerification;
 
     const codeLength = 6;
@@ -99,10 +101,11 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
                 <button
                     className={css.modal_confirm_button}
                     onClick={() => {
-                        resetContent();
+                        if(timeToResend <= 0) resetContent();
                         smtpRequest();
                     }}
-                >재전송</button>
+                    disabled={isEmailSending || timeToResend > 0}
+                >{timeToResend > 0 ? `재전송 (${timeToResend})` : '재전송'}</button>
                 <button
                     className={css.modal_confirm_button}
                     onClick={() => submitCode()}

@@ -17,6 +17,7 @@ export default async function sendVerificationCode({ email, purpose, recaptchaTo
             recaptchaToken: recaptchaToken
         },
         onSuccess: onSuccess,
-        onFail: onFail
+        onFail: onFail,
+        overwriteDefaultOnFail: false
     });
 }

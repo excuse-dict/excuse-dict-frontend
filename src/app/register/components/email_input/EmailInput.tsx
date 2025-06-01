@@ -20,8 +20,6 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
         isEmailVerified,
     } = emailVerification;
 
-    const { recaptchaRef, executeRecaptcha } = useRecaptcha();
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input = e.target.value;
 
@@ -38,17 +36,13 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
             Swal.fire("오류", "이메일을 올바르게 입력해주세요", "warning");
             return;
         }
-        // 리캡챠 토큰 검증
-        const recaptchaToken = await executeRecaptcha();
-        if (!recaptchaToken) return;
 
         // 이메일 중복 확인
         apiGet({
             endPoint: EP_CHECK_EMAIL_AVAILABILITY,
             params: { email: emailInput },
             onSuccess: () => {
-                // 사용 가능 이메일 -> 리캡챠 토큰 저장하고 모달 오픈
-                emailVerification.setRecaptchaToken(recaptchaToken);
+                // 사용 가능 이메일 -> 모달 오픈
                 setModalOpen(true);
             },
         });
@@ -73,7 +67,6 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
                     onClick={handleClick}
                 >{isEmailVerified ? '인증 완료' : '인증'}</button>
             </div>
-            <ReCAPTCHAComponent recaptchaRef={recaptchaRef}></ReCAPTCHAComponent>
         </div>
     );
 }

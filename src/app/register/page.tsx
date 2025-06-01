@@ -20,6 +20,7 @@ import { useRouter } from 'next/navigation';
 import { usePasswordInput } from './components/password_input/usePasswordInput';
 import VerificationModalContent from './verification/VerificationModalContent';
 import { useEmailVerification } from './verification/useEmailVerification';
+import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 
 export default function RegisterPage() {
 
@@ -32,7 +33,8 @@ export default function RegisterPage() {
 
     const {
         emailInput,
-        isEmailVerified, setEmailVerified
+        isEmailVerified, setEmailVerified,
+        recaptchaRef
     } = emailVerification;
 
     const {
@@ -124,6 +126,7 @@ export default function RegisterPage() {
                     }}
                 ></VerificationModalContent>
             </Modal>
+            <ReCAPTCHAComponent recaptchaRef={recaptchaRef}></ReCAPTCHAComponent>
         </div>
     );
 }
