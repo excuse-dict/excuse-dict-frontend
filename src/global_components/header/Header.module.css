@@ -251,6 +251,46 @@
   }
 }
 
+/* 사용자 아이콘 */
+.user_icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 10px 20px;  /* action_btn과 동일한 패딩 */
+  border-radius: 25px; /* action_btn과 동일한 radius */
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  /*border: 2px solid var(--purple-grey);*/
+  color: var(--purple-grey-light);
+  min-width: 60px; /* 적절한 최소 너비 */
+}
+
+.user_icon:hover {
+  background: var(--purple-grey-light);
+  color: var(--global-header);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}
+
+/* 모바일에서 아이콘 크기 조정 */
+@media (max-width: 768px) {
+  .user_icon {
+    padding: 8px 16px;
+    font-size: 20px;
+    min-width: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user_icon {
+    padding: 6px 12px;
+    font-size: 18px;
+    min-width: 45px;
+  }
+}
+
 /* 다크모드 지원 */
 /* @media (prefers-color-scheme: dark) {
   .nav_menu {

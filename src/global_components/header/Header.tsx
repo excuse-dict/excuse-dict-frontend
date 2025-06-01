@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import {useState} from 'react';
 import styles from './Header.module.css';
+import {useAuth} from "@/app/login/auth/useAuth";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,6 +11,8 @@ export default function Header() {
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
     };
+
+    const {isLoggedIn} = useAuth();
 
     return (
         <div className={styles.header_container}>
@@ -33,12 +36,17 @@ export default function Header() {
 
             {/* 사용자 액션 버튼 */}
             <div className={styles.user_actions}>
-                <Link href="/login" className={`${styles.action_btn} ${styles.login_btn}`}>
-                    로그인
-                </Link>
-                <Link href="/register" className={`${styles.action_btn} ${styles.register_btn}`}>
-                    회원가입
-                </Link>
+                {isLoggedIn ?
+                    <span className={styles.user_icon}>👤</span> :
+                    <>
+                        <Link href="/login" className={`${styles.action_btn} ${styles.login_btn}`}>
+                            로그인
+                        </Link>
+                        <Link href="/register" className={`${styles.action_btn} ${styles.register_btn}`}>
+                            회원가입
+                        </Link>
+                    </>
+                }
             </div>
 
             {/* 모바일 메뉴 버튼 */}

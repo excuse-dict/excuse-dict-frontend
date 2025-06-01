@@ -3,16 +3,30 @@
 import { useState } from 'react';
 import LoginInput from './components/LoginInput';
 import css from './page.module.css'
-import { apiPost } from '@/axios/apiPost';
-import { EP_LOGIN, PG_PASSWORD_RESET, PG_REGISTER } from '../constants/constants';
+import {EP_LOGIN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import { sendLoginRequest } from './functions/LoginRequest';
 import { useRouter } from 'next/navigation';
+import {useAuth} from "@/app/login/auth/useAuth";
 
 export default function LoginPage() {
 
     const [emailInput, setEmailInput] = useState('');
     const [passwordInput, setPasswordInput] = useState('');
     const router = useRouter();
+
+    const { login, logout } = useAuth();
+
+    const handleLogin = async () => {
+        try{
+            await login({
+                email: emailInput,
+                password: passwordInput
+            });
+            router.push(PG_HOME);
+        }catch (error){
+            // 여기선 아무것도 안함
+        }
+    }
 
     return (
         <div className={css.login_container}>
@@ -34,12 +48,7 @@ export default function LoginPage() {
                     </div>
                     <button
                         className={css.login_button}
-                        onClick={
-                            () => sendLoginRequest({
-                                email: emailInput,
-                                password: passwordInput,
-                                onSuccess: () => router.push('/home')
-                            })}
+                        onClick={handleLogin}
                     >로그인</button>
                 </div>
                 <div className={css.button_container}>
