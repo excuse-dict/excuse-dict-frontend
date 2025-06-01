@@ -3,6 +3,7 @@ import { useState } from "react";
 import css from './PasswordInput.module.css'
 import pageCss from '../../page.module.css';
 import { usePasswordInput } from "./usePasswordInput";
+import {input} from "sucrase/dist/types/parser/traverser/base";
 
 // 비밀번호 입력창
 export default function PasswordInput({ title, placeholder, password }:
@@ -12,49 +13,18 @@ export default function PasswordInput({ title, placeholder, password }:
         password: ReturnType<typeof usePasswordInput>
     }) {
     const {
-        passwordInput, setPasswordInput,
-        passwordConfirmInput,
-        setPasswordValid,
-        setPwMatched,
+        passwordInput,
+        validations
     } = password;
 
     const [isInputFocused, setInputFocused] = useState(false);
     const [isInputEmpty, setIsInputEmpty] = useState(true);
-    const [isLengthValid, setIsLengthValid] = useState(false);
-    const [isLowerCaseIncluded, setIsLowerCaseIncluded] = useState(false);
-    const [isUpperCaseIncluded, setIsUpperCaseIncluded] = useState(false);
-    const [isDigitIncluded, setIsDigitIncluded] = useState(false);
-    const [isSpecialCharacterIncluded, setIsSpecialCharacterIncluded] = useState(false);
-    const [isAllCharactersValid, setIsAllCharactersValid] = useState(true);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const input: string = e.target.value;
 
-        // 입력 비었는지 여부
         setIsInputEmpty(input.length === 0);
-        // 길이 검사
-        setIsLengthValid(input.length >= MIN_PASSWORD_LENGTH && input.length <= MAX_PASSWORD_LENGTH);
-        // 영문 소문자
-        setIsLowerCaseIncluded(/[a-z]/.test(input));
-        // 대문자
-        setIsUpperCaseIncluded(/[A-Z]/.test(input));
-        // 숫자
-        setIsDigitIncluded(/\d/.test(input));
-        // 특수문자
-        setIsSpecialCharacterIncluded(ALLOWED_SPECIAL_CHARS_REGEX.test(input));
-        // 허용되지 않는 문자가 포함되었는지
-        const allowdCharactersRegex: RegExp = new RegExp(`^[a-zA-Z0-9${ALLOWED_SPECIAL_CHARS_REGEX.source.slice(1, -1)}]*$`);
-        setIsAllCharactersValid(allowdCharactersRegex.test(input));
-
-        // 비밀번호 확인란 일치 여부 업데이트
-        setPwMatched(passwordConfirmInput === input);
-        // 자신 업데이트
-        setPasswordInput(input);
-
-        // 비밀번호 유효 여부 업데이트
-        const isPasswordValid = isLengthValid && isLowerCaseIncluded && isUpperCaseIncluded
-            && isDigitIncluded && isSpecialCharacterIncluded && isAllCharactersValid;
-        setPasswordValid(isPasswordValid);
+        password.handlePasswordChange(input);
     }
 
     const validColor: string = 'rgb(100, 210, 100)';
@@ -106,14 +76,14 @@ export default function PasswordInput({ title, placeholder, password }:
                 {(isInputEmpty || !isInputFocused) ? <div /> :
                     <div className={css.pw_validation_tooltip}>
                         <ul>
-                            <ValidationRule condition={isLengthValid}>
+                            <ValidationRule condition={validations.isLengthValid}>
                                 {`${MIN_PASSWORD_LENGTH}~${MAX_PASSWORD_LENGTH}자`}
                             </ValidationRule>
-                            <ValidationRule condition={isLowerCaseIncluded}>영문 소문자</ValidationRule>
-                            <ValidationRule condition={isUpperCaseIncluded}>영문 대문자</ValidationRule>
-                            <ValidationRule condition={isDigitIncluded}>숫자</ValidationRule>
-                            <ValidationRule condition={isAllCharactersValid}>허용되지 않은 문자</ValidationRule>
-                            <ValidationRule condition={isSpecialCharacterIncluded} isSpecialCharacterSpan={true}>
+                            <ValidationRule condition={validations.isLowerCaseIncluded}>영문 소문자</ValidationRule>
+                            <ValidationRule condition={validations.isUpperCaseIncluded}>영문 대문자</ValidationRule>
+                            <ValidationRule condition={validations.isDigitIncluded}>숫자</ValidationRule>
+                            <ValidationRule condition={validations.isAllCharactersValid}>허용되지 않은 문자</ValidationRule>
+                            <ValidationRule condition={validations.isSpecialCharacterIncluded} isSpecialCharacterSpan={true}>
                                 {`특수문자 ⓘ`}
                                 <span className={css.tooltip}>
                                     다음 문자들 중 하나를 포함해야 합니다:<br />
