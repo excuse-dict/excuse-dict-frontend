@@ -49,7 +49,7 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
     }
 
     return (
-        <div className='global_input_container'>
+        <div className='global_input_container w-full'>
             <div className='global_input_label'>이메일</div>
             <div className='global_input_inner_container'>
                 <input

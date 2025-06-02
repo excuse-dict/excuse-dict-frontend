@@ -88,7 +88,7 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
     }
 
     return (
-        <div className='global_input_container'>
+        <div className='global_input_container w-full'>
             <div className='global_input_label'>닉네임</div>
             <div className='global_input_inner_container'>
                 <input

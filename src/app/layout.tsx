@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "./styles/globals.css";
 import Header from "@/global_components/header/Header";
 import ScrollHandler from "@/global_components/ScrollHandler";
 
@@ -45,7 +45,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} app-container`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} app_container`}>
         <ScrollHandler />
         
         {/* 헤더 */}

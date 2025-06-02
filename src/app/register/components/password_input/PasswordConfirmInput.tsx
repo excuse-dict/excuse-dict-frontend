@@ -27,7 +27,7 @@ export default function PasswordConfirm({ title, placeholder, password }:
     }
 
     return (
-        <div className='global_input_container'>
+        <div className='global_input_container w-full'>
             <label className='global_input_label'>{title}</label>
             <div className='global_input_inner_container'>
                 <input

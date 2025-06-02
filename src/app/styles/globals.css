@@ -14,7 +14,8 @@
   --success-color: rgb(100, 210, 100);
   --error-color: rgb(255, 100, 100);
   --global-header: rgb(42, 42, 51);
-  --global-font: #3d393c;
+  --global-font-dark: #3d393c;
+  --global-font-bright: #d4d7d5;
   --shadow-soft: 0 4px 20px rgba(102, 126, 234, 0.1);
   --shadow-medium: 0 8px 30px rgba(102, 126, 234, 0.15);
   --shadow-strong: 0 15px 35px rgba(0, 0, 0, 0.1);
@@ -57,7 +58,7 @@ a:hover {
 }
 
 /* 메인 레이아웃 컨테이너 */
-.app-container {
+.app_container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
@@ -145,6 +146,19 @@ a:hover {
   padding: 20px;
 }
 
+/*본문 컨테이너 (좀 넒음)*/
+.global_container{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  box-shadow: var(--shadow-strong);
+  /*height: calc(100% - var(--header-height));*/
+  align-items: center;
+  margin: auto;
+  border-radius: 10px;
+  padding: 5% 0 3% 0;
+}
+
 /* 내부 컨테이너 (카드 형태) */
 .global_inner_container {
   position: relative;
@@ -173,7 +187,7 @@ a:hover {
 
 /*인풋 컨테이너*/
 .global_input_container{
-  width: 100%;
+  /*width: 100%;*/
   position: relative;
   overflow: visible;
 }
@@ -193,7 +207,7 @@ a:hover {
   border: 2px solid var(--purple-grey);
   border-radius: var(--border-radius);
   padding: 0 16px;
-  color: var(--global-font);
+  color: var(--global-font-dark);
   font-size: 16px;
   transition: var(--transition);
   outline: none;
@@ -221,22 +235,20 @@ a:hover {
 /* 라벨 스타일 개선 */
 .global_input_label {
   display: block;
-  color: var(--global-font);
+  color: var(--global-font-dark);
   margin-bottom: 8px;
   font-weight: 600;
   font-size: 14px;
   letter-spacing: 0.5px;
 }
 
-/* 글로벌 버튼 스타일 개선 */
+/* 글로벌 버튼 */
 .global_button {
-  background: linear-gradient(135deg, var(--purple-grey) 0%, var(--purple-grey-dark) 100%);
-  border: none;
-  border-radius: var(--border-radius);
+  /*background: linear-gradient(135deg, var(--purple-grey-highlighted) 0%, var(--purple-grey) 100%);*/
+  background-color: var(--purple-grey-highlighted);
+  /*border: 1px solid var(--purple-grey-dark);*/
   cursor: pointer;
-  color: var(--global-font);
-  font-weight: 600;
-  padding: 12px 24px;
+  color: var(--global-font-dark);
   transition: var(--transition);
   position: relative;
   overflow: hidden;

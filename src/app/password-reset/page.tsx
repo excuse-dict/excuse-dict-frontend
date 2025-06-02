@@ -58,7 +58,7 @@ export default function PasswordResetPage() {
     const resetPassword = async() => {
         // 비밀번호 유효성 검증
         if(!isPasswordValid){
-            Swal.fire('오류', "비밀번호 형식이 유효해야 합니다.", "warning");
+            Swal.fire('오류', "비밀번호 형식이 올바르지 않습니다.", "warning");
             return false;
         }
 

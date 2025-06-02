@@ -21,7 +21,7 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
-  color: var(--global-font);
+  color: var(--global-font-dark);
   font-weight: 700;
   font-size: 20px;
   transition: var(--transition);
@@ -57,7 +57,7 @@
 }
 
 .nav_link {
-  color: var(--global-font);
+  color: var(--global-font-bright);
   text-decoration: none;
   font-weight: 500;
   font-size: 16px;
@@ -147,6 +147,16 @@
   left: 100%;
 }
 
+/*AI 문구*/
+.ai_span{
+  background-color: rgba(193, 170, 127, 0.85);
+  border-radius: 3px;
+  padding: 0 3px 0 3px;
+  margin-left: 5px;
+  font-size: 12px;
+  color: white;
+}
+
 /* 모바일 메뉴 버튼 */
 .mobile_menu_btn {
   display: none;
@@ -164,7 +174,7 @@
 .mobile_menu_btn span {
   width: 100%;
   height: 3px;
-  background: var(--global-font);
+  background: var(--global-font-dark);
   border-radius: 2px;
   transition: var(--transition);
   transform-origin: center;

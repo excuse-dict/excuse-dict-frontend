@@ -39,8 +39,7 @@ export default function RegisterPage() {
 
     const {
         passwordInput,
-        validatePassword,
-        validatePwMatched,
+        isPasswordValid, isPwMatched
     } = password;
 
     // 회원가입 요청 전송
@@ -52,10 +51,15 @@ export default function RegisterPage() {
         }
 
         // 비밀번호 유효성 검증
-        validatePassword();
+        if(!isPasswordValid){
+            Swal.fire("오류", "비밀번호 형식이 올바르지 않습니다.", "warning");
+            return;
+        }
 
         // 비밀번호 확인란 일치 여부 검증
-        validatePwMatched();
+        if(!isPwMatched){
+            Swal.fire("오류", "비밀번호를 한번 더 확인해주세요.", "warning");
+        }
 
         // 가입 요청 전송
         apiPost({

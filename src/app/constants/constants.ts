@@ -16,6 +16,11 @@ export const PG_LOGIN: string = '/login';
 export const PG_REGISTER: string = "/register";
 export const PG_PASSWORD_RESET: string = "/password-reset";
 export const PG_PASSWORD_RESET_VERIFIED: string = '/password-reset-verified';
+export const PG_POPULAR: string = "/popular";
+export const PG_HALL_OF_FAME: string = "/hall_of_fame";
+export const PG_NEW_EXCUSE: string = "/excuses/new";
+export const PG_GENERATOR: string = "/generator";
+export const PG_ALL_EXCUSES: string = "/excuses";
 
 // 회원가입 제약조건
 export const MAX_EMAIL_LENGTH: number = 30;

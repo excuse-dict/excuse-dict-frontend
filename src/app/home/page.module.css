@@ -1,17 +1,4 @@
-.main{
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    width: 80%;
-    height: calc(100% - var(--header-height));
-    align-items: center;
-    justify-content: center;
-    margin: auto;
-    border-radius: 10px;
-}
-
 .section{
-    width: 80%;
     color: var(--purple-grey-black);
 }
 
