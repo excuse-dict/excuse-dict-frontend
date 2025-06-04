@@ -21,7 +21,7 @@ export default function TagSelectorModalContent({ searchedTags, setSearchedTags 
                 'searchValue': searchValue,
             },
             onSuccess: (response) => {
-                setSearchedTags(response?.data?.tags?.content);
+                setSearchedTags(response?.data?.data?.tags?.content);
             }
         })
     }

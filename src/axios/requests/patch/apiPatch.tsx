@@ -1,7 +1,7 @@
-import axios from "axios"
 import {API_URL} from "@/app/constants/constants";
 import {handleError} from "@/axios/handleFailure";
 import {useAuth} from "@/app/login/auth/useAuth";
+import axios from "axios";
 
 export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true}:
                                {
@@ -15,7 +15,7 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
     console.log("PATCH 요청 전송: " + API_URL + endPoint);
     console.log("body: ", body);
 
-    const token = useAuth.getState().token;
+    const token = useAuth.getState().accessToken;
     const headers = token ? {Authorization: token} : {};
 
     try {
@@ -23,10 +23,10 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
         const response: any = await axios.patch(API_URL + endPoint, body, { headers });
 
         // 성공
-        console.log("PATCH 요청 성공: ", response.data);
-        onSuccess?.(response.data);
+        console.log("PATCH 요청 성공: ", response);
+        onSuccess?.(response);
 
-        return response.data; // 응답 리턴
+        return response; // 응답 리턴
 
     } catch (error: any) { // 요청 실패(에러)
         handleError({

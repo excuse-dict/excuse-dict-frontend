@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import LoginInput from './components/LoginInput';
 import css from './page.module.css'
-import {EP_LOGIN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
+import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import { useRouter } from 'next/navigation';
 import {useAuth} from "@/app/login/auth/useAuth";
+import {apiPost} from "@/axios/requests/post/apiPost";
 
 export default function LoginPage() {
 
@@ -16,15 +17,24 @@ export default function LoginPage() {
     const { login, logout } = useAuth();
 
     const handleLogin = async () => {
-        try{
-            await login({
+
+        apiPost({
+            endPoint: EP_LOGIN,
+            body: {
                 email: emailInput,
-                password: passwordInput
-            });
-            router.push(PG_HOME);
-        }catch (error){
-            // 여기선 아무것도 안함
-        }
+                password: passwordInput,
+            },
+            onSuccess: (response) => {
+                login({
+                    accessToken: response.headers?.authorization,
+                    refreshToken: response.headers?.refresh,
+                })
+                router.push(PG_HOME);
+            },
+            onFail: () => {
+                // TODO: 로그인 창에 붉은 글씨로 안내
+            },
+        })
     }
 
     return (
