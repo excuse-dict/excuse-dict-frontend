@@ -5,7 +5,7 @@ import {
     VERIFICATION_CODE_COOLDOWN,
     VERIFICATION_CODE_PURPOSE
 } from "@/app/constants/constants";
-import { apiPost } from "@/axios/apiPost";
+import { apiPost } from "@/axios/requests/post/apiPost";
 import sendVerificationCode from "@/axios/requests/post/verificationCode";
 import { useEffect, useState } from "react";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";

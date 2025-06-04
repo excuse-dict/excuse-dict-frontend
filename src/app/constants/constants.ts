@@ -9,8 +9,9 @@ export const EP_NICKNAME_CHECK: string = "/api/v1/members/nicknames/check-availa
 export const EP_MEMBERS: string = "/api/v1/members";
 export const EP_LOGIN: string = "/api/v1/auth/login";
 export const EP_RESET_PASSWORD: string = "/api/v1/members/passwords/reset";
+export const EP_TAGS: string = "/api/v1/posts/tags"
 
-// 페이지
+// 페이지 주소
 export const PG_HOME: string = '/home';
 export const PG_LOGIN: string = '/login';
 export const PG_REGISTER: string = "/register";
@@ -38,3 +39,17 @@ export const VERIFICATION_CODE_PURPOSE = {
 }
 // 인증코드 발급 쿨타임
 export const VERIFICATION_CODE_COOLDOWN: number = 30;
+
+// 태그 카테고리 (백엔드 enum에 대응)
+export const TAG_CATEGORIES = [
+    { label: '사고', value: 'ACCIDENT' },
+    { label: '직장', value: 'COMPANY' },
+    { label: '행사', value: 'EVENT' },
+    { label: '가족', value: 'FAMILY' },
+    { label: '건강', value: 'HEALTH' },
+    { label: '집/시설', value: 'HOME_FACILITY' },
+    { label: '연애', value: 'LOVE' },
+    { label: '종교', value: 'RELIGIOUS' },
+    { label: '교통', value: 'TRANSPORT' },
+    { label: '날씨', value: 'WEATHER' },
+];

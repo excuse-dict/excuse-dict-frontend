@@ -1,5 +1,5 @@
 import { EP_LOGIN } from "@/app/constants/constants"
-import { apiPost } from "@/axios/apiPost"
+import { apiPost } from "@/axios/requests/post/apiPost"
 
 export const sendLoginRequest = async ({ email, password, onSuccess, onFail }: {
     email: string,

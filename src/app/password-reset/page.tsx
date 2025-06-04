@@ -4,7 +4,7 @@ import Modal from "@/global_components/modal/Modal";
 import {useState} from "react";
 import Swal from "sweetalert2";
 import {useRouter} from "next/navigation";
-import {apiGet} from "@/axios/apiGet";
+import {apiGet} from "@/axios/requests/get/apiGet";
 import {useEmailVerification} from "@/app/register/verification/useEmailVerification";
 import VerificationModalContent from "@/app/register/verification/VerificationModalContent";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
@@ -21,7 +21,7 @@ import {
     PG_PASSWORD_RESET_VERIFIED,
     VERIFICATION_CODE_PURPOSE
 } from "../constants/constants";
-import {apiPatch} from "@/axios/requests/apiPatch";
+import {apiPatch} from "@/axios/requests/patch/apiPatch";
 
 export default function PasswordResetPage() {
 

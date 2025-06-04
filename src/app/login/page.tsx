@@ -4,7 +4,6 @@ import { useState } from 'react';
 import LoginInput from './components/LoginInput';
 import css from './page.module.css'
 import {EP_LOGIN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
-import { sendLoginRequest } from './functions/LoginRequest';
 import { useRouter } from 'next/navigation';
 import {useAuth} from "@/app/login/auth/useAuth";
 

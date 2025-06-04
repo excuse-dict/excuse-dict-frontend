@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import pageCss from '../../page.module.css';
 import css from '../password_input/PasswordInput.module.css'
 import { EP_CHECK_EMAIL_AVAILABILITY, EP_NICKNAME_CHECK, MAX_EMAIL_LENGTH, MAX_NICKNAME_LENGTH, MIN_NICKNAME_LENGTH } from "@/app/constants/constants";
-import { apiGet } from "@/axios/apiGet";
+import { apiGet } from "@/axios/requests/get/apiGet";
 import Swal from "sweetalert2";
 import TextLoadingWidget from "@/global_components/loading/TextLoadingWidget";
 import { getErrorMessage } from "@/axios/handleFailure";

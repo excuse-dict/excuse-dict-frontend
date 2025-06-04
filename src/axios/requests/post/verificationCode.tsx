@@ -1,5 +1,5 @@
 import { EP_VERIFICATION_CODE_REQ } from "@/app/constants/constants";
-import { apiPost } from "@/axios/apiPost";
+import { apiPost } from "@/axios/requests/post/apiPost";
 
 export default async function sendVerificationCode({ email, purpose, recaptchaToken, onSuccess, onFail }:{
     email: string,

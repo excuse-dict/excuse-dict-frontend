@@ -8,7 +8,7 @@ import {
     VERIFICATION_CODE_PURPOSE
 } from '../constants/constants';
 import css from './page.module.css'
-import {apiPost} from '@/axios/apiPost';
+import {apiPost} from '@/axios/requests/post/apiPost';
 import EmailInput from './components/email_input/EmailInput';
 import PasswordInput from './components/password_input/PasswordInput';
 import PasswordConfirmInput from './components/password_input/PasswordConfirmInput'

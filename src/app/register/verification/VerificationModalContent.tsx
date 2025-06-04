@@ -1,7 +1,7 @@
 
 import css from './VerificationModalContent.module.css'
 import { useEffect, useState } from "react";
-import { apiPost } from "@/axios/apiPost";
+import { apiPost } from "@/axios/requests/post/apiPost";
 import Swal from "sweetalert2";
 import LoadingWidget from "@/global_components/loading/LoadingWidget";
 import CodeInput from "@/global_components/input/code/CodeInput";

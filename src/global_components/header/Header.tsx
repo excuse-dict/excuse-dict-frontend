@@ -31,7 +31,7 @@ export default function Header() {
                     전체
                 </Link>
                 <Link href={PG_POPULAR} className={css.nav_link}>
-                    인기
+                    주간 TOP
                 </Link>
                 <Link href={PG_HALL_OF_FAME} className={css.nav_link}>
                     명예의 전당

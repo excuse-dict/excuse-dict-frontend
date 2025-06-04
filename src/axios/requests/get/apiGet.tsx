@@ -1,6 +1,7 @@
 import axios from "axios"
-import { API_URL } from "../app/constants/constants"
-import { handleError } from "./handleFailure";
+import { API_URL } from "../../../app/constants/constants"
+import { handleError } from "../../handleFailure";
+import {useAuth} from "@/app/login/auth/useAuth";
 
 export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDefaultOnFail = true }:
     {
@@ -14,9 +15,14 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
     console.log("GET 요청 전송: " + API_URL + endPoint);
     console.log("params: ", params);
 
+    const token = useAuth.getState().token;
+    const headers = token ? { Authorization: token } : {};
+
+    console.log("headers: ", headers);
+
     try {
         // 요청 전송
-        const response: any = await axios.get(API_URL + endPoint, { params });
+        const response: any = await axios.get(API_URL + endPoint, { params, headers });
 
         // 성공
         console.log("GET 요청 성공: ", response.data);
