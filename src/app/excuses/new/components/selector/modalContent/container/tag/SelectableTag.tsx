@@ -38,9 +38,13 @@ export default function SelectableTag({ tagInterface, isSelected, tagSelector }:
         }
     }
 
+    const getBorder = () => {
+        return isSelected ? 'border-2 border-green-500' : 'border-2 border-transparent';
+    }
+
     return (
         <button
-            className={`${css.tag} ${getColor(category)} flex text-sm gap-1 p-0.5 text-white cursor-pointer ${isSelected ? 'border-green-500' : ''}`}
+            className={`${css.tag} ${getColor(category)} flex text-sm gap-1 p-0.5 text-white cursor-pointer ${getBorder()}`}
             onClick={handleSelect}
         >
             <span>{value}</span>

@@ -3,27 +3,27 @@ import css from '../../../Tag.module.css';
 import {usePage} from "@/global_components/page/usePage";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 
-export default function SelectableTagContainer({ tags, emptyLabel, pageInfo, tagSelector }: {
-    tags: { value: string, category: string }[],
+export default function SelectableTagContainer({ searchedTags, emptyLabel, pageInfo, tagSelector }: {
+    searchedTags: { value: string, category: string }[],
     emptyLabel?: string,
     pageInfo: ReturnType<typeof usePage>,
     tagSelector: ReturnType<typeof useTagSelector>,
 }){
 
     const { currentPage, setCurrentPage, totalPage } = pageInfo;
-    const { isTagsLoading } = tagSelector;
+    const { isTagsLoading, hasSelectedTag } = tagSelector;
 
     const getTags = () => {
         const label = isTagsLoading ? '태그 불러오는 중...' : emptyLabel || '태그 없음';
         return (
             <>
-                {!tags || tags?.length === 0 ?
+                {!searchedTags || searchedTags?.length === 0 ?
                     <span className={'w-full text-gray-400 text-center'}>{label}</span> : null}
-                {tags?.map((tag, index) => (
+                {searchedTags?.map((tag, index) => (
                     <SelectableTag
                         key={index}
                         tagInterface={tag}
-                        isSelected={false}
+                        isSelected={hasSelectedTag(tag)}
                         tagSelector={tagSelector}
                     ></SelectableTag>
                 ))}

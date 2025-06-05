@@ -53,13 +53,13 @@ export default function TagSelectorModalContent({
 
     return (
         <div className={'w-3/4 flex flex-col'}>
-            <h1>태그 검색</h1>
+            <h1 className={'font-bold'}>태그 검색</h1>
             <div className={'flex justify-between'}>
                 <span>사용 가능한 태그</span>
                 <span>{`${currentPage}/${totalPage}`}</span>
             </div>
             <SelectableTagContainer
-                tags={searchedTags}
+                searchedTags={searchedTags}
                 emptyLabel={'사용 가능한 태그 없음'}
                 pageInfo={page}
                 tagSelector={tagSelector}
@@ -75,10 +75,6 @@ export default function TagSelectorModalContent({
                 onInputChange={(e) => setSearchValue(e.target.value)}
                 buttonText={'검색'}
             ></InputWithButton>
-            <div className={'flex w-full justify-center gap-4'}>
-                <button className={'global_button'}>태그 추가</button>
-                <button className={'global_button'}>취소</button>
-            </div>
         </div>
     );
 }
