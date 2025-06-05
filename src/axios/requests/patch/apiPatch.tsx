@@ -3,14 +3,15 @@ import {handleError} from "@/axios/handleFailure";
 import {useAuth} from "@/app/login/auth/useAuth";
 import axios from "axios";
 
-export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true}:
-                               {
-                                   endPoint: string,
-                                   body?: object,
-                                   onSuccess?: (value: any) => void,
-                                   onFail?: (error?: any) => void,
-                                   overwriteDefaultOnFail?: boolean,
-                               }) => {
+export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false}:
+   {
+       endPoint: string,
+       body?: object,
+       onSuccess?: (value: any) => void,
+       onFail?: (error?: any) => void,
+       overwriteDefaultOnFail?: boolean,
+       isRetry?: boolean,
+   }) => {
 
     console.log("PATCH 요청 전송: " + API_URL + endPoint);
     console.log("body: ", body);
@@ -20,7 +21,7 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
 
     try {
         // 요청 전송
-        const response: any = await axios.patch(API_URL + endPoint, body, { headers });
+        const response: any = await axios.patch(API_URL + endPoint, body, {headers});
 
         // 성공
         console.log("PATCH 요청 성공: ", response);
@@ -30,9 +31,18 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
 
     } catch (error: any) { // 요청 실패(에러)
         handleError({
+            isRetry: isRetry,
             error: error,
             overwriteDefaultOnFail: overwriteDefaultOnFail,
-            onFail: onFail
+            onFail: onFail,
+            originalRequest: {
+                method: "PATCH",
+                endPoint: endPoint,
+                body: body,
+                onSuccess: onSuccess,
+                overwriteDefaultOnFail: overwriteDefaultOnFail,
+                onFail: onFail,
+            }
         });
         return null;
     }

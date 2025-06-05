@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type {Metadata, Viewport} from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./styles/globals.css";
 import Header from "@/global_components/header/Header";
@@ -14,11 +14,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  title: "Your App Name",
-  description: "Beautiful app with modern design",
-  viewport: "width=device-width, initial-scale=1",
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
   themeColor: "#667eea",
+};
+
+export const metadata: Metadata = {
+  title: "핑계사전",
+  description: "세상의 모든 핑계",
 };
 
 export default function RootLayout({
@@ -30,8 +34,7 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         {/* Progressive Web App 메타태그 */}
-        <meta name="theme-color" content="#667eea" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         
         {/* 폰트 프리로드 */}

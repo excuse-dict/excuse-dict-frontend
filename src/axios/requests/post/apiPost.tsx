@@ -3,12 +3,13 @@ import { handleError } from "../../handleFailure";
 import {useAuth} from "@/app/login/auth/useAuth";
 import axios from "axios";
 
-export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true }: {
+export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false }: {
     endPoint: string,
     body?: any,
     onSuccess?: (value: any) => void,
     onFail?: (error: any) => void,
     overwriteDefaultOnFail?: boolean,
+    isRetry?: boolean,
 }) => {
 
     console.log("POST 요청 전송: " + API_URL + endPoint);
@@ -32,9 +33,18 @@ export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefa
 
     } catch (error: any) { // 오류 발생
         handleError({
+            isRetry: isRetry,
             error: error,
             overwriteDefaultOnFail: overwriteDefaultOnFail,
-            onFail: onFail
+            onFail: onFail,
+            originalRequest: {
+                method: "POST",
+                endPoint: endPoint,
+                body: body,
+                onSuccess: onSuccess,
+                overwriteDefaultOnFail: overwriteDefaultOnFail,
+                onFail: onFail,
+            }
         })
         return null;
     }
