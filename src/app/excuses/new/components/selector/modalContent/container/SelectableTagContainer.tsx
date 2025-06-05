@@ -1,12 +1,14 @@
 import SelectableTag from "@/app/excuses/new/components/selector/modalContent/container/tag/SelectableTag";
 import css from '../../../Tag.module.css';
 import {usePage} from "@/global_components/page/usePage";
+import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 
-export default function SelectableTagContainer({ tags, emptyLabel, isTagsLoading, pageInfo }: {
+export default function SelectableTagContainer({ tags, emptyLabel, isTagsLoading, pageInfo, tagSelector }: {
     tags: { value: string, category: string }[],
     emptyLabel?: string,
     isTagsLoading: boolean,
     pageInfo: ReturnType<typeof usePage>,
+    tagSelector: ReturnType<typeof useTagSelector>,
 }){
 
     const { currentPage, setCurrentPage, totalPage } = pageInfo;
@@ -20,8 +22,9 @@ export default function SelectableTagContainer({ tags, emptyLabel, isTagsLoading
                 {tags?.map((tag, index) => (
                     <SelectableTag
                         key={index}
-                        tag={tag}
+                        tagInterface={tag}
                         isSelected={false}
+                        tagSelector={tagSelector}
                     ></SelectableTag>
                 ))}
             </>
@@ -30,8 +33,6 @@ export default function SelectableTagContainer({ tags, emptyLabel, isTagsLoading
 
     const handleClick = (direction: 'LEFT' | 'RIGHT') => {
         const dx = direction === 'LEFT' ? -1 : 1;
-
-        console.log("currentPage: ", currentPage);
 
         let nextPage = currentPage + dx;
         if(nextPage <= 0){
@@ -44,7 +45,7 @@ export default function SelectableTagContainer({ tags, emptyLabel, isTagsLoading
     }
 
     return (
-        <div className={`relative w-full min-h-4 p-8 rounded-sm flex flex-wrap gap-2 bg-[var(--purple-grey-light)]`}>
+        <div className={`relative w-full min-h-4 p-8 rounded-sm flex flex-wrap justify-center gap-2 bg-[var(--purple-grey-light)]`}>
             {getTags()}
             <button
                 className={`${css.page_button} left-1`}

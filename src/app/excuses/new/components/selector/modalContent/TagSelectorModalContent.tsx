@@ -6,20 +6,19 @@ import {EP_TAGS} from "@/app/constants/constants";
 import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePage} from "@/global_components/page/usePage";
+import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 
 export default function TagSelectorModalContent({
-                                                    searchedTags, setSearchedTags,
-                                                    selectedTags, setSelectedTags,
-                                                    isTagsLoading,
-                                                    setTagsLoading
+                                                    tagSelector
 }: {
-    searchedTags: TagInterface[],
-    setSearchedTags: (tags: TagInterface[]) => void,
-    selectedTags: TagInterface[],
-    setSelectedTags: (tags: TagInterface[]) => void,
-    isTagsLoading: boolean,
-    setTagsLoading: (value: boolean) => void,
+    tagSelector: ReturnType<typeof useTagSelector>
 }){
+
+    const {
+        isTagsLoading, setTagsLoading,
+        selectedTags,
+        searchedTags, setSearchedTags,
+    } = tagSelector;
 
     const [searchValue, setSearchValue] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<Array<{label: string, value: string}>>([]);
@@ -64,6 +63,7 @@ export default function TagSelectorModalContent({
                 emptyLabel={'사용 가능한 태그 없음'}
                 isTagsLoading={isTagsLoading}
                 pageInfo={page}
+                tagSelector={tagSelector}
             ></SelectableTagContainer>
             <span>선택된 태그</span>
             <RemovableTagContainer

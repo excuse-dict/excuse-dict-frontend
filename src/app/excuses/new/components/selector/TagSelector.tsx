@@ -9,14 +9,14 @@ import RemovableTagContainer from "@/app/excuses/new/components/selector/modalCo
 
 export default function TagSelector() {
 
-    const tags = useTagSelector();
+    const tagSelector = useTagSelector();
 
     const {
         isSelectorOpen, setSelectorOpen,
         isTagsLoading, setTagsLoading,
         searchedTags, setSearchedTags,
         selectedTags, setSelectedTags
-    } = tags;
+    } = tagSelector;
 
     return (
         <div className='global_input_container w-3/5'>
@@ -36,9 +36,7 @@ export default function TagSelector() {
                     setOpen={setSelectorOpen}
                 >
                     <TagSelectorModalContent
-                        searchedTags={searchedTags} selectedTags={selectedTags}
-                        setSelectedTags={setSelectedTags} setSearchedTags={setSearchedTags}
-                        isTagsLoading={isTagsLoading} setTagsLoading={setTagsLoading}
+                        tagSelector={tagSelector}
                     ></TagSelectorModalContent>
                 </Modal>
             }

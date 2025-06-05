@@ -1,12 +1,15 @@
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import css from '../../../../Tag.module.css';
+import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 
-export default function SelectableTag({ tag, isSelected }: {
-    tag: TagInterface,
+export default function SelectableTag({ tagInterface, isSelected, tagSelector }: {
+    tagInterface: TagInterface,
     isSelected: boolean,
+    tagSelector: ReturnType<typeof useTagSelector>
 
 }){
-    const { category, value } = tag;
+    const { category, value } = tagInterface;
+    const { hasSelectedTag, addSelectedTag, removeSelectedTag } = tagSelector;
 
     // 원래는 색상만 반환했는데 테일윈드가 런타임에 스타일을 동적으로 생성할 수 없어서 아예 스타일을 만들어 던지도록 변경
     const getColor = (category: string)=> {
@@ -26,9 +29,21 @@ export default function SelectableTag({ tag, isSelected }: {
         }
     }
 
+    const handleSelect = () => {
+
+        if(hasSelectedTag(tagInterface)){
+            removeSelectedTag(tagInterface);
+        }else{
+            addSelectedTag(tagInterface);
+        }
+    }
+
     return (
-        <div className={`${css.tag} ${getColor(category)} flex rounded-md text-sm gap-1 p-0.5 text-white cursor-pointer ${isSelected ? 'border-green-500' : ''}`}>
+        <button
+            className={`${css.tag} ${getColor(category)} flex text-sm gap-1 p-0.5 text-white cursor-pointer ${isSelected ? 'border-green-500' : ''}`}
+            onClick={handleSelect}
+        >
             <span>{value}</span>
-        </div>
+        </button>
     );
 }

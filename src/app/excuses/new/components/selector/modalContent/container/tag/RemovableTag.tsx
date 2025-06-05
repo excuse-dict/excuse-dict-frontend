@@ -27,7 +27,7 @@ export default function RemovableTag({ tag }: {
     }
 
     return (
-        <div className={`${css.tag} ${getColor(category)} flex rounded-md text-sm gap-1 p-0.5 text-white cursor-pointer`}>
+        <div className={`${css.tag} ${getColor(category)} flex text-sm gap-1 text-white cursor-pointer`}>
             <span>{value}</span>
             <button>×</button>
         </div>
