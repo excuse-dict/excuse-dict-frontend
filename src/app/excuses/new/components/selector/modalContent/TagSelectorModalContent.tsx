@@ -1,9 +1,9 @@
 import InputWithButton from "@/global_components/input/with_button/InputWithButton";
-import SelectableTagContainer from "@/app/excuses/new/components/SelectableTagContainer";
+import SelectableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/SelectableTagContainer";
 import {useEffect, useState} from "react";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_TAGS} from "@/app/constants/constants";
-import RemovableTagContainer from "@/app/excuses/new/components/RemovableTagContainer";
+import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePage} from "@/global_components/page/usePage";
 
@@ -24,7 +24,8 @@ export default function TagSelectorModalContent({
     const [searchValue, setSearchValue] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<Array<{label: string, value: string}>>([]);
 
-    const { setPageInfo, currentPage, totalPage } = usePage();
+    const page = usePage();
+    const { pageInfo, setPageInfo, currentPage, setCurrentPage, totalPage } = page;
 
     // 태그 조회
     const searchTags = () => {
@@ -32,8 +33,9 @@ export default function TagSelectorModalContent({
         apiGet({
             endPoint: EP_TAGS,
             params: {
-                'filterTypes': selectedCategories,
+                'categories': selectedCategories,
                 'searchValue': searchValue,
+                'page': currentPage,
             },
             onSuccess: (response) => {
                 setTagsLoading(false);
@@ -45,9 +47,10 @@ export default function TagSelectorModalContent({
         })
     }
 
+    // pageInfo 바뀔 때마다 새로 요청
     useEffect(() => {
         searchTags();
-    }, []);
+    }, [currentPage]);
 
     return (
         <div className={'w-3/4 flex flex-col'}>
@@ -60,6 +63,7 @@ export default function TagSelectorModalContent({
                 tags={searchedTags}
                 emptyLabel={'사용 가능한 태그 없음'}
                 isTagsLoading={isTagsLoading}
+                pageInfo={page}
             ></SelectableTagContainer>
             <span>선택된 태그</span>
             <RemovableTagContainer

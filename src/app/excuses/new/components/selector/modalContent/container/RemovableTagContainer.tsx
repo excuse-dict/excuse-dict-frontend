@@ -1,4 +1,4 @@
-import RemovableTag from "@/app/excuses/new/components/RemovableTag";
+import RemovableTag from "@/app/excuses/new/components/selector/modalContent/container/tag/RemovableTag";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 export default function RemovableTagContainer({ tags, emptyLabel, isTagsLoading }: {
     tags: TagInterface[],

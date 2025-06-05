@@ -1,5 +1,5 @@
 import TagInterface from "@/app/excuses/new/components/TagInterface";
-import css from './Tag.module.css';
+import css from '../../../../Tag.module.css';
 
 export default function RemovableTag({ tag }: {
     tag: TagInterface

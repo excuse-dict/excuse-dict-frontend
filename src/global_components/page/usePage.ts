@@ -9,7 +9,7 @@ interface PageInfo {
 
 export const usePage = () => {
     const [pageInfo, setPageInfo] = useState<PageInfo>({
-        currentPage: 0,
+        currentPage: 1,
         totalPages: 0,
         totalElements: 0,
         hasNext: false

@@ -1,6 +1,6 @@
 import InputComponent from "@/global_components/input/text/InputComponent";
 import TextBox from "@/global_components/input/text/TextBox";
-import TagSelector from "@/app/excuses/new/components/TagSelector";
+import TagSelector from "@/app/excuses/new/components/selector/TagSelector";
 
 export default function NewExcusePage(){
 
