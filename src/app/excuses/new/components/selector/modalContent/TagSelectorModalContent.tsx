@@ -64,7 +64,13 @@ export default function TagSelectorModalContent({
                 pageInfo={page}
                 tagSelector={tagSelector}
             ></SelectableTagContainer>
-            <span>{`선택된 태그 (${selectedTags.size}개 / 최대 ${MAX_SELECTED_TAGS}개)`}</span>
+            <div>
+                <span>선택된 태그 (</span>
+                <span
+                    className={selectedTags.size >= MAX_SELECTED_TAGS ? 'text-blue-500' : ''}
+                >{`${selectedTags.size}개 / 최대 ${MAX_SELECTED_TAGS}개`}</span>
+                <span>)</span>
+            </div>
             <RemovableTagContainer
                 tagSelector={tagSelector}
             ></RemovableTagContainer>
