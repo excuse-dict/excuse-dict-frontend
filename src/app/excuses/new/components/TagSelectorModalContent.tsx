@@ -1,19 +1,34 @@
 import InputWithButton from "@/global_components/input/with_button/InputWithButton";
-import TagContainer from "@/app/excuses/new/components/TagContainer";
+import SelectableTagContainer from "@/app/excuses/new/components/SelectableTagContainer";
 import {useEffect, useState} from "react";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_TAGS} from "@/app/constants/constants";
+import RemovableTagContainer from "@/app/excuses/new/components/RemovableTagContainer";
+import TagInterface from "@/app/excuses/new/components/TagInterface";
+import {usePage} from "@/global_components/page/usePage";
 
-export default function TagSelectorModalContent({ searchedTags, setSearchedTags }: {
-    searchedTags: {name: string, type: string}[],
-    setSearchedTags: (tags: {name: string, type: string}[]) => void,
+export default function TagSelectorModalContent({
+                                                    searchedTags, setSearchedTags,
+                                                    selectedTags, setSelectedTags,
+                                                    isTagsLoading,
+                                                    setTagsLoading
+}: {
+    searchedTags: TagInterface[],
+    setSearchedTags: (tags: TagInterface[]) => void,
+    selectedTags: TagInterface[],
+    setSelectedTags: (tags: TagInterface[]) => void,
+    isTagsLoading: boolean,
+    setTagsLoading: (value: boolean) => void,
 }){
 
     const [searchValue, setSearchValue] = useState('');
     const [selectedCategories, setSelectedCategories] = useState<Array<{label: string, value: string}>>([]);
 
+    const { setPageInfo, currentPage, totalPage } = usePage();
+
     // 태그 조회
     const searchTags = () => {
+        setTagsLoading(true);
         apiGet({
             endPoint: EP_TAGS,
             params: {
@@ -21,7 +36,11 @@ export default function TagSelectorModalContent({ searchedTags, setSearchedTags 
                 'searchValue': searchValue,
             },
             onSuccess: (response) => {
+                setTagsLoading(false);
                 setSearchedTags(response?.data?.data?.tags?.content);
+
+                const pageInfo = response?.data?.data?.pageInfo;
+                setPageInfo(pageInfo);
             }
         })
     }
@@ -31,13 +50,22 @@ export default function TagSelectorModalContent({ searchedTags, setSearchedTags 
     }, []);
 
     return (
-        <div className={'w-3/5 flex flex-col'}>
+        <div className={'w-3/4 flex flex-col'}>
             <h1>태그 검색</h1>
-            <span>사용 가능한 태그</span>
-            <TagContainer 
+            <div className={'flex justify-between'}>
+                <span>사용 가능한 태그</span>
+                <span>{`${currentPage}/${totalPage}`}</span>
+            </div>
+            <SelectableTagContainer
                 tags={searchedTags}
                 emptyLabel={'사용 가능한 태그 없음'}
-            ></TagContainer>
+                isTagsLoading={isTagsLoading}
+            ></SelectableTagContainer>
+            <span>선택된 태그</span>
+            <RemovableTagContainer
+                tags={selectedTags}
+                isTagsLoading={isTagsLoading}
+            ></RemovableTagContainer>
             <span>카테고리 필터</span>
             <InputWithButton 
                 labelText={'태그명 검색'}

@@ -1,0 +1,29 @@
+.page_button{
+    position: absolute;
+    top: 50%;
+    transform:  translateY(-50%);
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--purple-grey-black);
+
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 50%;
+}
+
+.page_button:hover{
+    color: var(--purple-grey-light);
+    background-color: var(--purple-grey-black);
+}
+
+.tag {
+    transition: box-shadow 0.1s ease;
+}
+.tag:hover{
+    box-shadow: 0 0 0 3px #858585;
+}

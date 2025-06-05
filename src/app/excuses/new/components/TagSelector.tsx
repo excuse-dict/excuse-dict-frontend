@@ -1,10 +1,11 @@
 'use client';
 
-import Tag from "@/app/excuses/new/components/Tag";
+import SelectableTag from "@/app/excuses/new/components/SelectableTag";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import Modal from "@/global_components/modal/Modal";
 import TagSelectorModalContent from "@/app/excuses/new/components/TagSelectorModalContent";
-import TagContainer from "@/app/excuses/new/components/TagContainer";
+import SelectableTagContainer from "@/app/excuses/new/components/SelectableTagContainer";
+import RemovableTagContainer from "@/app/excuses/new/components/RemovableTagContainer";
 
 export default function TagSelector() {
 
@@ -12,8 +13,9 @@ export default function TagSelector() {
 
     const {
         isSelectorOpen, setSelectorOpen,
+        isTagsLoading, setTagsLoading,
         searchedTags, setSearchedTags,
-        selectedTags
+        selectedTags, setSelectedTags
     } = tags;
 
     return (
@@ -24,15 +26,19 @@ export default function TagSelector() {
                     onClick={() => setSelectorOpen(true)}
                 >+추가</button>
             </div>
-            <TagContainer tags={selectedTags}></TagContainer>
+            <RemovableTagContainer
+                tags={selectedTags}
+                isTagsLoading={isTagsLoading}
+            ></RemovableTagContainer>
             {!isSelectorOpen ? null :
                 <Modal
                     isOpen={isSelectorOpen}
                     setOpen={setSelectorOpen}
                 >
                     <TagSelectorModalContent
-                        searchedTags={searchedTags}
-                        setSearchedTags={setSearchedTags}
+                        searchedTags={searchedTags} selectedTags={selectedTags}
+                        setSelectedTags={setSelectedTags} setSearchedTags={setSearchedTags}
+                        isTagsLoading={isTagsLoading} setTagsLoading={setTagsLoading}
                     ></TagSelectorModalContent>
                 </Modal>
             }
