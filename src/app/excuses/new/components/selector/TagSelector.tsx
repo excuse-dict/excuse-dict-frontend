@@ -13,9 +13,6 @@ export default function TagSelector() {
 
     const {
         isSelectorOpen, setSelectorOpen,
-        isTagsLoading, setTagsLoading,
-        searchedTags, setSearchedTags,
-        selectedTags, setSelectedTags
     } = tagSelector;
 
     return (
@@ -27,8 +24,7 @@ export default function TagSelector() {
                 >+추가</button>
             </div>
             <RemovableTagContainer
-                tags={selectedTags}
-                isTagsLoading={isTagsLoading}
+                tagSelector={tagSelector}
             ></RemovableTagContainer>
             {!isSelectorOpen ? null :
                 <Modal

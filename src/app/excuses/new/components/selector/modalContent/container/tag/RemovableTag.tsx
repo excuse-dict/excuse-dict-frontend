@@ -1,12 +1,14 @@
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import css from '../../../../Tag.module.css';
+import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 
-export default function RemovableTag({ tag }: {
-    tag: TagInterface
-
+export default function RemovableTag({ tagInterface, tagSelector }: {
+    tagInterface: TagInterface,
+    tagSelector: ReturnType<typeof useTagSelector>,
 }){
 
-    const { category, value } = tag;
+    const { category, value } = tagInterface;
+    const { removeSelectedTag } = tagSelector;
 
     // 원래는 색상만 반환했는데 테일윈드가 런타임에 스타일을 동적으로 생성할 수 없어서 아예 스타일을 만들어 던지도록 변경
     const getColor = (category: string)=> {
@@ -26,10 +28,14 @@ export default function RemovableTag({ tag }: {
         }
     }
 
+    const handleRemoveTag = () => {
+        removeSelectedTag(tagInterface);
+    }
+
     return (
         <div className={`${css.tag} ${getColor(category)} flex text-sm gap-1 text-white cursor-pointer`}>
             <span>{value}</span>
-            <button>×</button>
+            <button onClick={handleRemoveTag}>×</button>
         </div>
     );
 }

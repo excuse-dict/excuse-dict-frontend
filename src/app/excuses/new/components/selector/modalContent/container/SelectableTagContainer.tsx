@@ -3,15 +3,15 @@ import css from '../../../Tag.module.css';
 import {usePage} from "@/global_components/page/usePage";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 
-export default function SelectableTagContainer({ tags, emptyLabel, isTagsLoading, pageInfo, tagSelector }: {
+export default function SelectableTagContainer({ tags, emptyLabel, pageInfo, tagSelector }: {
     tags: { value: string, category: string }[],
     emptyLabel?: string,
-    isTagsLoading: boolean,
     pageInfo: ReturnType<typeof usePage>,
     tagSelector: ReturnType<typeof useTagSelector>,
 }){
 
     const { currentPage, setCurrentPage, totalPage } = pageInfo;
+    const { isTagsLoading } = tagSelector;
 
     const getTags = () => {
         const label = isTagsLoading ? '태그 불러오는 중...' : emptyLabel || '태그 없음';

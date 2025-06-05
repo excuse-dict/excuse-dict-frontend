@@ -61,14 +61,12 @@ export default function TagSelectorModalContent({
             <SelectableTagContainer
                 tags={searchedTags}
                 emptyLabel={'사용 가능한 태그 없음'}
-                isTagsLoading={isTagsLoading}
                 pageInfo={page}
                 tagSelector={tagSelector}
             ></SelectableTagContainer>
             <span>선택된 태그</span>
             <RemovableTagContainer
-                tags={selectedTags}
-                isTagsLoading={isTagsLoading}
+                tagSelector={tagSelector}
             ></RemovableTagContainer>
             <span>카테고리 필터</span>
             <InputWithButton 

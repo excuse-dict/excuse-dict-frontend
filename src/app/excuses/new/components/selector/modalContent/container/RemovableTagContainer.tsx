@@ -1,10 +1,12 @@
 import RemovableTag from "@/app/excuses/new/components/selector/modalContent/container/tag/RemovableTag";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
-export default function RemovableTagContainer({ tags, emptyLabel, isTagsLoading }: {
-    tags: Set<string>,
+import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
+export default function RemovableTagContainer({ tagSelector, emptyLabel }: {
+    tagSelector: ReturnType<typeof useTagSelector>,
     emptyLabel?: string,
-    isTagsLoading: boolean,
 }){
+
+    const { selectedTags, isTagsLoading } = tagSelector;
 
     const parseTagKey = (tagKey: string): TagInterface => {
         const [category, value] = tagKey.split(':');
@@ -13,16 +15,17 @@ export default function RemovableTagContainer({ tags, emptyLabel, isTagsLoading 
 
     const getTags = () => {
         const label = isTagsLoading ? '태그 불러오는 중...' : emptyLabel || '태그 없음';
-        const tagArray = Array.from(tags.values());
+        const tagArray = Array.from(selectedTags.values());
 
         return (
             <>
-                {!tags || tags?.size === 0 ?
+                {!selectedTags || selectedTags?.size === 0 ?
                     <span className={'w-full text-gray-400 text-center'}>{label}</span> : null}
                 {tagArray?.map((key, index) => (
                     <RemovableTag
                         key={index}
-                        tag={parseTagKey(key)}
+                        tagInterface={parseTagKey(key)}
+                        tagSelector={tagSelector}
                     ></RemovableTag>
                 ))}
             </>
