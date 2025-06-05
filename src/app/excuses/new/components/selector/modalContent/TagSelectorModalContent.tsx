@@ -2,7 +2,7 @@ import InputWithButton from "@/global_components/input/with_button/InputWithButt
 import SelectableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/SelectableTagContainer";
 import {useEffect, useState} from "react";
 import {apiGet} from "@/axios/requests/get/apiGet";
-import {EP_TAGS} from "@/app/constants/constants";
+import {EP_TAGS, MAX_SELECTED_TAGS} from "@/app/constants/constants";
 import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePage} from "@/global_components/page/usePage";
@@ -64,7 +64,7 @@ export default function TagSelectorModalContent({
                 pageInfo={page}
                 tagSelector={tagSelector}
             ></SelectableTagContainer>
-            <span>선택된 태그</span>
+            <span>{`선택된 태그 (${selectedTags.size}개 / 최대 ${MAX_SELECTED_TAGS}개)`}</span>
             <RemovableTagContainer
                 tagSelector={tagSelector}
             ></RemovableTagContainer>

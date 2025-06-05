@@ -54,3 +54,5 @@ export const TAG_CATEGORIES = [
     { label: '교통', value: 'TRANSPORT' },
     { label: '날씨', value: 'WEATHER' },
 ];
+// 최대 태그 선택 갯수
+export const MAX_SELECTED_TAGS = 10;
