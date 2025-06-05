@@ -35,7 +35,10 @@ export default function RemovableTag({ tagInterface, tagSelector }: {
     return (
         <div className={`${css.tag} ${getColor(category)} flex text-sm gap-1 text-white cursor-pointer`}>
             <span>{value}</span>
-            <button onClick={handleRemoveTag}>×</button>
+            <button
+                className={css.x_button}
+                onClick={handleRemoveTag}
+            >✕</button>
         </div>
     );
 }

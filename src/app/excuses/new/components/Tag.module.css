@@ -29,3 +29,14 @@
 .tag:hover{
     box-shadow: 0 0 0 3px #858585;
 }
+
+.x_button{
+    transition: transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+}
+.x_button:hover{
+    transform: scale(1.6);
+}
