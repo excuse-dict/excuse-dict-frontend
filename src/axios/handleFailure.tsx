@@ -63,8 +63,8 @@ export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = t
 
 // 인증 잘못될 시 강제 로그아웃
 const forceLogout = () => {
-    useAuth.getState().logout();
-    window.location.href = PG_LOGIN;
+    /*useAuth.getState().logout();
+    window.location.href = PG_LOGIN;*/
 }
 
 // 액세스 토큰 재발급 시도

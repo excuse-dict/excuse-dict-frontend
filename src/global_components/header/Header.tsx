@@ -4,7 +4,7 @@ import Link from 'next/link';
 import {useState} from 'react';
 import css from './Header.module.css';
 import {useAuth} from "@/app/login/auth/useAuth";
-import {PG_ALL_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_NEW_EXCUSE, PG_POPULAR} from "@/app/constants/constants";
+import {PG_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_NEW_EXCUSE, PG_POPULAR} from "@/app/constants/constants";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,7 +27,7 @@ export default function Header() {
 
             {/* 네비게이션 메뉴 */}
             <nav className={`${css.nav_menu} ${isMenuOpen ? css.nav_open : ''}`}>
-                <Link href={PG_ALL_EXCUSES} className={css.nav_link}>
+                <Link href={PG_EXCUSES} className={css.nav_link}>
                     전체
                 </Link>
                 <Link href={PG_POPULAR} className={css.nav_link}>

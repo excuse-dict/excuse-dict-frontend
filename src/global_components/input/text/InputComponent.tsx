@@ -2,7 +2,9 @@
 
 import {useState} from "react";
 
-export default function InputComponent({ label, type, placeholder, onChange, labelStyle, inputContainerStyle }: {
+export default function InputComponent({ value, setValue, label, type, placeholder, onChange, labelStyle, inputContainerStyle }: {
+    value: string,
+    setValue: (value: string) => void,
     label?: string,
     type?: string,
     placeholder?: string,
@@ -12,11 +14,9 @@ export default function InputComponent({ label, type, placeholder, onChange, lab
     inputStyle?: string
 }){
 
-    const [input, setInput] = useState('');
-
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        setInput(value);
+        setValue(value);
 
         if(onChange) onChange(value);
     }
@@ -28,7 +28,7 @@ export default function InputComponent({ label, type, placeholder, onChange, lab
                 <input
                     className={`global_input`}
                     placeholder={placeholder}
-                    value={input}
+                    value={value}
                     type={type || ''}
                     onChange={handleChange}
                 ></input>

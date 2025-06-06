@@ -3,7 +3,9 @@
 import css from './TextBox.module.css';
 import {useEffect, useRef, useState} from "react";
 
-export default function TextBox({label, size, placeholder, onChange, containerStyle}: {
+export default function TextBox({ value, setValue, label, size, placeholder, onChange, containerStyle}: {
+    value: string,
+    setValue: (value: string) => void,
     label?: string,
     size?: number,
     placeholder?: string,
@@ -11,7 +13,6 @@ export default function TextBox({label, size, placeholder, onChange, containerSt
     containerStyle?: string,
 }) {
 
-    const [input, setInput] = useState('');
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -19,7 +20,7 @@ export default function TextBox({label, size, placeholder, onChange, containerSt
         // 길이 제한
         if(size && value.length > size) return;
 
-        setInput(value);
+        setValue(value);
 
         if(onChange) onChange(value);
     }
@@ -30,7 +31,7 @@ export default function TextBox({label, size, placeholder, onChange, containerSt
             textareaRef.current.style.height = 'auto';
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
-    }, [input]);
+    }, [value]);
 
     return (
         <div className={`${css.text_area_container} ${containerStyle || ''}`}>
@@ -39,12 +40,12 @@ export default function TextBox({label, size, placeholder, onChange, containerSt
                 <textarea
                     ref={textareaRef}
                     className={`${css.text_area}`}
-                    value={input}
+                    value={value}
                     placeholder={placeholder}
                     onChange={handleChange}
                 ></textarea>
                 {!size ? null :
-                    <span className={css.size_span}>{`${input.length}/${size}자`}</span>}
+                    <span className={css.size_span}>{`${value.length}/${size}자`}</span>}
             </div>
         </div>
     );

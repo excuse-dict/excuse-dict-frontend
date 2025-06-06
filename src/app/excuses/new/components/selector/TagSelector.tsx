@@ -7,9 +7,9 @@ import TagSelectorModalContent from "@/app/excuses/new/components/selector/modal
 import SelectableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/SelectableTagContainer";
 import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
 
-export default function TagSelector() {
-
-    const tagSelector = useTagSelector();
+export default function TagSelector({ tagSelector }:{
+    tagSelector: ReturnType<typeof useTagSelector>
+}) {
 
     const {
         isSelectorOpen, setSelectorOpen,

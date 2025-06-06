@@ -11,6 +11,7 @@ export const EP_LOGIN = "/api/v1/auth/login";
 export const EP_RESET_PASSWORD = "/api/v1/members/passwords/reset";
 export const EP_TAGS = "/api/v1/posts/tags"
 export const EP_REFRESH_ACCESS_TOKEN = "/api/v1/auth/refresh";
+export const EP_NEW_POST = "/api/v1/posts";
 
 // 페이지 주소
 export const PG_HOME = '/home';
@@ -22,7 +23,7 @@ export const PG_POPULAR = "/popular";
 export const PG_HALL_OF_FAME = "/hall_of_fame";
 export const PG_NEW_EXCUSE = "/excuses/new";
 export const PG_GENERATOR = "/generator";
-export const PG_ALL_EXCUSES = "/excuses";
+export const PG_EXCUSES = "/excuses";
 
 // 회원가입 제약조건
 export const MAX_EMAIL_LENGTH = 30;
