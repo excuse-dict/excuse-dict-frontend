@@ -30,7 +30,7 @@ export default function SelectableTag({ tagInterface, isSelected, tagSelector }:
     }
 
     const getBrightness = () => {
-        return isSelected ? 'brightness-[0.75]' : '';
+        return isSelected ? '' : 'brightness-[0.75]';
     }
 
     return (

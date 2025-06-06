@@ -16,9 +16,9 @@
     position: relative;
     background-color: white;
     border-radius: 8px;
-    width: 50%;
+    @apply w-[80vw] sm:w-[70vw] md:w-[60vw] lg:w-[50vw];
     min-width: 500px;
-    height: 50%;
+    height: 50vh;
     min-height: 500px;
 
     /* 자식 중앙 정렬 */
@@ -26,7 +26,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 20px;
+    padding: 50px 20px 20px 20px;
 
     animation: modalShow 0.3s ease-out;
 }
