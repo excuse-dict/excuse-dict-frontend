@@ -1,9 +1,11 @@
 import RemovableTag from "@/app/excuses/new/components/selector/modalContent/container/tag/RemovableTag";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
-export default function RemovableTagContainer({ tagSelector, emptyLabel }: {
+export default function RemovableTagContainer({ tagSelector, emptyLabel, hideBorder = false, hideBackground = false }: {
     tagSelector: ReturnType<typeof useTagSelector>,
     emptyLabel?: string,
+    hideBorder?: boolean,
+    hideBackground?: boolean,
 }){
 
     const { selectedTags, isTagsLoading } = tagSelector;
@@ -20,7 +22,7 @@ export default function RemovableTagContainer({ tagSelector, emptyLabel }: {
         return (
             <>
                 {!selectedTags || selectedTags?.size === 0 ?
-                    <span className={'w-full text-gray-400 text-center'}>{label}</span> : null}
+                    <span className={'w-full text-[var(--placeholder-color)] text-center'}>{label}</span> : null}
                 {tagArray?.map((key, index) => (
                     <RemovableTag
                         key={index}
@@ -32,8 +34,16 @@ export default function RemovableTagContainer({ tagSelector, emptyLabel }: {
         )
     }
 
+    const getBorder = () => {
+        return hideBorder ? '' : 'border-2 border-[var(--purple-grey)]';
+    }
+
+    const getBackground = () => {
+        return hideBackground ? '' : 'bg-[var(--purple-grey-highlighted)]';
+    }
+
     return (
-        <div className={`w-full min-h-4 p-2 rounded-sm flex flex-wrap justify-center gap-2 bg-[var(--purple-grey-light)]`}>
+        <div className={`global_tag_container w-full ${getBorder()} ${getBackground()}`}>
             {getTags()}
         </div>
     );

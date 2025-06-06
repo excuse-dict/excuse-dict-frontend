@@ -43,16 +43,16 @@ export const VERIFICATION_CODE_COOLDOWN = 30;
 
 // 태그 카테고리 (백엔드 enum에 대응)
 export const TAG_CATEGORIES = [
-    { label: '사고', value: 'ACCIDENT' },
-    { label: '직장', value: 'COMPANY' },
-    { label: '행사', value: 'EVENT' },
-    { label: '가족', value: 'FAMILY' },
-    { label: '건강', value: 'HEALTH' },
-    { label: '집/시설', value: 'HOME_FACILITY' },
-    { label: '연애', value: 'LOVE' },
-    { label: '종교', value: 'RELIGIOUS' },
-    { label: '교통', value: 'TRANSPORT' },
-    { label: '날씨', value: 'WEATHER' },
+    { label: '사고', value: 'ACCIDENT', emoji: '⚠️' },
+    { label: '직장', value: 'COMPANY', emoji: '💼' },
+    { label: '행사', value: 'EVENT', emoji: '🎉' },
+    { label: '가족', value: 'FAMILY', emoji: '👨‍👩‍👧‍👦' },
+    { label: '건강', value: 'HEALTH', emoji: '🏥' },
+    { label: '집/시설', value: 'HOME_FACILITY', emoji: '🏠' },
+    { label: '연애', value: 'LOVE', emoji: '💕' },
+    { label: '종교', value: 'RELIGIOUS', emoji: '🙏' },
+    { label: '교통', value: 'TRANSPORT', emoji: '🚗' },
+    { label: '날씨', value: 'WEATHER', emoji: '🌤️' },
 ];
 // 최대 태그 선택 갯수
 export const MAX_SELECTED_TAGS = 10;
