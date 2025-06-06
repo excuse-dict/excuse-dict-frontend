@@ -15,6 +15,8 @@ export const usePage = () => {
         hasNext: false
     });
 
+    const [nextSearchPage, setNextSearchPage] = useState(1);
+
     const setCurrentPage = (page: number) => {
         setPageInfo(prev => ({ ...prev, currentPage: page }));
     };
@@ -37,10 +39,9 @@ export const usePage = () => {
         totalElements: pageInfo.totalElements,
         hasNext: pageInfo.hasNext,
 
-        setCurrentPage,
-        setTotalPages,
-        setTotalElements,
-        setHasNext,
+        setCurrentPage, setTotalPages,
+        setTotalElements, setHasNext,
+        nextSearchPage, setNextSearchPage,
 
         pageInfo,
         setPageInfo

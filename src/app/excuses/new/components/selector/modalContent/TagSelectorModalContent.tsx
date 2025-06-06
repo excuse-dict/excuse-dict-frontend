@@ -7,6 +7,7 @@ import RemovableTagContainer from "@/app/excuses/new/components/selector/modalCo
 import {usePage} from "@/global_components/page/usePage";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import CategoryFilter from "@/app/excuses/new/components/selector/modalContent/container/filter/CategoryFilter";
+import {apiPost} from "@/axios/requests/post/apiPost";
 
 export default function TagSelectorModalContent({
                                                     tagSelector
@@ -18,23 +19,30 @@ export default function TagSelectorModalContent({
         isTagsLoading, setTagsLoading,
         selectedTags,
         searchedTags, setSearchedTags,
+        selectedCategories
     } = tagSelector;
 
     const [searchValue, setSearchValue] = useState('');
-    const [selectedCategories, setSelectedCategories] = useState<Array<{ label: string, value: string }>>([]);
 
     const page = usePage();
-    const {totalElements, setPageInfo, currentPage, totalPage} = page;
+    const {
+        totalElements,
+        setPageInfo,
+        currentPage,
+        totalPage,
+        nextSearchPage,
+        setNextSearchPage
+    } = page;
 
     // 태그 조회
     const searchTags = () => {
         setTagsLoading(true);
-        apiGet({
+        apiPost({
             endPoint: EP_TAGS,
-            params: {
-                'categories': selectedCategories,
+            body: {
+                'categories': Array.from(selectedCategories),
                 'searchValue': searchValue,
-                'page': currentPage,
+                'page': nextSearchPage,
             },
             onSuccess: (response) => {
                 setTagsLoading(false);
@@ -46,10 +54,13 @@ export default function TagSelectorModalContent({
         })
     }
 
-    // pageInfo 바뀔 때마다 새로 요청
     useEffect(() => {
         searchTags();
-    }, [currentPage]);
+    }, [nextSearchPage]);
+
+    useEffect(() => {
+        setNextSearchPage(1);
+    }, [selectedCategories, searchValue]);
 
     return (
         <div className={'flex flex-col w-full h-full'}>
@@ -67,7 +78,10 @@ export default function TagSelectorModalContent({
                             placeholder={'검색어가 없으면 전체 결과가 표시됩니다.'}
                             onChange={(e) => setSearchValue(e.target.value)}
                         ></input>
-                        <button className={'global_button w-full !bg-[var(--purple-grey)] rounded-md'}>적용</button>
+                        <button
+                            className={'global_button w-full !bg-[var(--purple-grey)] rounded-md'}
+                            onClick={searchTags}
+                        >검색어 & 필터 적용</button>
                     </div>
                     <div className={'flex justify-between pl-2 pr-2'}>
                         <span>{`검색 결과: ${totalElements}개`}</span>
@@ -84,9 +98,9 @@ export default function TagSelectorModalContent({
                 </div>
             </div>
 
-            {/* 하단 선택된 태그 - 전체 너비 */}
+            {/* 하단 선택된 태그 */}
             <div
-                className={'bg-[var(--purple-grey-light)] w-full py-4'}
+                className={'w-full bg-[var(--purple-grey-light)] border-2 border-[var(--purple-grey)] py-4'}
             >
                 <div>
                     <span>선택된 태그 (</span>
