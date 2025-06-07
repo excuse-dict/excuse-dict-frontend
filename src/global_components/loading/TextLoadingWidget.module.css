@@ -1,5 +1,5 @@
 .nickname_condition{
-    color: var(--error-color);
+    color: var(--global-error);
     font-size: small;
     margin-left: var(--reg-input-label-margin);
 }
@@ -13,5 +13,5 @@
 }
 
 .failed{
-    color: var(--error-color);
+    color: var(--global-error);
 }

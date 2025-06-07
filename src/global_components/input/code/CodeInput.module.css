@@ -33,7 +33,7 @@
     opacity: 0; /* 기본값: 투명 */
     visibility: hidden; /* 안 보여도 공간은 차지하고 있음 */
     transition: opacity 0.1s ease, visibility 0.1s ease;
-    color: var(--error-color);
+    color: var(--global-error);
     font-size: 14px;
 }
 

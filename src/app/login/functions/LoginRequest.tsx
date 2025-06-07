@@ -4,7 +4,7 @@ import { apiPost } from "@/axios/requests/post/apiPost"
 export const sendLoginRequest = async ({ email, password, onSuccess, onFail }: {
     email: string,
     password: string,
-    onSuccess?: () => void
+    onSuccess?: (response: any) => void
     onFail?: () => void
 }) => {
     return await apiPost({

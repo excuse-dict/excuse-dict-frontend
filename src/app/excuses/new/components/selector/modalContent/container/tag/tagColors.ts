@@ -4,11 +4,14 @@ export const getBackgroundColorStyle = (category: string)=> {
         case "ACCIDENT": return 'bg-[#d35353]';
         case "COMPANY": return 'bg-[#4242dc]';
         case "EVENT": return 'bg-[#e3bd6e]';
+        case "EXERCISE": return 'bg-[#ff8c42]';
         case "FAMILY": return 'bg-[#e67e8a]';
+        case "FINANCIAL": return 'bg-[#27ae60]';
         case "HEALTH": return 'bg-[#4ecdc4]';
         case "HOME_FACILITY": return 'bg-[#8b7ed8]';
         case "LOVE": return 'bg-[#ff6b9d]';
         case "RELIGIOUS": return 'bg-[#f4a261]';
+        case "STUDY": return 'bg-[#6c5ce7]';
         case "TRANSPORT": return 'bg-[#2a9d8f]';
         case "WEATHER": return 'bg-[#457b9d]';
         case "ETC": return 'bg-[#757575]';

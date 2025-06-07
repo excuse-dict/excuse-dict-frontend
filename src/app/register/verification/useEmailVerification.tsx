@@ -71,7 +71,7 @@ export function useEmailVerification(purpose: string) {
             onSuccess: (response) => {
                 setEmailSending(false); // 이메일 전송 완료!
                 setSendingSucceed(true);
-                setTimeLeft(calculateTimeLeft(response.data.expiryTime));
+                setTimeLeft(calculateTimeLeft(response.data.data.expiryTime));
             },
             onFail: (error) => {
                 setEmailSending(false);

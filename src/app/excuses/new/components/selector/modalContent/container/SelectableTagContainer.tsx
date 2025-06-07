@@ -10,7 +10,7 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
     tagSelector: ReturnType<typeof useTagSelector>,
 }) {
 
-    const {currentPage, setCurrentPage, totalPage} = pageInfo;
+    const {currentPage, setCurrentPage, totalPage, isPageEmpty} = pageInfo;
     const {isTagsLoading, hasSelectedTag} = tagSelector;
 
     const getTags = () => {
@@ -48,10 +48,11 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
         <div
             className={`relative w-full min-h-4 pl-8 pr-8 rounded-sm flex flex-wrap justify-center gap-2`}>
             {getTags()}
-            {isTagsLoading ? null :
+            {isTagsLoading || isPageEmpty() ? null :
                 <>
                     <button
                         className={`${css.page_button} left-1`}
+                        hidden={totalPage < 1}
                         onClick={() => handleClick('LEFT')}
                     >{'<'}</button>
                     <button

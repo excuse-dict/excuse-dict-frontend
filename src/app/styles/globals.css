@@ -12,7 +12,7 @@
   --purple-grey-light: rgb(230, 224, 247);
   --header-height: 70px;
   --success-color: rgb(100, 210, 100);
-  --error-color: rgb(255, 100, 100);
+  --global-error: rgb(255, 100, 100);
   --global-header: rgb(42, 42, 51);
   --global-font-dark: #3d393c;
   --global-font-bright: #d4d7d5;
@@ -301,13 +301,13 @@ a:hover {
 
 /* 에러 및 성공 메시지 */
 .error-message {
-  color: var(--error-color);
+  color: var(--global-error);
   font-size: 14px;
   margin-top: 8px;
   padding: 8px 12px;
   background: rgba(255, 100, 100, 0.1);
   border-radius: 8px;
-  border-left: 3px solid var(--error-color);
+  border-left: 3px solid var(--global-error);
 }
 
 .success-message {

@@ -72,7 +72,7 @@ export default function CodeInput({ legnth, codes, setCodes }: {
                     </div>
                 ))}
             </div>
-            <span className={`${css.code_input_error} ${isErrorVisible ? css.visible : ''}`}>영문 및 숫자만 입력할 수 있습니다.</span>
+            <span className={`${css.code_input_error} ${isErrorVisible ? css.visible : ''}`}>영문 또는 숫자만 입력하실 수 있습니다.</span>
         </div>
     );
 }

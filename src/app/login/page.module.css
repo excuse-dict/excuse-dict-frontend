@@ -75,3 +75,15 @@
     display: flex;
     gap: 20px;
 }
+
+/*로그인 실패 문구*/
+.login_error {
+    font-size: 0.875rem;
+    color: var(--global-error);
+    transition: opacity 0.1s ease-in-out;
+    opacity: 0;
+}
+
+.login_error.visible {
+    opacity: 1;
+}

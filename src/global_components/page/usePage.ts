@@ -33,6 +33,10 @@ export const usePage = () => {
         setPageInfo(prev => ({ ...prev, hasNext }));
     };
 
+    const isPageEmpty = () => {
+        return pageInfo.totalPages < 1;
+    }
+
     return {
         currentPage: pageInfo.currentPage,
         totalPage: pageInfo.totalPages,
@@ -42,6 +46,7 @@ export const usePage = () => {
         setCurrentPage, setTotalPages,
         setTotalElements, setHasNext,
         nextSearchPage, setNextSearchPage,
+        isPageEmpty,
 
         pageInfo,
         setPageInfo
