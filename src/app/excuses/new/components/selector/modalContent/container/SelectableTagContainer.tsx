@@ -10,7 +10,7 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
     tagSelector: ReturnType<typeof useTagSelector>,
 }) {
 
-    const {currentPage, setCurrentPage, totalPage, isPageEmpty} = pageInfo;
+    const {currentPage, setNextSearchPage, totalPage, isPageEmpty} = pageInfo;
     const {isTagsLoading, hasSelectedTag} = tagSelector;
 
     const getTags = () => {
@@ -41,7 +41,7 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
             nextPage = 1;
         }
 
-        setCurrentPage(nextPage);
+        setNextSearchPage(nextPage);
     }
 
     return (
