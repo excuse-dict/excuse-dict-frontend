@@ -92,11 +92,12 @@ a:hover {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
-  
+  overflow-y: auto;
+  overflow-x: hidden;
+
   /* 개선된 그라디언트 배경 */
   background: linear-gradient(135deg, var(--purple-grey-dark) 0%, var(--purple-grey-light) 100%);
-  
+
   /* 애니메이션 효과를 위한 오버레이 */
   &::before {
     content: '';
@@ -112,7 +113,7 @@ a:hover {
     pointer-events: none;
     z-index: 1;
   }
-  
+
   /* 떠다니는 원형 장식 */
   &::after {
     content: '';
@@ -346,17 +347,17 @@ a:hover {
   :root {
     --header-height: 60px;
   }
-  
+
   .global_inner_container {
     padding: 30px 20px;
     max-width: 90%;
     margin: 20px auto;
   }
-  
+
   .content-wrapper {
     padding: 15px;
   }
-  
+
   .global_input {
     height: 48px;
     font-size: 16px; /* iOS zoom 방지 */
@@ -368,7 +369,7 @@ a:hover {
     padding: 25px 15px;
     border-radius: 16px;
   }
-  
+
   .global_input {
     height: 46px;
   }
@@ -385,18 +386,32 @@ a:hover {
     background: rgba(26, 26, 26, 0.95);
     border-bottom-color: rgba(255, 255, 255, 0.1);
   }
-  
+
   .inner_container {
     background: rgba(26, 26, 26, 0.95);
     border-color: rgba(255, 255, 255, 0.1);
   }
-  
+
   .global_input {
     background: rgba(255, 255, 255, 0.1);
     color: var(--foreground);
   }
-  
+
   .global_input:focus {
     background: rgba(255, 255, 255, 0.15);
   }
 } */
+
+.simple-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.simple-scroll::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+.simple-scroll::-webkit-scrollbar-thumb {
+  background: var(--purple-grey-dark);
+  border-radius: 6px;
+}
+.simple-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--purple-grey-black);
+}

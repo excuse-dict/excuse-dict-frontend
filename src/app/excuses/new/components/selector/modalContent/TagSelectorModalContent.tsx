@@ -88,7 +88,7 @@ export default function TagSelectorModalContent({
                     </div>
                     <div className={'flex justify-between pl-2 pr-2'}>
                         <span>{`검색 결과: ${totalElements}개`}</span>
-                        <span hidden={isPageEmpty()}>{`${currentPage}/${totalPage}`}</span>
+                        <span hidden={isPageEmpty()}>{`${currentPage + 1}/${totalPage}`}</span>
                     </div>
                     <div className={'flex items-center'}>
                         <SelectableTagContainer
