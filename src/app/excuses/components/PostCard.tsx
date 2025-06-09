@@ -12,8 +12,6 @@ export default function PostCard({post}: {
         return post.author.id === id;
     }
 
-    console.log("id: ", id);
-
     return (
         <article
             className="global_button !bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-100"

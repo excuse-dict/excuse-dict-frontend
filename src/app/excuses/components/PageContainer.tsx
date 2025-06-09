@@ -4,12 +4,12 @@ import NextPageButton from "@/app/excuses/components/NextPageButton";
 export default function PageContainer({page}: {
     page: ReturnType<typeof usePage>
 }) {
-    const {currentPage, setCurrentPage, totalPage} = page;
+    const {currentPage, setCurrentPage, totalPages} = page;
 
     const maxPagesRadius = 3;
 
     const movePage = (page: number) => {
-        if (page < 0 || page >= totalPage) return
+        if (page < 0 || page >= totalPages) return
 
         setCurrentPage(page);
     }
@@ -19,7 +19,7 @@ export default function PageContainer({page}: {
         const leftEnd = Math.max(currentPage - maxPagesRadius, 0);
         const rightAddition = maxPagesRadius - (currentPage - leftEnd);
 
-        const rightEnd = Math.min(currentPage + rightAddition, totalPage - 1);
+        const rightEnd = Math.min(currentPage + rightAddition, totalPages - 1);
 
         //console.log({currentPage, totalPage, leftEnd, rightEnd});
 
@@ -55,12 +55,12 @@ export default function PageContainer({page}: {
             <NextPageButton
                 pageToMove={currentPage + 1}
                 onClick={movePage}
-                isDisabled={currentPage === totalPage - 1}
+                isDisabled={currentPage === totalPages - 1}
             >{'>'}</NextPageButton>
             <NextPageButton
-                pageToMove={totalPage - 1}
+                pageToMove={totalPages - 1}
                 onClick={movePage}
-                isDisabled={currentPage === totalPage - 1}
+                isDisabled={currentPage === totalPages - 1}
             >{'>>'}</NextPageButton>
         </div>
     );

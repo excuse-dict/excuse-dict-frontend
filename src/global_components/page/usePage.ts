@@ -39,7 +39,7 @@ export const usePage = () => {
 
     return {
         currentPage: pageInfo.currentPage,
-        totalPage: pageInfo.totalPages,
+        totalPages: pageInfo.totalPages,
         totalElements: pageInfo.totalElements,
         hasNext: pageInfo.hasNext,
 

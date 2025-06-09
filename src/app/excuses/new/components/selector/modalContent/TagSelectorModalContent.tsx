@@ -29,7 +29,7 @@ export default function TagSelectorModalContent({
         totalElements,
         setPageInfo,
         currentPage,
-        totalPage,
+        totalPages,
         isFilterChanged,
         setFilterChanged,
         isPageEmpty
@@ -43,7 +43,7 @@ export default function TagSelectorModalContent({
             body: {
                 'categories': Array.from(selectedCategories),
                 'searchValue': searchValue,
-                'page': isFilterChanged ? 1 : currentPage,
+                'page': isFilterChanged ? 0 : currentPage,
             },
             onSuccess: (response) => {
                 setTagsLoading(false);
@@ -88,7 +88,7 @@ export default function TagSelectorModalContent({
                     </div>
                     <div className={'flex justify-between pl-2 pr-2'}>
                         <span>{`검색 결과: ${totalElements}개`}</span>
-                        <span hidden={isPageEmpty()}>{`${currentPage + 1}/${totalPage}`}</span>
+                        <span hidden={isPageEmpty()}>{`${currentPage + 1}/${totalPages}`}</span>
                     </div>
                     <div className={'flex items-center'}>
                         <SelectableTagContainer

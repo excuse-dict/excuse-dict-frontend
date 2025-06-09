@@ -10,7 +10,7 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
     tagSelector: ReturnType<typeof useTagSelector>,
 }) {
 
-    const {currentPage, setCurrentPage, totalPage, isPageEmpty} = pageInfo;
+    const {currentPage, setCurrentPage, totalPages, isPageEmpty} = pageInfo;
     const {isTagsLoading, hasSelectedTag} = tagSelector;
 
     const getTags = () => {
@@ -35,11 +35,13 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
         const dx = direction === 'LEFT' ? -1 : 1;
 
         let nextPage = currentPage + dx;
-        if (nextPage <= 0) {
-            nextPage = totalPage;
-        } else if (nextPage > totalPage) {
-            nextPage = 1;
+
+        if (nextPage < 0) {
+            nextPage = totalPages - 1;
+        } else if (nextPage >= totalPages) {
+            nextPage = 0;
         }
+        if(nextPage === currentPage) return;
 
         setCurrentPage(nextPage);
     }
@@ -52,11 +54,12 @@ export default function SelectableTagContainer({searchedTags, emptyLabel, pageIn
                 <>
                     <button
                         className={`${css.page_button} left-1`}
-                        hidden={totalPage < 1}
+                        hidden={totalPages < 1}
                         onClick={() => handleClick('LEFT')}
                     >{'<'}</button>
                     <button
                         className={`${css.page_button} right-1`}
+                        hidden={totalPages < 1}
                         onClick={() => handleClick("RIGHT")}
                     >{'>'}</button>
                 </>
