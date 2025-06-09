@@ -4,7 +4,7 @@ import InputComponent from "@/global_components/input/text/InputComponent";
 import TextBox from "@/global_components/input/text/TextBox";
 import TagSelector from "@/app/excuses/new/components/selector/TagSelector";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_NEW_POST, PG_EXCUSES} from "@/app/constants/constants";
+import {EP_POST, PG_EXCUSES} from "@/app/constants/constants";
 import {useState} from "react";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import Swal from "sweetalert2";
@@ -40,7 +40,7 @@ export default function NewExcusePage(){
     }
     const handlePost = () => {
         apiPost({
-            endPoint: EP_NEW_POST,
+            endPoint: EP_POST,
             body: {
                 'situation': situationInput,
                 'excuse': excuseInput,

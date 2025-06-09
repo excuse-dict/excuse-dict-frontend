@@ -30,8 +30,8 @@ export default function TagSelectorModalContent({
         setPageInfo,
         currentPage,
         totalPage,
-        nextSearchPage,
-        setNextSearchPage,
+        isFilterChanged,
+        setFilterChanged,
         isPageEmpty
     } = page;
 
@@ -43,24 +43,25 @@ export default function TagSelectorModalContent({
             body: {
                 'categories': Array.from(selectedCategories),
                 'searchValue': searchValue,
-                'page': nextSearchPage,
+                'page': isFilterChanged ? 1 : currentPage,
             },
             onSuccess: (response) => {
                 setTagsLoading(false);
-                setSearchedTags(response?.data?.data?.tags?.content);
+                setSearchedTags(response?.data?.data?.page?.content);
 
                 const pageInfo = response?.data?.data?.pageInfo;
                 setPageInfo(pageInfo);
+                setFilterChanged(false);
             }
         })
     }
 
     useEffect(() => {
         searchTags();
-    }, [nextSearchPage]);
+    }, [currentPage]);
 
     useEffect(() => {
-        setNextSearchPage(1);
+        setFilterChanged(true);
     }, [selectedCategories, searchValue]);
 
     return (
@@ -71,6 +72,7 @@ export default function TagSelectorModalContent({
                     <h1 className={'font-bold text-2xl mb-4'}>태그 검색</h1>
                     <CategoryFilter
                         tagSelector={tagSelector}
+                        page={page}
                     ></CategoryFilter>
                     <div className={'global_input_container flex flex-col flex-[4] gap-0.5'}>
                         <div className={'global_input_label'}>검색어 입력</div>

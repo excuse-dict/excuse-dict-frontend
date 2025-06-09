@@ -2,15 +2,19 @@ import {TAG_CATEGORIES} from "@/app/constants/constants";
 import {getBackgroundColorStyle} from "@/app/excuses/new/components/selector/modalContent/container/tag/tagColors";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import LabeledCheckbox from "@/global_components/input/checkbox/LabeledCheckbox";
+import {usePage} from "@/global_components/page/usePage";
 
-export default function CategoryFilter({ tagSelector }: {
+export default function CategoryFilter({ tagSelector, page }: {
     tagSelector: ReturnType<typeof useTagSelector>
+    page: ReturnType<typeof usePage>
 }) {
 
     const categoriesArray = Array.from(TAG_CATEGORIES);
 
     const { selectedCategories, addAllCategories, clearSelectedCategory,
         hasSelectedCategory, addSelectedCategory, removeSelectedCategory } = tagSelector;
+
+    const { isFilterChanged, setFilterChanged } = page;
 
     const handleClick = (categoryValue: string) => {
         if(hasSelectedCategory(categoryValue)){
@@ -20,6 +24,7 @@ export default function CategoryFilter({ tagSelector }: {
             // 선택
             addSelectedCategory(categoryValue);
         }
+        setFilterChanged(true);
     }
 
     const isAllCategorySelected = () => {
@@ -51,7 +56,10 @@ export default function CategoryFilter({ tagSelector }: {
     return (
         <div className={'w-full flex flex-col'}>
             <div className={'flex justify-between'}>
-                <span>{`카테고리 필터 (${selectedCategories.size}/${TAG_CATEGORIES.length} 선택됨)`}</span>
+                <div className={'flex gap-1'}>
+                    <span>{`카테고리 필터 (${selectedCategories.size}/${TAG_CATEGORIES.length} 선택됨)`}</span>
+                    {isFilterChanged && <span className={'text-blue-500'}>{'*변경됨'}</span>}
+                </div>
                 <LabeledCheckbox
                     labelText={isAllCategorySelected() ? '전체 해제' : '전체 선택'}
                     labelPosition={'RIGHT'}
