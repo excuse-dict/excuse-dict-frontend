@@ -5,8 +5,9 @@ import LoginInput from './components/LoginInput';
 import css from './page.module.css'
 import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import {useRouter} from 'next/navigation';
-import {useAuth} from "@/app/login/auth/useAuth";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 import {apiPost} from "@/axios/requests/post/apiPost";
+import {sendLoginRequest} from "@/app/login/functions/LoginRequest";
 
 export default function LoginPage() {
 
@@ -15,24 +16,15 @@ export default function LoginPage() {
     const [shouldShowError, setShouldShowError] = useState(false);
     const router = useRouter();
 
-    const {login, logout} = useAuth();
+    const { login } = useAuthState();
 
     const handleLogin = async () => {
 
-        apiPost({
-            endPoint: EP_LOGIN,
-            body: {
-                email: emailInput,
-                password: passwordInput,
-            },
-            onSuccess: (response) => {
-                login({
-                    accessToken: response.headers?.authorization,
-                    refreshToken: response.headers?.refresh,
-                })
-                router.push(PG_HOME);
-            },
-            overwriteDefaultOnFail: true,
+        sendLoginRequest({
+            email: emailInput,
+            password: passwordInput,
+            overwriteDefaultHandler: true,
+            login: login,
             onFail: () => {
                 // 로그인 창에 붉은 글씨로 안내
                 setShouldShowError(true);

@@ -1,9 +1,19 @@
 import {Post} from "@/app/excuses/interfaces/PostInterface";
 import {formatDate} from "@/app/excuses/functions/FormatDate";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 
 export default function PostCard({post}: {
     post: Post
 }) {
+
+    const { id } = useAuthState();
+
+    const isMine = () => {
+        return post.author.id === id;
+    }
+
+    console.log("id: ", id);
+
     return (
         <article
             className="global_button !bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-100"
@@ -14,10 +24,10 @@ export default function PostCard({post}: {
                 <div className="flex items-center space-x-3">
                     <div
                         className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                        {post.nickname?.charAt(0)?.toUpperCase() || '?'}
+                        {post.author.nickname?.charAt(0)?.toUpperCase() || '?'}
                     </div>
                     <div>
-                        <p className="font-semibold text-gray-800">{post.nickname || '익명'}</p>
+                        <p className={`font-semibold ${isMine() ? 'text-[var(--strong-purple)]' : 'text-gray-800'}`}>{post.author.nickname || '익명'}</p>
                         <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
                     </div>
                 </div>

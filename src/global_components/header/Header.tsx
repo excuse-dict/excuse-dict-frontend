@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import {useState} from 'react';
 import css from './Header.module.css';
-import {useAuth} from "@/app/login/auth/useAuth";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 import {PG_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_NEW_EXCUSE, PG_POPULAR} from "@/app/constants/constants";
 
 export default function Header() {
@@ -13,7 +13,7 @@ export default function Header() {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const {isLoggedIn} = useAuth();
+    const {isLoggedIn} = useAuthState();
 
     return (
         <div className={css.header_container}>

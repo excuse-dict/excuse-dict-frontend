@@ -9,6 +9,7 @@ interface AuthState {
     isLoggedIn: boolean;
     accessToken: string | null;
     refreshToken: string | null;
+    id: number | null;
 
     login: (params: LoginParams) => void,
     logout: () => void;
@@ -17,21 +18,24 @@ interface AuthState {
 export interface LoginParams {
     accessToken: string;
     refreshToken: string;
+    id: number,
 }
 
-export const useAuth = create<AuthState>()(
+export const useAuthState = create<AuthState>()(
     persist(
         (set, get) => ({
             isLoggedIn: false,
             accessToken: null,
             refreshToken: null,
+            id: null,
 
             // 로그인
-            login: ({accessToken, refreshToken}: LoginParams) => {
+            login: ({accessToken, refreshToken, id}: LoginParams) => {
                 set({
                     isLoggedIn: true,
                     accessToken: accessToken,
                     refreshToken: refreshToken,
+                    id: id,
                 });
             },
 
@@ -41,6 +45,7 @@ export const useAuth = create<AuthState>()(
                     isLoggedIn: false,
                     accessToken: null,
                     refreshToken: null,
+                    id: null,
                 })
             },
         }),

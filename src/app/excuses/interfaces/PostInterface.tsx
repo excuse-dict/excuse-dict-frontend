@@ -5,7 +5,7 @@ export interface Post {
         excuse: string,
         tags: Array<Object>,
     },
-    nickname: string;
+    author: any;
     upvoteCount: number;
     downvoteCount: number;
     comments: Array<Object>;

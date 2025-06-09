@@ -1,6 +1,6 @@
 import { API_URL } from "../../../app/constants/constants"
 import { handleError } from "../../handleFailure";
-import {useAuth} from "@/app/login/auth/useAuth";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 import axios from "axios";
 import {on} from "next/dist/client/components/react-dev-overlay/pages/bus";
 
@@ -17,7 +17,7 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
     console.log("GET 요청 전송: " + API_URL + endPoint);
     console.log("params: ", params);
 
-    const token = useAuth.getState().accessToken;
+    const token = useAuthState.getState().accessToken;
     const headers = token ? { Authorization: token } : {};
 
     console.log("headers: ", headers);

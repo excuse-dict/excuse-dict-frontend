@@ -21,13 +21,13 @@ import {usePasswordInput} from './components/password_input/usePasswordInput';
 import VerificationModalContent from './verification/VerificationModalContent';
 import {useEmailVerification} from './verification/useEmailVerification';
 import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
-import {useAuth} from "@/app/login/auth/useAuth";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 
 export default function RegisterPage() {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [nicknameInput, setNicknameInput] = useState('');
-    const { login } = useAuth();
+    const { login } = useAuthState();
 
     const router = useRouter();
     const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.REGISTRATION);
@@ -82,13 +82,7 @@ export default function RegisterPage() {
                 sendLoginRequest({
                     email: emailInput,
                     password: passwordInput,
-                    onSuccess: (response) => {
-                        login({
-                            accessToken: response.headers?.authorization,
-                            refreshToken: response.headers?.refresh
-                        });
-                        router.push(PG_HOME);
-                    },
+                    login: login,
                     onFail: () => router.push(PG_LOGIN)
                 });
             });

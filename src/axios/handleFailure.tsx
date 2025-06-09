@@ -1,7 +1,7 @@
 import Swal from "sweetalert2"
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_LOGIN} from "@/app/constants/constants";
-import {LoginParams, useAuth} from "@/app/login/auth/useAuth";
+import {LoginParams, useAuthState} from "@/app/login/auth/useAuthState";
 import {on} from "next/dist/client/components/react-dev-overlay/pages/bus";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
@@ -63,7 +63,7 @@ export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = t
 
 // 인증 잘못될 시 강제 로그아웃
 const forceLogout = () => {
-    useAuth.getState().logout();
+    useAuthState.getState().logout();
     window.location.href = PG_LOGIN;
 }
 
@@ -71,8 +71,8 @@ const forceLogout = () => {
 const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
 
     const { refreshToken, login } = {
-        refreshToken: useAuth.getState().refreshToken,
-        login: useAuth.getState().login,
+        refreshToken: useAuthState.getState().refreshToken,
+        login: useAuthState.getState().login,
     };
 
     if(!refreshToken){

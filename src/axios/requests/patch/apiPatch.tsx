@@ -1,6 +1,6 @@
 import {API_URL} from "@/app/constants/constants";
 import {handleError} from "@/axios/handleFailure";
-import {useAuth} from "@/app/login/auth/useAuth";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 import axios from "axios";
 
 export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false}:
@@ -16,7 +16,7 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
     console.log("PATCH 요청 전송: " + API_URL + endPoint);
     console.log("body: ", body);
 
-    const token = useAuth.getState().accessToken;
+    const token = useAuthState.getState().accessToken;
     const headers = token ? {Authorization: token} : {};
 
     try {
