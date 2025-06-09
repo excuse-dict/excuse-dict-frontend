@@ -10,9 +10,10 @@ interface PostCardProps {
 export default function PostCard({post}: PostCardProps) {
 
     const authState = useAuthState()
-    const { id } = authState;
+    const {id} = authState;
     const [isExpanded, setExpanded] = useState<boolean>(false);
     const [newComment, setNewComment] = useState<string>('');
+    const [comments, setComments] = useState<Array<Object>>([]);
 
     const isMine = (): boolean => {
         return post.author.id === id;
@@ -37,97 +38,103 @@ export default function PostCard({post}: PostCardProps) {
 
     return (
         <article
-            className={`global_button !bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 border border-gray-100 cursor-pointer ${
+            className={`global_button !cursor-default !bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-8 border border-gray-100 ${
                 isExpanded ? 'shadow-xl' : ''
             }`}
-            onClick={handleCardClick}
         >
-            {/* 작성자 정보 */}
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                    <div
-                        className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                        {post.author.nickname?.charAt(0)?.toUpperCase() || '?'}
+            {/*상단 섹션*/}
+            <section
+                className={'cursor-pointer'}
+                onClick={handleCardClick}
+            >
+                {/* 작성자 정보 */}
+                <div className="flex items-center justify-between mb-4">
+                    <div className="flex items-center space-x-3">
+                        <div
+                            className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                            {post.author.nickname?.charAt(0)?.toUpperCase() || '?'}
+                        </div>
+                        <div>
+                            <p className={`font-semibold ${isMine() ? 'text-[var(--strong-purple)]' : 'text-gray-800'}`}>
+                                {post.author.nickname || '익명'}
+                            </p>
+                            <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
+                        </div>
                     </div>
-                    <div>
-                        <p className={`font-semibold ${isMine() ? 'text-[var(--strong-purple)]' : 'text-gray-800'}`}>
-                            {post.author.nickname || '익명'}
-                        </p>
-                        <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
+
+                    {/* 확장 상태 표시 아이콘 */}
+                    <div className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                        <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
+                        </svg>
                     </div>
                 </div>
 
-                {/* 확장 상태 표시 아이콘 */}
-                <div className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
+                {/* 상황 (제목) */}
+                <h2 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
+                    {post.excuse.situation || '제목 없음'}
+                </h2>
+
+                {/* 변명 내용 */}
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                    <p className="text-gray-700 leading-relaxed">
+                        {post.excuse.excuse || '내용 없음'}
+                    </p>
                 </div>
-            </div>
 
-            {/* 상황 (제목) */}
-            <h2 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
-                {post.excuse.situation || '제목 없음'}
-            </h2>
+                {/* 투표 버튼, 댓글수 */}
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                        <button
+                            className="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors group"
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
+                            <span className="text-lg group-hover:scale-110 transition-transform">👍</span>
+                            <span className="font-semibold">{post.upvoteCount || 0}</span>
+                        </button>
 
-            {/* 변명 내용 */}
-            <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                <p className="text-gray-700 leading-relaxed">
-                    {post.excuse.excuse || '내용 없음'}
-                </p>
-            </div>
+                        <button
+                            className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors group"
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
+                            <span className="text-lg group-hover:scale-110 transition-transform">👎</span>
+                            <span className="font-semibold">{post.downvoteCount || 0}</span>
+                        </button>
 
-            {/* 투표 버튼, 댓글수 */}
-            <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-4">
-                    <button
-                        className="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors group"
-                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
-                        <span className="text-lg group-hover:scale-110 transition-transform">👍</span>
-                        <span className="font-semibold">{post.upvoteCount || 0}</span>
-                    </button>
-
-                    <button
-                        className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors group"
-                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
-                        <span className="text-lg group-hover:scale-110 transition-transform">👎</span>
-                        <span className="font-semibold">{post.downvoteCount || 0}</span>
-                    </button>
-
-                    <button
-                        className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"
-                        onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
-                        <span className="text-lg group-hover:scale-110 transition-transform">💬</span>
-                        <span className="font-semibold">{post.comments.length}</span>
-                    </button>
-                </div>
-                <div className={'flex gap-2'}>
-                    {post.excuse.tags.map((tag: any, index: number) => {
-                        return <span
-                            key={index}
-                            className={'text-blue-500 text-sm'}
-                        >{`#${(tag as {value: string}).value}`}
+                        <button
+                            className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"
+                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
+                            <span className="text-lg group-hover:scale-110 transition-transform">💬</span>
+                            <span className="font-semibold">{post.commentCount}</span>
+                        </button>
+                    </div>
+                    <div className={'flex gap-2'}>
+                        {post.excuse.tags.map((tag: any, index: number) => {
+                            return <span
+                                key={index}
+                                className={'text-blue-500 text-sm'}
+                            >{`#${(tag as { value: string }).value}`}
                         </span>;
-                    })}
+                        })}
+                    </div>
                 </div>
-            </div>
+            </section>
 
             {/* 댓글 섹션 - 확장될 때만 표시 */}
-            <div className={`overflow-hidden transition-all duration-300 ${
+            <section className={`overflow-hidden transition-all duration-300 !cursor-default ${
                 isExpanded ? 'max-h-[1000px] opacity-100 mt-6' : 'max-h-0 opacity-0'
             }`}>
                 <div className="border-t border-gray-100 pt-6">
                     {/* 댓글 헤더 */}
                     <div className="flex items-center justify-between mb-4">
                         <h3 className="text-lg font-semibold text-gray-800">
-                            댓글 ({post.comments.length})
+                            댓글 ({post.commentCount})
                         </h3>
                     </div>
 
                     {/* 댓글 작성 폼 - 하이라이트 개선 */}
                     <form onSubmit={handleCommentSubmit} className="mb-6">
                         <div className="flex items-start space-x-3">
-                            <div className="w-8 h-8 bg-[var(--strong-purple)] rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                            <div
+                                className="w-8 h-8 bg-[var(--strong-purple)] rounded-full flex items-center justify-center text-white font-semibold text-sm">
                                 나
                             </div>
                             <div className="flex-1">
@@ -160,10 +167,12 @@ export default function PostCard({post}: PostCardProps) {
 
                     {/* 댓글 목록 */}
                     <div className="space-y-4">
-                        {post.comments && post.comments.length > 0 ? (
-                            post.comments.map((comment: any, index: number) => (
-                                <div key={index} className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                        {comments.length > 0 ? (
+                            comments.map((comment: any, index: number) => (
+                                <div key={index}
+                                     className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
+                                    <div
+                                        className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
                                         {comment.author?.nickname?.charAt(0)?.toUpperCase() || '?'}
                                     </div>
                                     <div className="flex-1">
@@ -183,7 +192,8 @@ export default function PostCard({post}: PostCardProps) {
                             ))
                         ) : (
                             <div className="text-center py-8">
-                                <div className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+                                <div
+                                    className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
                                     <span className="text-2xl">💬</span>
                                 </div>
                                 <p className="text-gray-500 mb-2 font-medium">아직 댓글이 없습니다.</p>
@@ -192,7 +202,7 @@ export default function PostCard({post}: PostCardProps) {
                         )}
                     </div>
                 </div>
-            </div>
+            </section>
         </article>
     );
 }
