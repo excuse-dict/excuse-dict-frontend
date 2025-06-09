@@ -64,7 +64,7 @@ a:hover {
 .app_container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  /*min-height: 100vh;*/
   position: relative;
 }
 
@@ -90,20 +90,22 @@ a:hover {
 .app-background {
   flex: 1;
   width: 100%;
-  min-height: calc(100vh - var(--header-height));
+  /*min-height: calc(100vh - var(--header-height));*/
   display: flex;
   flex-direction: column;
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
 
-  /* 개선된 그라디언트 배경 */
+  /* 개선된 그라디언트 배경 - 고정 크기로 설정하여 스크롤 시에도 일관된 배경 유지 */
   background: linear-gradient(135deg, var(--purple-grey-dark) 0%, var(--purple-grey-light) 100%);
+  background-attachment: fixed;
+  background-size: 100% 100%;
 
   /* 애니메이션 효과를 위한 오버레이 */
   &::before {
     content: '';
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
@@ -114,12 +116,13 @@ a:hover {
       radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.2) 0%, transparent 50%);
     pointer-events: none;
     z-index: 1;
+    background-attachment: fixed;
   }
 
   /* 떠다니는 원형 장식 */
   &::after {
     content: '';
-    position: absolute;
+    position: fixed;
     width: 300px;
     height: 300px;
     border-radius: 50%;

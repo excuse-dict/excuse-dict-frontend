@@ -12,10 +12,10 @@ export default function Board() {
     const page = usePage();
     const { currentPage, setPageInfo } = page;
     const [posts, setPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState(false);
+    const [isLoading, setloading] = useState(true);
 
     useEffect(() => {
-        setLoading(true);
+        setloading(true);
         apiGet({
             endPoint: EP_POST,
             params: {
@@ -24,14 +24,14 @@ export default function Board() {
             onSuccess: (reponse) => {
                 setPosts(reponse?.data?.data?.page?.content);
                 setPageInfo(reponse?.data?.data?.pageInfo);
-                setLoading(false);
+                setloading(false);
             }
         })
     }, [currentPage]);
 
-    if (loading) {
+    if (isLoading) {
         return (
-            <div className="w-full max-w-4xl mx-auto min-h-screen flex items-center justify-center p-4">
+            <div className="w-full max-w-4xl mx-auto flex items-center justify-center p-4 min-h-screen">
                 <div className="flex flex-col items-center space-y-4">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
                     <p className="text-gray-600">게시물을 불러오는 중...</p>
@@ -49,7 +49,7 @@ export default function Board() {
             </div>
 
             {/* 게시물 없음 */}
-            {posts.length === 0 && !loading && (
+            {posts.length === 0 && !isLoading && (
                 <div className="text-center py-16">
                     <div className="text-6xl mb-4">📝</div>
                     <h3 className="text-xl font-semibold text-gray-700 mb-2">게시물이 없습니다</h3>

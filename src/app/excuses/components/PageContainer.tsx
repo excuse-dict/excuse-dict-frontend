@@ -21,7 +21,7 @@ export default function PageContainer({page}: {
 
         const rightEnd = Math.min(currentPage + rightAddition, totalPage - 1);
 
-        console.log({currentPage, totalPage, leftEnd, rightEnd});
+        //console.log({currentPage, totalPage, leftEnd, rightEnd});
 
         return Array.from({length: rightEnd - leftEnd + 1}, (_, i) => leftEnd + i);
     }

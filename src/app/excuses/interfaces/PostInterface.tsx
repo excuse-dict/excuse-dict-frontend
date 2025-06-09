@@ -1,9 +1,14 @@
 export interface Post {
-    situation: string;
-    excuse: string;
+    id: string,
+    excuse: {
+        situation: string,
+        excuse: string,
+        tags: Array<Object>,
+    },
     nickname: string;
     upvoteCount: number;
     downvoteCount: number;
+    comments: Array<Object>;
     createdAt: string;
     modifiedAt: string;
 }
