@@ -10,7 +10,7 @@ import PageContainer from "@/app/excuses/components/PageContainer";
 
 export default function Board() {
     const page = usePage();
-    const { currentPage, setCurrentPage } = page;
+    const { currentPage, setPageInfo } = page;
     const [posts, setPosts] = useState<Post[]>([]);
     const [loading, setLoading] = useState(false);
 
@@ -23,6 +23,7 @@ export default function Board() {
             },
             onSuccess: (reponse) => {
                 setPosts(reponse?.data?.data?.page?.content);
+                setPageInfo(reponse?.data?.data?.pageInfo);
                 setLoading(false);
             }
         })
