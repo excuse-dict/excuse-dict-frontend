@@ -3,11 +3,21 @@
 import css from './TextBox.module.css';
 import {useEffect, useRef, useState} from "react";
 
-export default function TextBox({ value, setValue, label, size, placeholder, onChange, containerStyle}: {
+export default function TextBox({
+                                    value,
+                                    setValue,
+                                    label,
+                                    min,
+                                    max,
+                                    placeholder,
+                                    onChange,
+                                    containerStyle
+                                }: {
     value: string,
     setValue: (value: string) => void,
     label?: string,
-    size?: number,
+    min?: number,
+    max?: number,
     placeholder?: string,
     onChange?: (value: string) => void,
     containerStyle?: string,
@@ -18,11 +28,11 @@ export default function TextBox({ value, setValue, label, size, placeholder, onC
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
         const value = e.target.value;
         // 길이 제한
-        if(size && value.length > size) return;
+        if (max && value.length > max) return;
 
         setValue(value);
 
-        if(onChange) onChange(value);
+        if (onChange) onChange(value);
     }
 
     // 동적 높이 조정
@@ -32,6 +42,12 @@ export default function TextBox({ value, setValue, label, size, placeholder, onC
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
     }, [value]);
+
+    const isLengthValid = () => {
+        if(min && value.length < min) return false;
+        if(max && value.length > max) return false;
+        return true;
+    }
 
     return (
         <div className={`${css.text_area_container} ${containerStyle || ''}`}>
@@ -44,8 +60,10 @@ export default function TextBox({ value, setValue, label, size, placeholder, onC
                     placeholder={placeholder}
                     onChange={handleChange}
                 ></textarea>
-                {!size ? null :
-                    <span className={css.size_span}>{`${value.length}/${size}자`}</span>}
+                {!max ? null :
+                    <span
+                        className={`${css.size_span} ${isLengthValid() ? '' : css.error}`}
+                    >{`${value.length}/${max}자`}</span>}
             </div>
         </div>
     );

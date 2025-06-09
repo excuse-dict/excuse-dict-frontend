@@ -17,6 +17,27 @@ export default function NewExcusePage(){
     const tagSelector = useTagSelector();
     const { selectedTags } = tagSelector;
 
+    const handleClick = () => {
+        if(situationInput.length < 3){
+            Swal.fire("오류", "상황은 3글자 이상으로 입력해주세요.", "warning");
+            return;
+        }
+        if(excuseInput.length < 5 || excuseInput.length > 100){
+            Swal.fire("오류", "핑계는 5~100 글자 사이로로 입력해주세요.", "warning");
+            return;
+        }
+        Swal.fire({
+            title: "확인",
+            text: "게시글을 등록하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "등록",
+            cancelButtonText: "취소",
+        })
+            .then((result) => {
+                if(result.isConfirmed) handlePost();
+            })
+    }
     const handlePost = () => {
         apiPost({
             endPoint: EP_NEW_POST,
@@ -26,19 +47,16 @@ export default function NewExcusePage(){
                 'tags': Array.from(selectedTags),
             },
             onSuccess: (response) => {
-                Swal.fire("성공", "게시글이 등록되었습니다.", "success")
-                    .then(() => {
-                        const uri = response?.headers?.location;
+                const uri = response?.headers?.location;
 
-                        if(uri){
-                            const postId = uri.split('/').pop();
-                            // 작성글로 곧장 이동
-                            window.location.href = PG_EXCUSES + `/${postId}`;
-                        }else{
-                            // 전체 게시판으로 이동
-                            window.location.href = PG_EXCUSES;
-                        }
-                    });
+                if(uri){
+                    const postId = uri.split('/').pop();
+                    // 작성글로 곧장 이동
+                    window.location.href = PG_EXCUSES + `/${postId}`;
+                }else{
+                    // 전체 게시판으로 이동
+                    window.location.href = PG_EXCUSES;
+                }
             }
         })
     }
@@ -56,14 +74,15 @@ export default function NewExcusePage(){
                 value={excuseInput}
                 setValue={setExcuseInput}
                 label={'핑계'}
-                size={500}
+                min={5}
+                max={100}
                 placeholder={"핑계를 입력해주세요."}
                 containerStyle={'w-3/5'}
             ></TextBox>
             <TagSelector tagSelector={tagSelector}></TagSelector>
             <button
-                className={'global_button rounded-md p-1 mt-8'}
-                onClick={handlePost}
+                className={`global_button rounded-md p-1 mt-8`}
+                onClick={handleClick}
             >글쓰기</button>
         </div>
     );
