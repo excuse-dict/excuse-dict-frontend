@@ -5,6 +5,7 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --strong-purple: rgb(141, 127, 205);
   --purple-grey-black: rgb(121, 120, 139);
   --purple-grey-dark: rgb(153, 156, 180);
   --purple-grey: rgb(177, 178, 209);

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import {apiPost} from "@/axios/requests/post/apiPost";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_POST} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
