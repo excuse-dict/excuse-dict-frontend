@@ -6,11 +6,16 @@ export default function PostCard({post}: {
     post: Post
 }) {
 
-    const { id } = useAuthState();
+    const authState = useAuthState()
+    const { id } = authState;
 
     const isMine = () => {
         return post.author.id === id;
     }
+
+    console.log("id: ", id);
+    console.log("authState: ", authState);
+    console.log("postId: ", post.author.id);
 
     return (
         <article
