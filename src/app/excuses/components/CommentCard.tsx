@@ -1,20 +1,59 @@
 import {formatDate} from "@/app/excuses/functions/FormatDate";
 import {Post} from "@/app/excuses/interfaces/PostInterface";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {EP_COMMENT, EP_POST} from "@/app/constants/constants";
+import {apiGet} from "@/axios/requests/get/apiGet";
+import {usePage} from "@/global_components/page/usePage";
+import Swal from "sweetalert2";
+import {apiPost} from "@/axios/requests/post/apiPost";
+import Comment from "@/app/excuses/components/Comment";
 
 export default function CommentCard({ isExpanded, post }: {
     isExpanded: boolean,
     post: Post,
 }){
     const [comments, setComments] = useState<Array<Object>>([]);
-    const [newComment, setNewComment] = useState<string>('');
+    const [commentInput, setCommentInput] = useState('');
+    const { currentPage, setCurrentPage } = usePage();
 
     const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (newComment.trim()) {
-            // TODO: 댓글 추가 로직 구현
-            setNewComment('');
-        }
+
+        // 댓글 작성 요청
+        apiPost({
+            endPoint: EP_COMMENT(post.postId),
+            body: {
+                comment: commentInput,
+            },
+            onSuccess: () => {
+                setCurrentPage(0);
+                if (currentPage === 0) {
+                    // 이미 0페이지면 직접 새로고침
+                    getComments();
+                } else {
+                    // 다른 페이지면 0페이지로 이동 (useEffect 호출)
+                    setCurrentPage(0);
+                }
+                setCommentInput('');
+            }
+        })
+    }
+
+    // 댓글 가져오기
+    useEffect(() => {
+        if(!isExpanded) return;
+        getComments();
+
+    }, [isExpanded, currentPage]);
+
+    const getComments = () => {
+        apiGet({
+            endPoint: EP_COMMENT(post.postId),
+            params: {
+                page: currentPage,
+            },
+            onSuccess: (response) => setComments(response.data.data.page.content),
+        })
     }
 
     return (
@@ -38,8 +77,8 @@ export default function CommentCard({ isExpanded, post }: {
                         </div>
                         <div className="flex-1">
                                 <textarea
-                                    value={newComment}
-                                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setNewComment(e.target.value)}
+                                    value={commentInput}
+                                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setCommentInput(e.target.value)}
                                     className="w-full p-3 border-2 border-gray-200 rounded-lg resize-none transition-all duration-200
                                              focus:outline-none focus:ring-4 focus:ring-purple-100 focus:border-[var(--strong-purple)]
                                              hover:border-purple-300 bg-white shadow-sm
@@ -51,7 +90,7 @@ export default function CommentCard({ isExpanded, post }: {
                             <div className="flex justify-end mt-3">
                                 <button
                                     type="submit"
-                                    disabled={!newComment.trim()}
+                                    disabled={!commentInput.trim()}
                                     className="global_button !bg-[var(--strong-purple)] !text-white px-6 py-2.5 rounded-lg disabled:from-gray-300 disabled:to-gray-400
                                                  disabled:cursor-not-allowed transition-all duration-200 text-sm font-medium
                                                  shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
@@ -68,26 +107,7 @@ export default function CommentCard({ isExpanded, post }: {
                 <div className="space-y-4">
                     {comments.length > 0 ? (
                         comments.map((comment: any, index: number) => (
-                            <div key={index}
-                                 className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors duration-200">
-                                <div
-                                    className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
-                                    {comment.author?.nickname?.charAt(0)?.toUpperCase() || '?'}
-                                </div>
-                                <div className="flex-1">
-                                    <div className="flex items-center space-x-2 mb-1">
-                                            <span className="font-semibold text-gray-800 text-sm">
-                                                {comment.author?.nickname || '익명'}
-                                            </span>
-                                        <span className="text-xs text-gray-500">
-                                                {formatDate(comment.createdAt)}
-                                            </span>
-                                    </div>
-                                    <p className="text-gray-700 text-sm leading-relaxed">
-                                        {comment.content}
-                                    </p>
-                                </div>
-                            </div>
+                            <Comment key={index} comment={comment}></Comment>
                         ))
                     ) : (
                         <div className="text-center py-8">
@@ -99,6 +119,7 @@ export default function CommentCard({ isExpanded, post }: {
                             <p className="text-sm text-gray-400">첫 번째 댓글을 작성해보세요!</p>
                         </div>
                     )}
+                    <div>댓글 10개 더보기</div>
                 </div>
             </div>
         </section>
