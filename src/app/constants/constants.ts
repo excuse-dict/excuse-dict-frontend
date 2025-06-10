@@ -12,6 +12,7 @@ export const EP_RESET_PASSWORD = "/api/v1/members/passwords/reset";
 export const EP_TAGS = "/api/v1/posts/tags"
 export const EP_REFRESH_ACCESS_TOKEN = "/api/v1/auth/refresh";
 export const EP_POST = "/api/v1/posts";
+export const EP_VOTE = (postId: number) => `/api/v1/posts/${postId}/votes`;
 
 // 페이지 주소
 export const PG_HOME = '/home';

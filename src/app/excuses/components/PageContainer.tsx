@@ -26,6 +26,8 @@ export default function PageContainer({page}: {
         return Array.from({length: rightEnd - leftEnd + 1}, (_, i) => leftEnd + i);
     }
 
+    if(totalPages === 0) return <></>
+
     return (
         <div className="flex justify-center space-x-2 pb-8">
             <NextPageButton

@@ -60,7 +60,7 @@ export default function Board() {
             {/* 게시물 목록 */}
             <div className="space-y-6 mb-8">
                 {posts.map((post, index) => (
-                    <PostCard key={index} post={post}></PostCard>
+                    <PostCard key={index} postProp={post}></PostCard>
                 ))}
             </div>
 
