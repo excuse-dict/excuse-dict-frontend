@@ -8,6 +8,7 @@ export interface Post {
     author: any;
     upvoteCount: number;
     downvoteCount: number;
+    myVote: Object;
     commentCount: number;
     createdAt: string;
     modifiedAt: string;

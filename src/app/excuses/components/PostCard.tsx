@@ -57,6 +57,8 @@ export default function PostCard({postProp}: {
 
     if(!post) return <></>;
 
+    const myVoteType = post?.myVote?.voteType;
+
     return (
         <article
             className={`global_button !cursor-default !bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-8 border border-gray-100 ${
@@ -106,23 +108,36 @@ export default function PostCard({postProp}: {
                 {/* 투표 버튼, 댓글수 */}
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
+                        {/*추천 버튼*/}
                         <button
-                            className="flex items-center space-x-2 text-green-600 hover:text-green-700 transition-colors group"
+                            className={`flex items-center space-x-2 transition-all duration-200 group px-3 py-1.5 rounded-lg ${
+                                myVoteType === "UPVOTE"
+                                    ? 'text-green-700 bg-green-100 font-bold'
+                                    : 'text-green-600 hover:text-green-700 hover:bg-green-50'
+                            }`}
                             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 handleVote("UPVOTE");
                             }}>
-                            <span className="text-lg group-hover:scale-110 transition-transform">👍</span>
+                            <span className={`text-lg group-hover:scale-110 transition-transform ${
+                                myVoteType === "UPVOTE" ? 'scale-110' : ''
+                            }`}>👍</span>
                             <span className="font-semibold">{post.upvoteCount || 0}</span>
                         </button>
-
+                        {/* 비추천 버튼 */}
                         <button
-                            className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors group"
+                            className={`flex items-center space-x-2 transition-all duration-200 group px-3 py-1.5 rounded-lg ${
+                                myVoteType === "DOWNVOTE"
+                                    ? 'text-red-700 bg-red-100 font-bold'
+                                    : 'text-red-600 hover:text-red-700 hover:bg-red-50'
+                            }`}
                             onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                                 e.stopPropagation();
                                 handleVote("DOWNVOTE")
                             }}>
-                            <span className="text-lg group-hover:scale-110 transition-transform">👎</span>
+                            <span className={`text-lg group-hover:scale-110 transition-transform ${
+                                myVoteType === "DOWNVOTE" ? 'scale-110' : ''
+                            }`}>👎</span>
                             <span className="font-semibold">{post.downvoteCount || 0}</span>
                         </button>
 

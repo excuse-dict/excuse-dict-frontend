@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {Post} from "@/app/excuses/interfaces/PostInterface";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 
 export const usePost = (initialPost: Post) => {
 
@@ -8,28 +9,32 @@ export const usePost = (initialPost: Post) => {
     const upvote = () => {
         setPost(prev => ({
             ...prev,
-            upvoteCount: prev.upvoteCount + 1
+            upvoteCount: prev.upvoteCount + 1,
+            myVote: { voteType: "UPVOTE", postId: post.postId, memberId: useAuthState.getState().id }
         }));
     }
 
     const cancelUpvote = () => {
         setPost(prev => ({
             ...prev,
-            upvoteCount: prev.upvoteCount - 1
+            upvoteCount: prev.upvoteCount - 1,
+            myVote: null,
         }));
     }
 
     const downvote = () => {
         setPost(prev => ({
             ...prev,
-            downvoteCount: prev.downvoteCount + 1
+            downvoteCount: prev.downvoteCount + 1,
+            myVote: { voteType: "DOWNVOTE", postId: post.postId, memberId: useAuthState.getState().id }
         }));
     }
 
     const cancelDownvote = () => {
         setPost(prev => ({
             ...prev,
-            downvoteCount: prev.downvoteCount - 1
+            downvoteCount: prev.downvoteCount - 1,
+            myVote: null,
         }));
     }
 
