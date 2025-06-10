@@ -9,8 +9,8 @@ import PostCard from "@/app/excuses/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 
 export default function Board() {
-    const page = usePage();
-    const { currentPage, setPageInfo } = page;
+    const boardPage = usePage();
+    const { currentPage, setPageInfo } = boardPage;
     const [posts, setPosts] = useState<Post[]>([]);
     const [isLoading, setloading] = useState(true);
 
@@ -65,7 +65,7 @@ export default function Board() {
             </div>
 
             {/* 페이지네이션 */}
-            <PageContainer page={page}></PageContainer>
+            <PageContainer page={boardPage}></PageContainer>
         </div>
     );
 }

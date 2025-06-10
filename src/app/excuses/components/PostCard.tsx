@@ -2,7 +2,7 @@ import {Post} from "@/app/excuses/interfaces/PostInterface";
 import {formatDate} from "@/app/excuses/functions/FormatDate";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useEffect, useState} from "react";
-import CommentCard from "@/app/excuses/components/CommentCard";
+import CommentCard from "@/app/excuses/comments/components/CommentCard";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_POST, EP_VOTE} from "@/app/constants/constants";
 import {usePost} from "@/app/excuses/hook/usePost";
@@ -57,7 +57,7 @@ export default function PostCard({postProp}: {
 
     if(!post) return <></>;
 
-    const myVoteType = post?.myVote?.voteType;
+    const myVoteType: string = post?.myVote?.voteType;
 
     return (
         <article
