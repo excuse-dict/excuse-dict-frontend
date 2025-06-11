@@ -10,7 +10,7 @@ export const usePost = (initialPost: Post) => {
         setPost(prev => ({
             ...prev,
             upvoteCount: prev.upvoteCount + 1,
-            myVote: { voteType: "UPVOTE", postId: post.postId, memberId: useAuthState.getState().id }
+            myVote: { voteType: "UPVOTE", postId: post.postId, memberId: useAuthState.getState().memberId }
         }));
     }
 
@@ -26,7 +26,7 @@ export const usePost = (initialPost: Post) => {
         setPost(prev => ({
             ...prev,
             downvoteCount: prev.downvoteCount + 1,
-            myVote: { voteType: "DOWNVOTE", postId: post.postId, memberId: useAuthState.getState().id }
+            myVote: { voteType: "DOWNVOTE", postId: post.postId, memberId: useAuthState.getState().memberId }
         }));
     }
 

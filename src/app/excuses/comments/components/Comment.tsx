@@ -26,11 +26,12 @@ export default function Comment({ comment, updateComment }: {
 }){
 
     const { myVote } = comment;
+    const { memberId } = useAuthState();
 
     const handleVote = (voteType: VoteType) => {
 
-        const memberId = useAuthState.getState().id;
         console.log("memberId: ", memberId);
+        console.log("comment: ", comment);
 
         if(!memberId){
             askToLogin();

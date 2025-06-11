@@ -17,11 +17,11 @@ export default function PostCard({postProp}: {
     const { post } = postState;
 
     const authState = useAuthState()
-    const {id} = authState;
+    const {memberId} = authState;
     const [isExpanded, setExpanded] = useState<boolean>(false);
 
     const isMine = (): boolean => {
-        return post.author.id === id;
+        return post.author.id === memberId;
     }
 
     const handleCardClick = (e: React.MouseEvent<HTMLElement>) => {

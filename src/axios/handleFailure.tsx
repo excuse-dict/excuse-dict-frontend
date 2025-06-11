@@ -90,6 +90,7 @@ const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
             login({
                 accessToken: response?.headers?.authorization,
                 refreshToken: refreshToken,
+                id: response.data?.data?.id
             })
 
             // 원 요청 재시도
