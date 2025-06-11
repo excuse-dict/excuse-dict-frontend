@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_POST} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
-import {Post} from "@/app/excuses/interfaces/PostInterface";
+import {Post} from "@/app/excuses/posts/PostInterface";
 import PostCard from "@/app/excuses/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 

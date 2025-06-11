@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Post} from "@/app/excuses/interfaces/PostInterface";
+import {Post} from "@/app/excuses/posts/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 
 export const usePost = (initialPost: Post) => {

@@ -1,7 +1,7 @@
-import {Post} from "@/app/excuses/interfaces/PostInterface";
+import {Post} from "@/app/excuses/posts/PostInterface";
 import {useEffect, useState} from "react";
 import {usePage} from "@/global_components/page/usePage";
-import Comment from "@/app/excuses/comments/components/Comment";
+import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
 
@@ -14,12 +14,12 @@ export default function CommentCard({ isExpanded, post }: {
     const {
         commentCount, commentInput, setCommentInput,
         comments, handleCommentSubmit, getComments,
-        loadMoreComments,
+        loadMoreComments, updateComment
     } = useComment({
         post: post,
         setPageInfo: setPageInfo,
         currentPage: currentPage,
-        setCurrentPage: setCurrentPage
+        setCurrentPage: setCurrentPage,
     });
 
     // 댓글 가져오기
@@ -52,9 +52,9 @@ export default function CommentCard({ isExpanded, post }: {
                 {/* 댓글 목록 */}
                 <div className="space-y-4">
                     {comments.length > 0 ? (
-                        comments.map((comment: any, index: number) => (
+                        comments.map((comment: CommentInterface, index: number) => (
                             /*개별 댓글*/
-                            <Comment key={index} comment={comment}></Comment>
+                            <Comment key={index} comment={comment} updateComment={updateComment}></Comment>
                         ))
                     ) : (
                         <div className="text-center py-8">

@@ -1,18 +1,20 @@
-import {Post} from "@/app/excuses/interfaces/PostInterface";
+import {Post} from "@/app/excuses/posts/PostInterface";
 import {formatDate} from "@/app/excuses/functions/FormatDate";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useEffect, useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_POST, EP_VOTE} from "@/app/constants/constants";
+import {EP_POST, EP_VOTE_TO_POST} from "@/app/constants/constants";
 import {usePost} from "@/app/excuses/hook/usePost";
+import VoteButton from "@/app/excuses/components/VoteButton";
 
 export default function PostCard({postProp}: {
     postProp: Post
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
-    const { post, upvote, cancelUpvote, downvote, cancelDownvote } = usePost(postProp);
+    const postState = usePost(postProp);
+    const { post } = postState;
 
     const authState = useAuthState()
     const {id} = authState;
@@ -31,33 +33,7 @@ export default function PostCard({postProp}: {
         setExpanded(!isExpanded);
     }
 
-    const handleVote = (type: "UPVOTE" | "DOWNVOTE") => {
-        apiPost({
-            endPoint: EP_VOTE(post.postId),
-            body:{
-                voteType: type,
-            },
-            onSuccess: (response) => {
-                if(type === "UPVOTE"){
-                    if(response.data.data.data){
-                        upvote();
-                    }else{
-                        cancelUpvote();
-                    }
-                }else{
-                    if(response.data.data.data){
-                        downvote();
-                    }else {
-                        cancelDownvote();
-                    }
-                }
-            }
-        })
-    }
-
     if(!post) return <></>;
-
-    const myVoteType: string = post?.myVote?.voteType;
 
     return (
         <article
@@ -109,37 +85,9 @@ export default function PostCard({postProp}: {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         {/*추천 버튼*/}
-                        <button
-                            className={`flex items-center space-x-2 transition-all duration-200 group px-3 py-1.5 rounded-lg ${
-                                myVoteType === "UPVOTE"
-                                    ? 'text-green-700 bg-green-100 font-bold'
-                                    : 'text-green-600 hover:text-green-700 hover:bg-green-50'
-                            }`}
-                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                e.stopPropagation();
-                                handleVote("UPVOTE");
-                            }}>
-                            <span className={`text-lg group-hover:scale-110 transition-transform ${
-                                myVoteType === "UPVOTE" ? 'scale-110' : ''
-                            }`}>👍</span>
-                            <span className="font-semibold">{post.upvoteCount || 0}</span>
-                        </button>
+                        <VoteButton postState={postState} voteType={"UPVOTE"}></VoteButton>
                         {/* 비추천 버튼 */}
-                        <button
-                            className={`flex items-center space-x-2 transition-all duration-200 group px-3 py-1.5 rounded-lg ${
-                                myVoteType === "DOWNVOTE"
-                                    ? 'text-red-700 bg-red-100 font-bold'
-                                    : 'text-red-600 hover:text-red-700 hover:bg-red-50'
-                            }`}
-                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                                e.stopPropagation();
-                                handleVote("DOWNVOTE")
-                            }}>
-                            <span className={`text-lg group-hover:scale-110 transition-transform ${
-                                myVoteType === "DOWNVOTE" ? 'scale-110' : ''
-                            }`}>👎</span>
-                            <span className="font-semibold">{post.downvoteCount || 0}</span>
-                        </button>
+                        <VoteButton postState={postState} voteType={"DOWNVOTE"}></VoteButton>
 
                         <button
                             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"

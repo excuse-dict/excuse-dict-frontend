@@ -1,8 +1,15 @@
-import {Post} from "@/app/excuses/interfaces/PostInterface";
+import {Post} from "@/app/excuses/posts/PostInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_COMMENT} from "@/app/constants/constants";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {useState} from "react";
+import {CommentInterface} from "@/app/excuses/comments/components/Comment";
+
+
+export interface UpdateCommentDto{
+    commentId: string,
+    updatedData: Partial<CommentInterface>
+}
 
 export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
     post: Post,
@@ -10,7 +17,7 @@ export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
     setCurrentPage: (value: number) => void,
     setPageInfo: (value: any) => void,
 }) => {
-    const [comments, setComments] = useState<Array<Object>>([]);
+    const [comments, setComments] = useState<Array<CommentInterface>>([]);
     const [commentInput, setCommentInput] = useState('');
     const [commentCount, setCommentCount] = useState(post.commentCount);
 
@@ -59,6 +66,17 @@ export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
         setCurrentPage(currentPage + 1);
     }
 
+    // 댓글 상태 업데이트
+    const updateComment = ({ commentId, updatedData }: UpdateCommentDto) => {
+        setComments(prev =>
+            prev.map(comment =>
+                comment.id === commentId
+                    ? { ...comment, ...updatedData }
+                    : comment
+            )
+        );
+    };
+
     return {
         comments, setComments,
         commentInput, setCommentInput,
@@ -67,5 +85,6 @@ export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
         handleCommentSubmit,
         getComments,
         loadMoreComments,
+        updateComment,
     }
 }
