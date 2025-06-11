@@ -18,7 +18,7 @@ interface AuthState {
 export interface LoginParams {
     accessToken: string;
     refreshToken: string;
-    id: number,
+    id: number | null,
 }
 
 export const useAuthState = create<AuthState>()(

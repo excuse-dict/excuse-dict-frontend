@@ -70,9 +70,10 @@ const forceLogout = () => {
 // 액세스 토큰 재발급 시도
 const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
 
-    const { refreshToken, login } = {
+    const { refreshToken, login, memberId } = {
         refreshToken: useAuthState.getState().refreshToken,
         login: useAuthState.getState().login,
+        memberId: useAuthState.getState().memberId
     };
 
     if(!refreshToken){
@@ -90,7 +91,7 @@ const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
             login({
                 accessToken: response?.headers?.authorization,
                 refreshToken: refreshToken,
-                id: response.data?.data?.id
+                id: memberId
             })
 
             // 원 요청 재시도
