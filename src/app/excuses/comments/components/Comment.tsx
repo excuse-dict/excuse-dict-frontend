@@ -7,7 +7,7 @@ import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
-import {useContext} from "react";
+import {useContext, useState} from "react";
 import {ReplyContext} from "@/app/excuses/contexts/ReplyContext";
 import Swal from "sweetalert2";
 
@@ -20,6 +20,7 @@ export interface CommentInterface {
     myVote: CommentVoteInterface | null,
     upvoteCount: number,
     downvoteCount: number,
+    replyCount: number,
     createdAt: string,
     modifiedAt: string,
 }
@@ -32,6 +33,7 @@ export default function Comment({comment, updateComment}: {
     const {myVote} = comment;
     const {memberId} = useAuthState();
 
+    const [isReplyFormOpen, setReplyFormOpen] = useState(false);
     const { replyInput, setReplyInput } = useContext(ReplyContext);
 
     const handleVote = (voteType: VoteType) => {
@@ -98,26 +100,30 @@ export default function Comment({comment, updateComment}: {
                         {comment.content}
                     </p>
                     <div className={'flex gap-2 font-light text-sm'}>
+                        {/*추천 버튼*/}
                         <button
                             className={`${myVote?.voteType === "UPVOTE" ? 'text-green-500 font-bold' : ''}`}
                             onClick={() => handleVote("UPVOTE")}
                         >{`👍${comment.upvoteCount}`}</button>
+                        {/*비추천 버튼*/}
                         <button
                             className={`${myVote?.voteType === "DOWNVOTE" ? 'text-red-500 font-bold' : ''}`}
                             onClick={() => handleVote("DOWNVOTE")}
                         >{`👎${comment.downvoteCount}`}</button>
+                        <p>💬</p>
+                        <p>{comment.replyCount}</p>
                     </div>
                 </div>
             </div>
             {/*대댓글 입력창*/}
-            <div className="bg-gray-50">
+            {isReplyFormOpen ? <div className="bg-gray-50">
                 <CommentForm
                     commentInput={replyInput}
                     setCommentInput={setReplyInput}
                     handleCommentSubmit={handleReplySubmit}
                     hideProfileImage={true}>
                 </CommentForm>
-            </div>
+            </div> : <></>}
         </div>
     );
 }
