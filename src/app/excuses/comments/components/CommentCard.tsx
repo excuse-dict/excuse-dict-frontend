@@ -57,6 +57,7 @@ export default function CommentCard({ isExpanded, post }: {
                             <Comment key={index} comment={comment} updateComment={updateComment}></Comment>
                         ))
                     ) : (
+                        /*댓글 없음 표시*/
                         <div className="text-center py-8">
                             <div
                                 className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
@@ -66,6 +67,7 @@ export default function CommentCard({ isExpanded, post }: {
                             <p className="text-sm text-gray-400">첫 번째 댓글을 작성해보세요!</p>
                         </div>
                     )}
+                    {/*댓글이 많을 때 댓글 더 보기 버튼*/}
                     {nextPageSize <= 0 ? <></> : <div
                         className={'text-blue-500 cursor-pointer text-center'}
                         onClick={loadMoreComments}

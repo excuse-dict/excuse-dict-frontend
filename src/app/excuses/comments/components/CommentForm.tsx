@@ -1,13 +1,14 @@
-export default function CommentForm({ commentInput, setCommentInput, handleCommentSubmit }: {
+export default function CommentForm({ commentInput, setCommentInput, handleCommentSubmit, hideProfileImage = false }: {
     commentInput: string,
     setCommentInput: (value: string) => void,
     handleCommentSubmit: (e: React.FormEvent<HTMLFormElement>) => void,
+    hideProfileImage?: boolean,
 }){
     return (
         <form onSubmit={handleCommentSubmit} className="mb-6">
             <div className="flex items-start space-x-3">
                 <div
-                    className="w-8 h-8 bg-[var(--strong-purple)] rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                    className={hideProfileImage ? "invisible" : "" + "w-8 h-8 bg-[var(--strong-purple)] rounded-full flex items-center justify-center text-white font-semibold text-sm"}>
                     나
                 </div>
                 <div className="flex-1">

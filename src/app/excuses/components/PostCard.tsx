@@ -3,7 +3,7 @@ import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
-import {usePost} from "@/app/excuses/hook/usePost";
+import {usePost} from "@/app/excuses/hooks/usePost";
 import VoteButton from "@/app/excuses/components/VoteButton";
 
 export default function PostCard({postProp}: {

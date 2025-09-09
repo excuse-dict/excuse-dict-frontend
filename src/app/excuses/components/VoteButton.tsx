@@ -1,6 +1,6 @@
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_VOTE_TO_POST} from "@/app/constants/constants";
-import {usePost} from "@/app/excuses/hook/usePost";
+import {usePost} from "@/app/excuses/hooks/usePost";
 
 type VoteType = "UPVOTE" | "DOWNVOTE";
 
