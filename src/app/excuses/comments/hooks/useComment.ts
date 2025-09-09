@@ -24,9 +24,7 @@ export const useComment = ({ post, pageHook }: {
     const [commentCount, setCommentCount] = useState(post.commentCount);
 
     // 댓글 작성 요청
-    const handleCommentSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const handleCommentSubmit = () => {
         apiPost({
             endPoint: EP_COMMENT(post.postId),
             body: {

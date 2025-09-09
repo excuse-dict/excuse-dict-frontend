@@ -1,15 +1,18 @@
 import {MemberInterface} from "@/app/members/MemberInterface";
 import {CommentVoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
+import {EP_REPLIES, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
 import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
-import React, {useContext} from "react";
+import React, {useContext, useEffect} from "react";
 import {ReplyContext} from "@/app/excuses/contexts/ReplyContext";
 import Swal from "sweetalert2";
 import CommentCore from "@/app/excuses/comments/components/CommentCore";
+import {useReply} from "@/app/excuses/comments/hooks/useReply";
+import {usePage} from "@/global_components/page/usePage";
+import ReplyList from "@/app/excuses/comments/components/ReplyList";
 
 export interface CommentInterface {
     postId: string,
@@ -34,6 +37,16 @@ export default function Comment({comment, updateComment, isRepliesExpanded, setE
 
     const {memberId} = useAuthState();
     const { replyInput, setReplyInput } = useContext(ReplyContext);
+    const pageHook = usePage();
+    const { nextPageSize, loadMoreContents } = pageHook;
+    const { replies, getReplies, updateReply } = useReply({comment: comment, pageHook: pageHook});
+
+    useEffect(() => {
+        if(!isRepliesExpanded) return;
+
+        // 대댓글 펼쳐질 때 서버에서 조회
+        getReplies(comment.id);
+    }, [isRepliesExpanded]);
 
     const handleVote = (
         voteType: VoteType,
@@ -79,16 +92,22 @@ export default function Comment({comment, updateComment, isRepliesExpanded, setE
         e.stopPropagation();
     }
 
-    const handleReplySubmit = () => {
-        Swal.fire("대댓글 등록");
-    }
-
     const toggleRepliesExpanded = () => {
         // 이미 펼쳐져 있었으면 접기 (0으로 초기화)
         const expandedCommentId = isRepliesExpanded ? 0 : comment.id;
         setExpandedComment(expandedCommentId);
         // 대댓글 입력값 초기화
         setReplyInput('');
+    }
+
+    // 대댓글 작성 요청
+    const handlePostReply = () => {
+        apiPost({
+            endPoint: EP_REPLIES(comment.id),
+            body: {
+                comment: replyInput
+            },
+        })
     }
 
     return (
@@ -100,19 +119,19 @@ export default function Comment({comment, updateComment, isRepliesExpanded, setE
                 toggleRepliesExpanded={toggleRepliesExpanded}
             >
             </CommentCore>
-            {/*{isRepliesExpanded ?
+            {isRepliesExpanded ?
                 <ReplyList
-                    replies={}
-                    updateReply={}
-                    nextPageSize={}
-                    loadMoreReplies={}>
-                </ReplyList> : <></>}*/}
+                    replies={replies}
+                    updateReply={updateReply}
+                    nextPageSize={nextPageSize}
+                    loadMoreReplies={loadMoreContents}>
+                </ReplyList> : <></>}
             {/*대댓글 입력창*/}
             {isRepliesExpanded ? <div className="bg-gray-50">
                 <CommentForm
                     commentInput={replyInput}
                     setCommentInput={setReplyInput}
-                    handleCommentSubmit={handleReplySubmit}
+                    handleCommentSubmit={handlePostReply}
                     hideProfileImage={true}>
                 </CommentForm>
             </div> : <></>}
