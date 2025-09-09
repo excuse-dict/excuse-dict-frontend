@@ -4,6 +4,7 @@ import {EP_COMMENT} from "@/app/constants/constants";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {useState} from "react";
 import {CommentInterface} from "@/app/excuses/comments/components/Comment";
+import {usePage} from "@/global_components/page/usePage";
 
 
 export interface UpdateCommentDto{
@@ -11,12 +12,13 @@ export interface UpdateCommentDto{
     updatedData: Partial<CommentInterface>
 }
 
-export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
+export const useComment = ({ post, pageHook }: {
     post: Post,
-    currentPage: number,
-    setCurrentPage: (value: number) => void,
-    setPageInfo: (value: any) => void,
+    pageHook: ReturnType<typeof usePage>
 }) => {
+
+    const { currentPage, setCurrentPage, setPageInfo } = pageHook;
+
     const [comments, setComments] = useState<Array<CommentInterface>>([]);
     const [commentInput, setCommentInput] = useState('');
     const [commentCount, setCommentCount] = useState(post.commentCount);
@@ -61,11 +63,6 @@ export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
         })
     }
 
-    // 더보기 핸들러
-    const loadMoreComments = () => {
-        setCurrentPage(currentPage + 1);
-    }
-
     // 댓글 상태 업데이트
     const updateComment = ({ commentId, updatedData }: UpdateCommentDto) => {
         setComments(prev =>
@@ -84,7 +81,6 @@ export const useComment = ({ post, currentPage, setCurrentPage, setPageInfo }: {
 
         handleCommentSubmit,
         getComments,
-        loadMoreComments,
         updateComment,
     }
 }

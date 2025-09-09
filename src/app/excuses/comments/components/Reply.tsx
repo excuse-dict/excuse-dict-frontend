@@ -12,24 +12,12 @@ import {ReplyContext} from "@/app/excuses/contexts/ReplyContext";
 import Swal from "sweetalert2";
 import ReplyList from "@/app/excuses/comments/components/ReplyList";
 import CommentCore from "@/app/excuses/comments/components/CommentCore";
+import {ReplyInterface, UpdateReplyDto} from "@/app/excuses/comments/hooks/useReply";
+import ReplyCore from "@/app/excuses/comments/components/ReplyCore";
 
-export interface CommentInterface {
-    postId: string,
-    id: string,
-    content: string,
-    isReply: boolean,
-    author: MemberInterface,
-    myVote: CommentVoteInterface | null,
-    upvoteCount: number,
-    downvoteCount: number,
-    replyCount: number,
-    createdAt: string,
-    modifiedAt: string,
-}
-
-export default function Comment({comment, updateComment}: {
-    comment: CommentInterface,
-    updateComment: (value: UpdateCommentDto) => void,
+export default function Reply({reply, updateReply}: {
+    reply: ReplyInterface,
+    updateReply: (value: UpdateReplyDto) => void,
 }) {
 
     const {memberId} = useAuthState();
@@ -39,40 +27,11 @@ export default function Comment({comment, updateComment}: {
 
     const handleVote = (voteType: VoteType) => {
 
-        /*console.log("memberId: ", memberId);
-        console.log("comment: ", comment);*/
-
         if (!memberId) {
             askToLogin();
             return;
         }
 
-        apiPost({
-            endPoint: EP_VOTE_TO_COMMENT(comment.id),
-            body: {
-                voteType: voteType,
-            },
-            onSuccess: (response) => {
-                const isVoting = response.data.data.data;
-
-                updateComment({
-                    commentId: comment.id,
-                    updatedData: {
-                        upvoteCount: voteType === "UPVOTE"
-                            ? comment.upvoteCount + (isVoting ? 1 : -1)
-                            : comment.upvoteCount,
-                        downvoteCount: voteType === "DOWNVOTE"
-                            ? comment.downvoteCount + (isVoting ? 1 : -1)
-                            : comment.downvoteCount,
-                        myVote: isVoting ? {
-                            commentId: comment.id,
-                            memberId: memberId,
-                            voteType: voteType,
-                        } : null
-                    }
-                })
-            }
-        })
     }
 
     const handleReplySubmit = () => {
@@ -82,11 +41,11 @@ export default function Comment({comment, updateComment}: {
     return (
         <div>
             {/*댓글 본체*/}
-            <CommentCore
-                comment={comment}
+            <ReplyCore
+                reply={reply}
                 handleVote={handleVote}
             >
-            </CommentCore>
+            </ReplyCore>
             {/*{isRepliesExpanded ?
                 <ReplyList
                     replies={}

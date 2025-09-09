@@ -1,9 +1,9 @@
-import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
-import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
+import {ReplyInterface, UpdateReplyDto} from "@/app/excuses/comments/hooks/useReply";
+import Reply from "@/app/excuses/comments/components/Reply";
 
 export default function ReplyList({ replies, updateReply, nextPageSize, loadMoreReplies}: {
-    replies: Array<CommentInterface>,
-    updateReply: (value: UpdateCommentDto) => void,
+    replies: Array<ReplyInterface>,
+    updateReply: (value: UpdateReplyDto) => void,
     nextPageSize: number,
     loadMoreReplies: () => void,
 }) {
@@ -11,9 +11,9 @@ export default function ReplyList({ replies, updateReply, nextPageSize, loadMore
         <div className="space-y-4">
             {/*대댓글 리스트*/}
             <ul className="space-y-4 list-none">
-                {replies.map((comment: CommentInterface, index: number) => (
+                {replies.map((comment: ReplyInterface, index: number) => (
                     <li key={comment.id}>
-                        <Comment comment={comment} updateComment={updateReply}/>
+                        <Reply reply={comment} updateReply={updateReply}/>
                     </li>
                 ))}
             </ul>

@@ -11,16 +11,15 @@ export default function CommentCard({isExpanded, post}: {
     post: Post,
 }) {
 
-    const {setPageInfo, currentPage, setCurrentPage, nextPageSize} = usePage();
+    const pageHook = usePage();
+    const { currentPage, nextPageSize, loadMoreContents } = pageHook;
     const {
         commentCount, commentInput, setCommentInput,
         comments, handleCommentSubmit, getComments,
-        loadMoreComments, updateComment
+        updateComment
     } = useComment({
         post: post,
-        setPageInfo: setPageInfo,
-        currentPage: currentPage,
-        setCurrentPage: setCurrentPage,
+        pageHook: pageHook
     });
 
     // 댓글 가져오기
@@ -55,7 +54,7 @@ export default function CommentCard({isExpanded, post}: {
                     comments={comments}
                     updateComment={updateComment}
                     nextPageSize={nextPageSize}
-                    loadMoreComments={loadMoreComments}>
+                    loadMoreComments={loadMoreContents}>
                 </CommentList>
             </div>
         </section>

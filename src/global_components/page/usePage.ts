@@ -39,6 +39,11 @@ export const usePage = () => {
         return pageInfo.totalPages < 1;
     }
 
+    // 더보기 핸들러
+    const loadMoreContents = () => {
+        setCurrentPage(pageInfo.currentPage + 1);
+    }
+
     return {
         currentPage: pageInfo.currentPage,
         totalPages: pageInfo.totalPages,
@@ -50,6 +55,7 @@ export const usePage = () => {
         setTotalElements, setHasNext,
         isFilterChanged, setFilterChanged,
         isPageEmpty,
+        loadMoreContents,
 
         pageInfo,
         setPageInfo
