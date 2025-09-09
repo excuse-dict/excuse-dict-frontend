@@ -1,21 +1,19 @@
-import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {MemberInterface} from "@/app/members/MemberInterface";
-import {CommentVoteInterface, VoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
+import {CommentVoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
 import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
-import {useContext, useState} from "react";
+import React, {useContext} from "react";
 import {ReplyContext} from "@/app/excuses/contexts/ReplyContext";
 import Swal from "sweetalert2";
-import ReplyList from "@/app/excuses/comments/components/ReplyList";
 import CommentCore from "@/app/excuses/comments/components/CommentCore";
 
 export interface CommentInterface {
     postId: string,
-    id: string,
+    id: number,
     content: string,
     isReply: boolean,
     author: MemberInterface,
@@ -27,17 +25,20 @@ export interface CommentInterface {
     modifiedAt: string,
 }
 
-export default function Comment({comment, updateComment}: {
+export default function Comment({comment, updateComment, isRepliesExpanded, setExpandedComment}: {
     comment: CommentInterface,
     updateComment: (value: UpdateCommentDto) => void,
+    isRepliesExpanded: boolean,
+    setExpandedComment: (value: number) => void,
 }) {
 
     const {memberId} = useAuthState();
-
-    const [isRepliesExpanded, setRepliesExpanded] = useState(false);
     const { replyInput, setReplyInput } = useContext(ReplyContext);
 
-    const handleVote = (voteType: VoteType) => {
+    const handleVote = (
+        voteType: VoteType,
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
 
         /*console.log("memberId: ", memberId);
         console.log("comment: ", comment);*/
@@ -73,10 +74,21 @@ export default function Comment({comment, updateComment}: {
                 })
             }
         })
+
+        // 클릭 이벤트 전파 방지
+        e.stopPropagation();
     }
 
     const handleReplySubmit = () => {
         Swal.fire("대댓글 등록");
+    }
+
+    const toggleRepliesExpanded = () => {
+        // 이미 펼쳐져 있었으면 접기 (0으로 초기화)
+        const expandedCommentId = isRepliesExpanded ? 0 : comment.id;
+        setExpandedComment(expandedCommentId);
+        // 대댓글 입력값 초기화
+        setReplyInput('');
     }
 
     return (
@@ -85,6 +97,7 @@ export default function Comment({comment, updateComment}: {
             <CommentCore
                 comment={comment}
                 handleVote={handleVote}
+                toggleRepliesExpanded={toggleRepliesExpanded}
             >
             </CommentCore>
             {/*{isRepliesExpanded ?

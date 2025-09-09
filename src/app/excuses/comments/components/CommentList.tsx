@@ -1,5 +1,6 @@
 import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
+import {useState} from "react";
 
 export default function CommentList({ comments, updateComment, nextPageSize, loadMoreComments}: {
     comments: Array<CommentInterface>,
@@ -7,13 +8,21 @@ export default function CommentList({ comments, updateComment, nextPageSize, loa
     nextPageSize: number,
     loadMoreComments: () => void,
 }) {
+
+    const [expandedComment, setExpandedComment] = useState(0);
+
     return (
         <div className="space-y-4">
             {comments.length > 0 ? (
                 <ul className="space-y-4 list-none">
                     {comments.map((comment: CommentInterface, index: number) => (
                         <li key={comment.id}>
-                            <Comment comment={comment} updateComment={updateComment}/>
+                            <Comment
+                                comment={comment}
+                                updateComment={updateComment}
+                                isRepliesExpanded={comment.id === expandedComment}
+                                setExpandedComment={setExpandedComment}
+                            />
                         </li>
                     ))}
                 </ul>

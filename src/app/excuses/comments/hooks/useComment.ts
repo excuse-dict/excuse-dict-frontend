@@ -8,7 +8,7 @@ import {usePage} from "@/global_components/page/usePage";
 
 
 export interface UpdateCommentDto{
-    commentId: string,
+    commentId: number,
     updatedData: Partial<CommentInterface>
 }
 
