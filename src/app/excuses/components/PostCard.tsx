@@ -1,10 +1,8 @@
 import {Post} from "@/app/excuses/posts/PostInterface";
-import {formatDate} from "@/app/excuses/functions/FormatDate";
+import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {useAuthState} from "@/app/login/auth/useAuthState";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
-import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_POST, EP_VOTE_TO_POST} from "@/app/constants/constants";
 import {usePost} from "@/app/excuses/hook/usePost";
 import VoteButton from "@/app/excuses/components/VoteButton";
 
@@ -49,15 +47,18 @@ export default function PostCard({postProp}: {
                 {/* 작성자 정보 */}
                 <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center space-x-3">
+                        {/*프로필 아이콘*/}
                         <div
                             className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
                             {post.author.nickname?.charAt(0)?.toUpperCase() || '?'}
                         </div>
                         <div>
+                            {/*작성자 닉네임*/}
                             <p className={`font-semibold ${isMine() ? 'text-[var(--strong-purple)]' : 'text-gray-800'}`}>
                                 {post.author.nickname || '익명'}
                             </p>
-                            <p className="text-sm text-gray-500">{formatDate(post.createdAt)}</p>
+                            {/*작성일시*/}
+                            <p className="text-sm text-gray-500">{getDatetimeFormat(post.createdAt)}</p>
                         </div>
                     </div>
 

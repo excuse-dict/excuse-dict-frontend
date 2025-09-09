@@ -1,4 +1,4 @@
-import {formatDate} from "@/app/excuses/functions/FormatDate";
+import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {MemberInterface} from "@/app/members/MemberInterface";
 import {CommentVoteInterface, VoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
@@ -79,7 +79,7 @@ export default function Comment({ comment, updateComment }: {
                                                 {comment.author?.nickname || '익명'}
                                             </span>
                     <span className="text-xs text-gray-500">
-                                                {formatDate(comment.createdAt)}
+                                                {getDatetimeFormat(comment.createdAt)}
                                             </span>
                 </div>
                 <p className="text-gray-700 text-sm leading-relaxed">
