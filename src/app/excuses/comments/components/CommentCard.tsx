@@ -4,13 +4,14 @@ import {usePage} from "@/global_components/page/usePage";
 import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
+import CommentList from "@/app/excuses/comments/components/CommentList";
 
-export default function CommentCard({ isExpanded, post }: {
+export default function CommentCard({isExpanded, post}: {
     isExpanded: boolean,
     post: Post,
-}){
+}) {
 
-    const { setPageInfo, currentPage, setCurrentPage, nextPageSize } = usePage();
+    const {setPageInfo, currentPage, setCurrentPage, nextPageSize} = usePage();
     const {
         commentCount, commentInput, setCommentInput,
         comments, handleCommentSubmit, getComments,
@@ -24,7 +25,7 @@ export default function CommentCard({ isExpanded, post }: {
 
     // 댓글 가져오기
     useEffect(() => {
-        if(!isExpanded) return;
+        if (!isExpanded) return;
         getComments();
 
     }, [isExpanded, currentPage, commentCount]);
@@ -50,32 +51,12 @@ export default function CommentCard({ isExpanded, post }: {
                 ></CommentForm>
 
                 {/* 댓글 목록 */}
-                <div className="space-y-4">
-                    {comments.length > 0 ? (
-                        comments.map((comment: CommentInterface, index: number) => (
-                            /*개별 댓글*/
-                            <Comment key={index} comment={comment} updateComment={updateComment}></Comment>
-                        ))
-                    ) : (
-                        /*댓글 없음 표시*/
-                        <div className="text-center py-8">
-                            <div
-                                className="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
-                                <span className="text-2xl">💬</span>
-                            </div>
-                            <p className="text-gray-500 mb-2 font-medium">아직 댓글이 없습니다.</p>
-                            <p className="text-sm text-gray-400">첫 번째 댓글을 작성해보세요!</p>
-                        </div>
-                    )}
-                    {/*댓글이 많을 때 댓글 더 보기 버튼*/}
-                    {nextPageSize <= 0 ? <></> : <div
-                        className={'text-blue-500 cursor-pointer text-center'}
-                        onClick={loadMoreComments}
-                    >
-                        <span>🡻</span>
-                        <span className={'underline underline-offset-2'}>{`댓글 ${nextPageSize}개 더보기`}</span>
-                    </div>}
-                </div>
+                <CommentList
+                    comments={comments}
+                    updateComment={updateComment}
+                    nextPageSize={nextPageSize}
+                    loadMoreComments={loadMoreComments}>
+                </CommentList>
             </div>
         </section>
     );
