@@ -1,4 +1,4 @@
-import {Post} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import {useEffect, useState} from "react";
 import {usePage} from "@/global_components/page/usePage";
 import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
@@ -8,7 +8,7 @@ import CommentList from "@/app/excuses/comments/components/CommentList";
 
 export default function CommentCard({isExpanded, post}: {
     isExpanded: boolean,
-    post: Post,
+    post: PostInterface,
 }) {
 
     const pageHook = usePage();

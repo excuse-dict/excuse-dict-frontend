@@ -45,8 +45,8 @@ export default function CommentList({ comments, updateComment, nextPageSize, loa
                 >
                     <span>🡻</span>
                     <span className="underline underline-offset-2">
-                                {`댓글 ${nextPageSize}개 더보기`}
-                            </span>
+                        {`댓글 ${nextPageSize}개 더보기`}
+                    </span>
                 </button>
             )}
         </div>

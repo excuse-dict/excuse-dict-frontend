@@ -1,10 +1,10 @@
 import {useEffect, useState} from "react";
-import {Post} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 
-export const usePost = (initialPost: Post) => {
+export const usePost = (initialPost: PostInterface) => {
 
-    const [post, setPost] = useState<Post>(initialPost);
+    const [post, setPost] = useState<PostInterface>(initialPost);
 
     const upvote = () => {
         setPost(prev => ({

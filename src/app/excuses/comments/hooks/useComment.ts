@@ -1,4 +1,4 @@
-import {Post} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_COMMENT} from "@/app/constants/constants";
 import {apiGet} from "@/axios/requests/get/apiGet";
@@ -13,7 +13,7 @@ export interface UpdateCommentDto{
 }
 
 export const useComment = ({ post, pageHook }: {
-    post: Post,
+    post: PostInterface,
     pageHook: ReturnType<typeof usePage>
 }) => {
 
@@ -63,11 +63,11 @@ export const useComment = ({ post, pageHook }: {
 
     // 댓글 상태 업데이트
     const updateComment = ({ commentId, updatedData }: UpdateCommentDto) => {
-        setComments(prev =>
-            prev.map(comment =>
+        setComments(comments =>
+            comments.map(comment =>   // Comment 배열을 순회
                 comment.id === commentId
-                    ? { ...comment, ...updatedData }
-                    : comment
+                    ? { ...comment, ...updatedData } // id 일치하면 업데이트
+                    : comment                        // 나머지는 냅두기
             )
         );
     };

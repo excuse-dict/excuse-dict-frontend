@@ -15,13 +15,13 @@ export interface ReplyInterface {
     upvoteCount: number,
     downvoteCount: number,
     replyCount: number,
-    myVote: ReplyVoteInterface,
+    myVote: ReplyVoteInterface | null,
     createdAt: string,
     modifiedAt: string,
 }
 
 export interface UpdateReplyDto{
-    replyId: string,
+    replyId: number,
     updatedData: Partial<ReplyInterface>
 }
 
@@ -46,8 +46,15 @@ export const useReply = ({ comment, pageHook }: {
         })
     }
 
+    // 대댓글 상태 업데이트
     const updateReply = ({ replyId, updatedData }: UpdateReplyDto) => {
-
+        setReplies(replies =>
+            replies.map(reply =>    // Reply 배열을 순회
+                reply.id === replyId
+                    ? { ...reply, ...updatedData }  // id 일치하면 업데이트
+                    : reply                         // 나머지는 냅두기
+            )
+        );
     }
 
     return {

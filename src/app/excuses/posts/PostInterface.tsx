@@ -1,5 +1,5 @@
-export interface Post {
-    postId: string,
+export interface PostInterface {
+    postId: number,
     excuse: {
         situation: string,
         excuse: string,

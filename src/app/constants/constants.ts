@@ -2,7 +2,7 @@
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/emails/check-availability"
 export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";
-export const EP_COMMENT = (postId: string) => `/api/v1/posts/${postId}/comments`;
+export const EP_COMMENT = (postId: number) => `/api/v1/posts/${postId}/comments`;
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
 export const EP_LOGIN = "/api/v1/auth/login";
@@ -14,8 +14,9 @@ export const EP_TAGS = "/api/v1/posts/tags"
 export const EP_VERIFICATION_CODE_REQ = "/api/v1/auth/verify/codes";
 export const EP_VERIFY_SIGNUP = "/api/v1/auth/verify/signup";
 export const EP_VERIFY_RESET_PASSWORD = "/api/v1/auth/verify/reset-password";
-export const EP_VOTE_TO_POST = (postId: string) => `/api/v1/posts/${postId}/votes`;
+export const EP_VOTE_TO_POST = (postId: number) => `/api/v1/posts/${postId}/votes`;
 export const EP_VOTE_TO_COMMENT = (commentId: number) => `/api/v1/posts/comments/${commentId}/votes`;
+export const EP_VOTE_TO_REPLY = (replyId: number) => `/api/v1/posts/comments/replies/${replyId}/votes`;
 
 // 페이지 주소
 export const PG_HOME = '/home';

@@ -67,18 +67,19 @@ export default function Comment({comment, updateComment, isRepliesExpanded, setE
                 voteType: voteType,
             },
             onSuccess: (response) => {
-                const isVoting = response.data.data.data;
+                const isUpvote = response.data.data.data;
 
+                // 댓글 상태 즉시 업데이트
                 updateComment({
                     commentId: comment.id,
                     updatedData: {
                         upvoteCount: voteType === "UPVOTE"
-                            ? comment.upvoteCount + (isVoting ? 1 : -1)
+                            ? comment.upvoteCount + (isUpvote ? 1 : -1)
                             : comment.upvoteCount,
                         downvoteCount: voteType === "DOWNVOTE"
-                            ? comment.downvoteCount + (isVoting ? 1 : -1)
+                            ? comment.downvoteCount + (isUpvote ? 1 : -1)
                             : comment.downvoteCount,
-                        myVote: isVoting ? {
+                        myVote: isUpvote ? {
                             commentId: comment.id,
                             memberId: memberId,
                             voteType: voteType,

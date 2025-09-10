@@ -13,7 +13,10 @@ export default function ReplyList({ replies, updateReply, nextPageSize, loadMore
             <ul className="space-y-4 list-none">
                 {replies.map((comment: ReplyInterface, index: number) => (
                     <li key={comment.id}>
-                        <Reply reply={comment} updateReply={updateReply}/>
+                        <Reply
+                            reply={comment}
+                            updateReply={updateReply}
+                        />
                     </li>
                 ))}
             </ul>

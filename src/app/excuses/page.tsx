@@ -4,7 +4,7 @@ import {useState, useEffect} from 'react';
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_POST} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
-import {Post} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import PostCard from "@/app/excuses/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
@@ -12,7 +12,7 @@ import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 export default function Board() {
     const boardPage = usePage();
     const {currentPage, setPageInfo} = boardPage;
-    const [posts, setPosts] = useState<Post[]>([]);
+    const [posts, setPosts] = useState<PostInterface[]>([]);
     const [isLoading, setloading] = useState(true);
 
     useEffect(() => {

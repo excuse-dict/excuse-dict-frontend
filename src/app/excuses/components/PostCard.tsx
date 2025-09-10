@@ -1,4 +1,4 @@
-import {Post} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useState} from "react";
@@ -7,7 +7,7 @@ import {usePost} from "@/app/excuses/hooks/usePost";
 import VoteButton from "@/app/excuses/components/VoteButton";
 
 export default function PostCard({postProp}: {
-    postProp: Post
+    postProp: PostInterface
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
