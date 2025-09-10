@@ -27,7 +27,13 @@ export const getErrorMessage = (error: any) => {
 export const onFailDefault = (error: any) => {
     const message: string = getErrorMessage(error);
 
-    Swal.fire("오류", message, 'error');
+    Swal.fire({
+        title: "오류",
+        text: message,
+        icon: 'error',
+        scrollbarPadding: false,
+        heightAuto: false,
+    });
 }
 
 // 에러 처리 메인
