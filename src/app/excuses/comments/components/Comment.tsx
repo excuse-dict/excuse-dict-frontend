@@ -2,7 +2,7 @@ import {MemberInterface} from "@/app/members/MemberInterface";
 import {CommentVoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_REPLIES, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
-import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
+import {UpdateCommentDto, useComment} from "@/app/excuses/comments/hooks/useComment";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
@@ -28,14 +28,13 @@ export interface CommentInterface {
     modifiedAt: string,
 }
 
-export default function Comment({comment, updateComment, isRepliesExpanded, setExpandedComment}: {
+export default function Comment({comment, commentHook, isRepliesExpanded, setExpandedComment}: {
     comment: CommentInterface,
-    updateComment: (value: UpdateCommentDto) => void,
+    commentHook: ReturnType<typeof useComment>
     isRepliesExpanded: boolean,
     setExpandedComment: (value: number) => void,
 }) {
 
-    const {memberId} = useAuthState();
     const { replyInput, setReplyInput } = useContext(ReplyContext);
     const pageHook = usePage();
     const { nextPageSize, loadMoreContents } = pageHook;
@@ -47,51 +46,6 @@ export default function Comment({comment, updateComment, isRepliesExpanded, setE
         // 대댓글 펼쳐질 때 서버에서 조회
         getReplies(comment.id);
     }, [isRepliesExpanded]);
-
-    const handleVote = (
-        voteType: VoteType,
-        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-
-        /*console.log("memberId: ", memberId);
-        console.log("comment: ", comment);*/
-
-        if (!memberId) {
-            askToLogin();
-            return;
-        }
-
-        apiPost({
-            endPoint: EP_VOTE_TO_COMMENT(comment.id),
-            body: {
-                voteType: voteType,
-            },
-            onSuccess: (response) => {
-                const isUpvote = response.data.data.data;
-
-                // 댓글 상태 즉시 업데이트
-                updateComment({
-                    commentId: comment.id,
-                    updatedData: {
-                        upvoteCount: voteType === "UPVOTE"
-                            ? comment.upvoteCount + (isUpvote ? 1 : -1)
-                            : comment.upvoteCount,
-                        downvoteCount: voteType === "DOWNVOTE"
-                            ? comment.downvoteCount + (isUpvote ? 1 : -1)
-                            : comment.downvoteCount,
-                        myVote: isUpvote ? {
-                            commentId: comment.id,
-                            memberId: memberId,
-                            voteType: voteType,
-                        } : null
-                    }
-                })
-            }
-        })
-
-        // 클릭 이벤트 전파 방지
-        e.stopPropagation();
-    }
 
     const toggleRepliesExpanded = () => {
         // 이미 펼쳐져 있었으면 접기 (0으로 초기화)
@@ -116,7 +70,7 @@ export default function Comment({comment, updateComment, isRepliesExpanded, setE
             {/*댓글 본체*/}
             <CommentCore
                 comment={comment}
-                handleVote={handleVote}
+                commentHook={commentHook}
                 toggleRepliesExpanded={toggleRepliesExpanded}
             >
             </CommentCore>

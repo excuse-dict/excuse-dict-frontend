@@ -6,6 +6,7 @@ import {on} from "next/dist/client/components/react-dev-overlay/pages/bus";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {toast} from "react-toastify";
+import {apiDelete} from "@/axios/requests/delete/apiDelete";
 
 interface OriginalRequest {
     method: 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE',
@@ -151,9 +152,19 @@ const retryOriginalRequest = (originalRequest: OriginalRequest) => {
             })
             break;
         }
+        case "DELETE":{
+            apiDelete({
+                endPoint: endPoint,
+                params: params,
+                onSuccess: onSuccess,
+                overwriteDefaultOnFail: overwriteDefaultOnFail,
+                onFail: onFail,
+                isRetry: true,
+            })
+        }
         default:{
-            // TODO: PUT/DELETE도 추가
-            Swal.fire("오류", "PUT/DELETE에 대한 원 요청 재전송 로직이 설정되지 않았습니다. handleFailure.tsx에 추가해 주세요", "warning");
+            // TODO: PUT도 추가
+            Swal.fire("오류", "PUT에 대한 원 요청 재전송 로직이 설정되지 않았습니다. handleFailure.tsx에 추가해 주세요", "warning");
         }
     }
 }

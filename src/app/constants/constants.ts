@@ -3,6 +3,7 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/emails/check-availability"
 export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";
 export const EP_COMMENT = (postId: number) => `/api/v1/posts/${postId}/comments`;
+export const EP_DELETE_COMMENT = (commentId: number) => `/api/v1/posts/comments/${commentId}`;
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
 export const EP_LOGIN = "/api/v1/auth/login";

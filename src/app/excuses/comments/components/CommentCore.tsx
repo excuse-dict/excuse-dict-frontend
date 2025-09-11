@@ -1,12 +1,52 @@
 import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import {VoteType} from "@/app/excuses/votes/VoteInterface";
+import {useComment} from "@/app/excuses/comments/hooks/useComment";
+import React from "react";
+import {askToLogin} from "@/app/login/functions/AskToLogin";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 
-export default function CommentCore({ comment, handleVote, toggleRepliesExpanded }: {
+export default function CommentCore({ comment, commentHook, toggleRepliesExpanded }: {
     comment: CommentInterface,
-    handleVote: (voteType: VoteType, e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+    commentHook: ReturnType<typeof useComment>
     toggleRepliesExpanded: () => void,
 }){
+
+    const { memberId } = useAuthState();
+    const { deleteComment, voteToComment } = commentHook;
+    
+    const handleEdit = () => {
+        
+    }
+    
+    const handleDelete = (e: React.MouseEvent<HTMLParagraphElement, MouseEvent>) => {
+
+        deleteComment(comment.id);
+        e.stopPropagation();
+    }
+
+    const handleVote = (
+        voteType: VoteType,
+        e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+
+        /*console.log("memberId: ", memberId);
+        console.log("comment: ", comment);*/
+
+        if (!memberId) {
+            askToLogin();
+            return;
+        }
+
+        voteToComment({
+            comment: comment,
+            memberId: memberId,
+            voteType: voteType,
+        });
+
+        // 클릭 이벤트 전파 방지
+        e.stopPropagation();
+    }
 
     return (
         <div
@@ -33,19 +73,28 @@ export default function CommentCore({ comment, handleVote, toggleRepliesExpanded
                 <p className="text-gray-700 text-sm leading-relaxed">
                     {comment.content}
                 </p>
-                <div className={'flex gap-2 font-light text-sm'}>
-                    {/*추천 버튼*/}
-                    <button
-                        className={`${comment.myVote?.voteType === "UPVOTE" ? 'text-green-500 font-bold' : ''}`}
-                        onClick={(e) => handleVote("UPVOTE", e)}
-                    >{`👍${comment.upvoteCount}`}</button>
-                    {/*비추천 버튼*/}
-                    <button
-                        className={`${comment.myVote?.voteType === "DOWNVOTE" ? 'text-red-500 font-bold' : ''}`}
-                        onClick={(e) => handleVote("DOWNVOTE", e)}
-                    >{`👎${comment.downvoteCount}`}</button>
-                    <p>💬</p>
-                    <p>{comment.replyCount}</p>
+                <div className="flex justify-between">
+                    <div className={'flex gap-2 font-light text-sm'}>
+                        {/*추천 버튼*/}
+                        <button
+                            className={`${comment.myVote?.voteType === "UPVOTE" ? 'text-green-500 font-bold' : ''}`}
+                            onClick={(e) => handleVote("UPVOTE", e)}
+                        >{`👍${comment.upvoteCount}`}</button>
+                        {/*비추천 버튼*/}
+                        <button
+                            className={`${comment.myVote?.voteType === "DOWNVOTE" ? 'text-red-500 font-bold' : ''}`}
+                            onClick={(e) => handleVote("DOWNVOTE", e)}
+                        >{`👎${comment.downvoteCount}`}</button>
+                        <p>💬</p>
+                        <p>{comment.replyCount}</p>
+                    </div>
+                    <div className="flex gap-2">
+                        <p className="text-xs p-1 rounded-xl text-blue-400">수정</p>
+                        <p
+                            className="text-xs p-1 rounded-2xl text-red-400"
+                            onClick={(e) => handleDelete(e)}
+                        >삭제</p>
+                    </div>
                 </div>
             </div>
         </div>

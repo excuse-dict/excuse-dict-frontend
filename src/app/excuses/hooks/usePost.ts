@@ -38,9 +38,17 @@ export const usePost = (initialPost: PostInterface) => {
         }));
     }
 
+    const lowerCommentCount = () => {
+        setPost(prev => ({
+            ...prev,
+            commentCount: prev.commentCount - 1,
+        }));
+    }
+
     return {
         post, setPost,
         upvote, cancelUpvote,
-        downvote, cancelDownvote
+        downvote, cancelDownvote,
+        lowerCommentCount,
     };
 }

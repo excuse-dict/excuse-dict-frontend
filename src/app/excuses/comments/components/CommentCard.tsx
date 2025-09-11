@@ -5,22 +5,25 @@ import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comme
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import CommentList from "@/app/excuses/comments/components/CommentList";
+import {usePost} from "@/app/excuses/hooks/usePost";
 
-export default function CommentCard({isExpanded, post}: {
+export default function CommentCard({isExpanded, postHook}: {
     isExpanded: boolean,
-    post: PostInterface,
+    postHook: ReturnType<typeof usePost>,
 }) {
 
     const pageHook = usePage();
     const { currentPage, nextPageSize, loadMoreContents } = pageHook;
+    const commentHook = useComment({
+        postHook: postHook,
+        pageHook: pageHook
+    });
     const {
         commentCount, commentInput, setCommentInput,
         comments, handleCommentSubmit, getComments,
-        updateComment
-    } = useComment({
-        post: post,
-        pageHook: pageHook
-    });
+    } = commentHook;
+
+    const { post } = postHook;
 
     // 댓글 가져오기
     useEffect(() => {
@@ -38,7 +41,7 @@ export default function CommentCard({isExpanded, post}: {
                 {/* 댓글 헤더 */}
                 <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold text-gray-800">
-                        댓글 ({commentCount})
+                        댓글 ({post.commentCount})
                     </h3>
                 </div>
 
@@ -52,7 +55,7 @@ export default function CommentCard({isExpanded, post}: {
                 {/* 댓글 목록 */}
                 <CommentList
                     comments={comments}
-                    updateComment={updateComment}
+                    commentHook={commentHook}
                     nextPageSize={nextPageSize}
                     loadMoreComments={loadMoreContents}>
                 </CommentList>

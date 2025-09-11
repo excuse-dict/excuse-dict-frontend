@@ -11,8 +11,8 @@ export default function PostCard({postProp}: {
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
-    const postState = usePost(postProp);
-    const { post } = postState;
+    const postHook = usePost(postProp);
+    const { post } = postHook;
 
     const authState = useAuthState()
     const {memberId} = authState;
@@ -86,16 +86,16 @@ export default function PostCard({postProp}: {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         {/*추천 버튼*/}
-                        <VoteButton postState={postState} voteType={"UPVOTE"}></VoteButton>
+                        <VoteButton postState={postHook} voteType={"UPVOTE"}></VoteButton>
                         {/* 비추천 버튼 */}
-                        <VoteButton postState={postState} voteType={"DOWNVOTE"}></VoteButton>
-
-                        <button
+                        <VoteButton postState={postHook} voteType={"DOWNVOTE"}></VoteButton>
+                        {/*댓글 수*/}
+                        <div
                             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"
-                            onClick={(e: React.MouseEvent<HTMLButtonElement>) => e.stopPropagation()}>
+                        >
                             <span className="text-lg group-hover:scale-110 transition-transform">💬</span>
                             <span className="font-semibold">{post.commentCount}</span>
-                        </button>
+                        </div>
                     </div>
                     <div className={'flex gap-2'}>
                         {post.excuse.tags.map((tag: any, index: number) => {
@@ -110,7 +110,7 @@ export default function PostCard({postProp}: {
             </section>
 
             {/* 댓글 섹션 - 확장될 때만 표시 */}
-            <CommentCard isExpanded={isExpanded} post={post}></CommentCard>
+            <CommentCard isExpanded={isExpanded} postHook={postHook}></CommentCard>
         </article>
     );
 }

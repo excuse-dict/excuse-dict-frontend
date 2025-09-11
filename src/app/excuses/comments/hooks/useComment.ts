@@ -1,10 +1,14 @@
 import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_COMMENT} from "@/app/constants/constants";
+import {EP_COMMENT, EP_DELETE_COMMENT, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {useState} from "react";
 import {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import {usePage} from "@/global_components/page/usePage";
+import {apiDelete} from "@/axios/requests/delete/apiDelete";
+import {toast} from "react-toastify";
+import {VoteType} from "@/app/excuses/votes/VoteInterface";
+import {usePost} from "@/app/excuses/hooks/usePost";
 
 
 export interface UpdateCommentDto{
@@ -12,11 +16,12 @@ export interface UpdateCommentDto{
     updatedData: Partial<CommentInterface>
 }
 
-export const useComment = ({ post, pageHook }: {
-    post: PostInterface,
+export const useComment = ({ postHook, pageHook }: {
+    postHook: ReturnType<typeof usePost>,
     pageHook: ReturnType<typeof usePage>
 }) => {
 
+    const { post, lowerCommentCount } = postHook;
     const { currentPage, setCurrentPage, setPageInfo } = pageHook;
 
     const [comments, setComments] = useState<Array<CommentInterface>>([]);
@@ -61,6 +66,40 @@ export const useComment = ({ post, pageHook }: {
         })
     }
 
+    const voteToComment = ({ comment, memberId, voteType }: {
+        comment: CommentInterface,
+        memberId: number,
+        voteType: VoteType,
+    }) => {
+        apiPost({
+            endPoint: EP_VOTE_TO_COMMENT(comment.id),
+            body: {
+                voteType: voteType,
+            },
+            onSuccess: (response) => {
+                const isUpvote = response.data.data.data;
+
+                // 댓글 상태 즉시 업데이트
+                updateComment({
+                    commentId: comment.id,
+                    updatedData: {
+                        upvoteCount: voteType === "UPVOTE"
+                            ? comment.upvoteCount + (isUpvote ? 1 : -1)
+                            : comment.upvoteCount,
+                        downvoteCount: voteType === "DOWNVOTE"
+                            ? comment.downvoteCount + (isUpvote ? 1 : -1)
+                            : comment.downvoteCount,
+                        myVote: isUpvote ? {
+                            commentId: comment.id,
+                            memberId: memberId,
+                            voteType: voteType,
+                        } : null
+                    }
+                })
+            }
+        })
+    }
+
     // 댓글 상태 업데이트
     const updateComment = ({ commentId, updatedData }: UpdateCommentDto) => {
         setComments(comments =>
@@ -72,6 +111,21 @@ export const useComment = ({ post, pageHook }: {
         );
     };
 
+    // 댓글 삭제 요청
+    const deleteComment = (commentId: number) => {
+        apiDelete({
+            endPoint: EP_DELETE_COMMENT(commentId),
+            onSuccess: () => {
+                toast.success("댓글이 삭제되었습니다.");
+
+                // 댓글 목록 업데이트
+                setComments(comments.filter(comment => comment.id !== commentId));
+                // post 댓글 수 업데이트
+                lowerCommentCount();
+            },
+        })
+    }
+
     return {
         comments, setComments,
         commentInput, setCommentInput,
@@ -79,6 +133,8 @@ export const useComment = ({ post, pageHook }: {
 
         handleCommentSubmit,
         getComments,
+        voteToComment,
         updateComment,
+        deleteComment,
     }
 }

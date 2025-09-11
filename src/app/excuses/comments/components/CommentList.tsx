@@ -1,10 +1,10 @@
 import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
-import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
+import {UpdateCommentDto, useComment} from "@/app/excuses/comments/hooks/useComment";
 import {useState} from "react";
 
-export default function CommentList({ comments, updateComment, nextPageSize, loadMoreComments}: {
+export default function CommentList({ comments, commentHook, nextPageSize, loadMoreComments}: {
     comments: Array<CommentInterface>,
-    updateComment: (value: UpdateCommentDto) => void,
+    commentHook: ReturnType<typeof useComment>
     nextPageSize: number,
     loadMoreComments: () => void,
 }) {
@@ -19,7 +19,7 @@ export default function CommentList({ comments, updateComment, nextPageSize, loa
                         <li key={comment.id}>
                             <Comment
                                 comment={comment}
-                                updateComment={updateComment}
+                                commentHook={commentHook}
                                 isRepliesExpanded={comment.id === expandedComment}
                                 setExpandedComment={setExpandedComment}
                             />
