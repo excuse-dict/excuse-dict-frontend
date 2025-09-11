@@ -5,6 +5,7 @@ import {LoginParams, useAuthState} from "@/app/login/auth/useAuthState";
 import {on} from "next/dist/client/components/react-dev-overlay/pages/bus";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
+import {toast} from "react-toastify";
 
 interface OriginalRequest {
     method: 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE',
@@ -27,13 +28,15 @@ export const getErrorMessage = (error: any) => {
 export const onFailDefault = (error: any) => {
     const message: string = getErrorMessage(error);
 
-    Swal.fire({
+    /*Swal.fire({
         title: "오류",
         text: message,
         icon: 'error',
         scrollbarPadding: false,
         heightAuto: false,
-    });
+    });*/
+
+    toast.error(message);
 }
 
 // 에러 처리 메인

@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./styles/globals.css";
 import Header from "@/global_components/header/Header";
 import ScrollHandler from "@/global_components/ScrollHandler";
+import {ToastContainer} from "react-toastify";
+import ToastProvider from "@/app/toast/ToastProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -50,6 +52,9 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} app_container`}>
         <ScrollHandler />
+
+        {/* Toast 컨테이너 */}
+        <ToastProvider></ToastProvider>
         
         {/* 헤더 */}
         <header className="app-header">
