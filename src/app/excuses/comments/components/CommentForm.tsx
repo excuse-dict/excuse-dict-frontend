@@ -33,9 +33,10 @@ export default function CommentForm({ commentInput, setCommentInput, handleComme
                         <button
                             type="submit"
                             disabled={!commentInput.trim()}
-                            className="global_button !bg-[var(--strong-purple)] !text-white px-6 py-2.5 rounded-lg disabled:from-gray-300 disabled:to-gray-400
+                            className={`global_button !text-white px-6 py-2.5 rounded-lg disabled:from-gray-300 disabled:to-gray-400
                                                  disabled:cursor-not-allowed transition-all duration-200 text-sm font-medium
-                                                 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95"
+                                                 shadow-md hover:shadow-lg transform hover:scale-105 active:scale-95
+                                                 ${!commentInput.trim() ? '!bg-gray-300' : '!bg-[var(--strong-purple)]'}`}
                         >
                             댓글 작성
                         </button>

@@ -1,9 +1,6 @@
-import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
-import {MemberInterface} from "@/app/members/MemberInterface";
-import {CommentVoteInterface, VoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
+import {VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_REPLIES, EP_VOTE_TO_COMMENT, EP_VOTE_TO_REPLY} from "@/app/constants/constants";
-import {UpdateCommentDto} from "@/app/excuses/comments/hooks/useComment";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import {ReplyInterface, UpdateReplyDto} from "@/app/excuses/comments/hooks/useReply";
