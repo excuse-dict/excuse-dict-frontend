@@ -1,6 +1,6 @@
 import {PostInterface} from "@/app/excuses/posts/PostInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_COMMENT, EP_DELETE_COMMENT, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
+import {EP_COMMENT, EP_UPDATE_OR_DELETE_COMMENT, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {useState} from "react";
 import {CommentInterface} from "@/app/excuses/comments/components/Comment";
@@ -66,6 +66,7 @@ export const useComment = ({ postHook, pageHook }: {
         })
     }
 
+    // 댓글 추천/비추천
     const voteToComment = ({ comment, memberId, voteType }: {
         comment: CommentInterface,
         memberId: number,
@@ -114,7 +115,7 @@ export const useComment = ({ postHook, pageHook }: {
     // 댓글 삭제 요청
     const deleteComment = (commentId: number) => {
         apiDelete({
-            endPoint: EP_DELETE_COMMENT(commentId),
+            endPoint: EP_UPDATE_OR_DELETE_COMMENT(commentId),
             onSuccess: () => {
                 toast.success("댓글이 삭제되었습니다.");
 
