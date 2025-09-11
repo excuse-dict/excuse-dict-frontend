@@ -1,7 +1,6 @@
 import {useState} from "react";
-import {REPLY_PAGE_SIZE} from "@/app/constants/constants";
 
-interface PageInfo {
+export interface PageInfo {
     currentPage: number;
     totalPages: number;
     totalElements: number;

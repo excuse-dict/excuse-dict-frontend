@@ -1,4 +1,6 @@
 // axios
+import {PageInfo} from "@/global_components/page/usePage";
+
 export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/emails/check-availability"
 export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";

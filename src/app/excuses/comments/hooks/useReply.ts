@@ -32,7 +32,6 @@ export const useReply = ({ comment, pageHook }: {
 
     const { currentPage, setPageInfo } = pageHook;
     const [replies, setReplies] = useState<Array<ReplyInterface>>([]);
-    const { replyInput } = useContext(ReplyContext);
 
     // 대댓글 조회 요청
     const getReplies = (commentId: number) => {

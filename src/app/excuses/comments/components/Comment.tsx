@@ -38,16 +38,24 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
 
     const { replyInput, setReplyInput } = useContext(ReplyContext);
     const replyPageHook = usePage();
-    const { currentPage, nextPageSize, loadMoreContents, addElementsAndUpdatePageInfo } = replyPageHook;
+    const { currentPage, setCurrentPage, nextPageSize, loadMoreContents, addElementsAndUpdatePageInfo } = replyPageHook;
     const { updateComment } = commentHook;
-    const { replies, getReplies, updateReply } = useReply({comment: comment, pageHook: replyPageHook});
+    const { replies, getReplies, setReplies, updateReply } = useReply({comment: comment, pageHook: replyPageHook});
 
     useEffect(() => {
-        if(!isRepliesExpanded) return;
+        if(!isRepliesExpanded) return
 
         // 대댓글 펼쳐질 때 서버에서 조회
         getReplies(comment.id);
     }, [isRepliesExpanded, currentPage, comment.id]);
+
+    useEffect(() => {
+        if(isRepliesExpanded) return;
+
+        // 답글 목록 접을 때 상태 초기화
+        setReplies([]);
+        setCurrentPage(1);
+    }, [isRepliesExpanded]);
 
     const toggleRepliesExpanded = () => {
         // 이미 펼쳐져 있었으면 접기 (0으로 초기화)
