@@ -8,7 +8,7 @@ export default function CommentForm({ commentInput, setCommentInput, handleComme
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             handleCommentSubmit();
-        }} className="mb-6">
+        }} className="mb-6 w-full">
             <div className="flex items-start space-x-3">
                 {/*프로필 이미지*/}
                 <div

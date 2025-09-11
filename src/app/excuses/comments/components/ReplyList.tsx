@@ -8,9 +8,9 @@ export default function ReplyList({ replies, updateReply, nextPageSize, loadMore
     loadMoreReplies: () => void,
 }) {
     return (
-        <div className="space-y-4">
+        <div>
             {/*대댓글 리스트*/}
-            <ul className="space-y-4 list-none">
+            <ul className="list-none">
                 {replies.map((comment: ReplyInterface, index: number) => (
                     <li key={comment.id}>
                         <Reply

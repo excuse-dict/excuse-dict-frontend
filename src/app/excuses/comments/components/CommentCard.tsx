@@ -12,11 +12,11 @@ export default function CommentCard({isExpanded, postHook}: {
     postHook: ReturnType<typeof usePost>,
 }) {
 
-    const pageHook = usePage();
-    const { currentPage, nextPageSize, loadMoreContents } = pageHook;
+    const commentPageHook = usePage();
+    const { currentPage, nextPageSize, loadMoreContents } = commentPageHook;
     const commentHook = useComment({
         postHook: postHook,
-        pageHook: pageHook
+        pageHook: commentPageHook
     });
     const {
         commentCount, commentInput, setCommentInput,

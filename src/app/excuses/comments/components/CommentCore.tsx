@@ -101,7 +101,7 @@ export default function CommentCore({ comment, commentHook, toggleRepliesExpande
                 text: '변경사항이 저장되지 않습니다.',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: '취소',
+                confirmButtonText: '수정 취소',
                 cancelButtonText: '계속 수정',
                 heightAuto: false // 높이 자동 조절 비활성화
             }).then((result) => {

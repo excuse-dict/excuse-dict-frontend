@@ -30,7 +30,7 @@ export const useReply = ({ comment, pageHook }: {
     pageHook: ReturnType<typeof usePage>,
 }) => {
 
-    const { currentPage, nextPageSize } = pageHook;
+    const { currentPage, setPageInfo } = pageHook;
     const [replies, setReplies] = useState<Array<ReplyInterface>>([]);
     const { replyInput } = useContext(ReplyContext);
 
@@ -38,7 +38,18 @@ export const useReply = ({ comment, pageHook }: {
     const getReplies = (commentId: number) => {
         apiGet({
             endPoint: EP_REPLIES(commentId),
-            onSuccess: (data) => setReplies(data.data.data.page.content),
+            onSuccess: (response) => {
+                const newReplies = response.data.data.page.content;
+
+                if (currentPage === 0) {
+                    // 0페이지면 새로 설정
+                    setReplies(newReplies);
+                } else {
+                    // 0페이지가 아니면 기존 답글에 추가 (누적)
+                    setReplies(prev => [...prev, ...newReplies]);
+                }
+                setPageInfo(response.data.data.pageInfo);
+            },
             params: {
                 page: currentPage,
                 size: REPLY_PAGE_SIZE

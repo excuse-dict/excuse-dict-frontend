@@ -13,6 +13,7 @@ import CommentCore from "@/app/excuses/comments/components/CommentCore";
 import {useReply} from "@/app/excuses/comments/hooks/useReply";
 import {usePage} from "@/global_components/page/usePage";
 import ReplyList from "@/app/excuses/comments/components/ReplyList";
+import {toast} from "react-toastify";
 
 export interface CommentInterface {
     postId: string,
@@ -36,9 +37,10 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
 }) {
 
     const { replyInput, setReplyInput } = useContext(ReplyContext);
-    const pageHook = usePage();
-    const { nextPageSize, loadMoreContents } = pageHook;
-    const { replies, getReplies, updateReply } = useReply({comment: comment, pageHook: pageHook});
+    const replyPageHook = usePage();
+    const { nextPageSize, loadMoreContents } = replyPageHook;
+    const { updateComment } = commentHook;
+    const { replies, getReplies, updateReply } = useReply({comment: comment, pageHook: replyPageHook});
 
     useEffect(() => {
         if(!isRepliesExpanded) return;
@@ -62,8 +64,20 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
             body: {
                 comment: replyInput
             },
+            onSuccess: (response) => {
+                toast.success("답글이 등록되었습니다.");
+                setReplyInput('');
+                updateComment({
+                    commentId: comment.id,
+                    updatedData: {
+                        replyCount: response.data?.data?.number,
+                    }
+                })
+            }
         })
     }
+
+    console.log("nextPageSize: " + nextPageSize);
 
     return (
         <div>
@@ -82,14 +96,16 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
                     loadMoreReplies={loadMoreContents}>
                 </ReplyList> : <></>}
             {/*대댓글 입력창*/}
-            {isRepliesExpanded ? <div className="bg-gray-50">
-                <CommentForm
-                    commentInput={replyInput}
-                    setCommentInput={setReplyInput}
-                    handleCommentSubmit={handlePostReply}
-                    hideProfileImage={true}>
-                </CommentForm>
-            </div> : <></>}
+            {isRepliesExpanded ?
+                <div className="flex w-full bg-gray-50 border-t pt-6">
+                    <p className='ml-8 text-2xl'>⤷</p>
+                    <CommentForm
+                        commentInput={replyInput}
+                        setCommentInput={setReplyInput}
+                        handleCommentSubmit={handlePostReply}
+                        hideProfileImage={true}>
+                    </CommentForm>
+                </div> : <></>}
         </div>
     );
 }

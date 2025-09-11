@@ -49,7 +49,7 @@ export default function Reply({reply, updateReply}: {
     }
 
     return (
-        <div>
+        <div className='border-t'>
             {/*대댓글 본체*/}
             <ReplyCore
                 reply={reply}
