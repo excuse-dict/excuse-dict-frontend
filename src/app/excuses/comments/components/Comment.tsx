@@ -1,7 +1,7 @@
 import {MemberInterface} from "@/app/members/MemberInterface";
 import {CommentVoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_REPLIES, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
+import {EP_REPLIES, EP_VOTE_TO_COMMENT, REPLY_PAGE_SIZE} from "@/app/constants/constants";
 import {UpdateCommentDto, useComment} from "@/app/excuses/comments/hooks/useComment";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
@@ -38,7 +38,7 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
 
     const { replyInput, setReplyInput } = useContext(ReplyContext);
     const replyPageHook = usePage();
-    const { nextPageSize, loadMoreContents } = replyPageHook;
+    const { currentPage, nextPageSize, loadMoreContents, addElementsAndUpdatePageInfo } = replyPageHook;
     const { updateComment } = commentHook;
     const { replies, getReplies, updateReply } = useReply({comment: comment, pageHook: replyPageHook});
 
@@ -47,7 +47,7 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
 
         // 대댓글 펼쳐질 때 서버에서 조회
         getReplies(comment.id);
-    }, [isRepliesExpanded]);
+    }, [isRepliesExpanded, currentPage, comment.id]);
 
     const toggleRepliesExpanded = () => {
         // 이미 펼쳐져 있었으면 접기 (0으로 초기화)
@@ -73,11 +73,10 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
                         replyCount: response.data?.data?.number,
                     }
                 })
+                addElementsAndUpdatePageInfo(1, REPLY_PAGE_SIZE);
             }
         })
     }
-
-    console.log("nextPageSize: " + nextPageSize);
 
     return (
         <div>

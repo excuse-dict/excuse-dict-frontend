@@ -1,4 +1,5 @@
 import {useState} from "react";
+import {REPLY_PAGE_SIZE} from "@/app/constants/constants";
 
 interface PageInfo {
     currentPage: number;
@@ -39,9 +40,25 @@ export const usePage = () => {
         return pageInfo.totalPages < 1;
     }
 
+    const setNextPageSize = (nextPageSize: number) => {
+        setPageInfo(prev => ({ ...prev, nextPageSize }));
+    }
+
     // 더보기 핸들러
     const loadMoreContents = () => {
         setCurrentPage(pageInfo.currentPage + 1);
+    }
+
+    // 요소 더하고 페이지 정보 갱신
+    const addElementsAndUpdatePageInfo = (addition: number, pageSize: number) => {
+        const newTotalElements = pageInfo.totalElements + addition;
+        const newTotalPages = Math.ceil(newTotalElements / pageSize);
+        const newNextPageSize = newTotalElements % pageSize || pageSize;
+
+        setTotalElements(newTotalElements);
+        setTotalPages(newTotalPages);
+        setNextPageSize(newNextPageSize);
+        setHasNext(pageInfo.currentPage < newTotalPages);
     }
 
     return {
@@ -54,8 +71,9 @@ export const usePage = () => {
         setCurrentPage, setTotalPages,
         setTotalElements, setHasNext,
         isFilterChanged, setFilterChanged,
-        isPageEmpty,
+        isPageEmpty, addElementsAndUpdatePageInfo,
         loadMoreContents,
+        setNextPageSize,
 
         pageInfo,
         setPageInfo
