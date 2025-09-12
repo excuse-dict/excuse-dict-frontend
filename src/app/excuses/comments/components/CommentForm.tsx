@@ -1,9 +1,15 @@
+import React from "react";
+import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
+
 export default function CommentForm({ commentInput, setCommentInput, handleCommentSubmit, hideProfileImage = false }: {
     commentInput: string,
     setCommentInput: (value: string) => void,
     handleCommentSubmit: () => void,
     hideProfileImage?: boolean,
 }){
+
+    const { requireAuth } = useAuthGuard();
+
     return (
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
@@ -26,7 +32,10 @@ export default function CommentForm({ commentInput, setCommentInput, handleComme
                                  placeholder:text-gray-400"
                         rows={3}
                         placeholder="댓글을 입력하세요..."
-                        onClick={(e: React.MouseEvent<HTMLTextAreaElement>) => e.stopPropagation()}
+                        onFocus={(e) => {
+                            e.stopPropagation()
+                            if (!requireAuth()) e.target.blur();
+                        }}
                     />
                     <div className="flex justify-end mt-3">
                         {/*댓글 작성 버튼*/}

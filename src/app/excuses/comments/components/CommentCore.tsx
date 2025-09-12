@@ -5,7 +5,6 @@ import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import React, {useEffect, useRef, useState} from "react";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import {useAuthState} from "@/app/login/auth/useAuthState";
-import Swal from "sweetalert2";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {EP_UPDATE_OR_DELETE_COMMENT} from "@/app/constants/constants";
 import {useEdit} from "@/app/excuses/comments/hooks/useEdit";
