@@ -11,3 +11,8 @@ export interface CommentVoteInterface{
     memberId: string | number,
     voteType: VoteType,
 }
+
+export interface ReplyVoteInterface{
+    replyId: string | number,
+    voteType: VoteType,
+}

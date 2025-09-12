@@ -1,9 +1,9 @@
-import {ReplyInterface, UpdateReplyDto} from "@/app/excuses/comments/hooks/useReply";
+import {ReplyInterface, useReply} from "@/app/excuses/comments/hooks/useReply";
 import Reply from "@/app/excuses/comments/components/Reply";
 
-export default function ReplyList({ replies, updateReply, nextPageSize, loadMoreReplies}: {
+export default function ReplyList({ replies, replyHook, nextPageSize, loadMoreReplies}: {
     replies: Array<ReplyInterface>,
-    updateReply: (value: UpdateReplyDto) => void,
+    replyHook: ReturnType<typeof useReply>
     nextPageSize: number,
     loadMoreReplies: () => void,
 }) {
@@ -15,7 +15,7 @@ export default function ReplyList({ replies, updateReply, nextPageSize, loadMore
                     <li key={comment.id}>
                         <Reply
                             reply={comment}
-                            updateReply={updateReply}
+                            replyHook={replyHook}
                         />
                     </li>
                 ))}

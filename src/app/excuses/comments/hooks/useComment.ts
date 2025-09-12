@@ -127,6 +127,10 @@ export const useComment = ({ postHook, pageHook }: {
         })
     }
 
+    const lowerReplyCount = (comment: CommentInterface) => {
+        comment.replyCount--;
+    }
+
     return {
         comments, setComments,
         commentInput, setCommentInput,
@@ -137,5 +141,6 @@ export const useComment = ({ postHook, pageHook }: {
         voteToComment,
         updateComment,
         deleteComment,
+        lowerReplyCount,
     }
 }
