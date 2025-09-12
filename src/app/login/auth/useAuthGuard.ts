@@ -22,7 +22,7 @@ export const useAuthGuard = () => {
             setFirstFocus(!isFirstFocus);
 
             const currentPath = window.location.pathname + window.location.search;
-            // TODO: 로그인 성공 후 세션 스토리지에서 꺼내 사용
+            // 로그인 성공 후 세션 스토리지에서 꺼내 사용
             sessionStorage.setItem('redirectAfterLogin', currentPath);
 
             Swal.fire({

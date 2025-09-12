@@ -13,7 +13,12 @@ interface AuthState {
     memberId: number | null;
     nickname: string | null;
 
-    login: (params: LoginParams) => void,
+    login: (params: {
+        email: string;
+        password: string;
+        overwriteDefaultHandler?: boolean;
+        onFail?: () => void;
+    }) => void,
     logout: () => void;
 }
 
@@ -54,11 +59,25 @@ export const useAuthState = create<AuthState>()(
                             id: response.data?.data?.id,
                             nickname: response.data?.data?.nickname,
                         });
-                        window.location.href = PG_HOME;
+
+                        // 원래 위치로 돌아가기
+                        const path = getRedirectPath();
+                        window.location.href = path;
                     },
                     onFail: onFail
                 });
             };
+
+            const getRedirectPath = () => {
+                if (typeof window === 'undefined') return PG_HOME;
+
+                const savedPath = sessionStorage.getItem('redirectAfterLogin');
+                if (savedPath) {
+                    sessionStorage.removeItem('redirectAfterLogin');
+                    return savedPath;
+                }
+                return PG_HOME;
+            }
 
             return {
                 isLoggedIn: false,

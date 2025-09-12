@@ -6,8 +6,6 @@ import css from './page.module.css'
 import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import {useRouter} from 'next/navigation';
 import {useAuthState} from "@/app/login/auth/useAuthState";
-import {apiPost} from "@/axios/requests/post/apiPost";
-import {sendLoginRequest} from "@/app/login/functions/LoginRequest";
 
 export default function LoginPage() {
 
