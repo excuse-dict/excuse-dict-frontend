@@ -55,6 +55,11 @@ export default function CommentCore({ comment, commentHook, toggleRepliesExpande
     const handleSubmitEdit = (e: React.MouseEvent<HTMLParagraphElement>) => {
         e.stopPropagation();
 
+        if(comment.content === editInput) {
+            setOnEditing(false);
+            return;
+        };
+
         apiPatch({
             endPoint: EP_UPDATE_OR_DELETE_COMMENT(comment.id),
             body: {

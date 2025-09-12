@@ -1,10 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import {useState} from 'react';
+import { useState } from 'react';
 import css from './Header.module.css';
-import {useAuthState} from "@/app/login/auth/useAuthState";
-import {PG_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_NEW_EXCUSE, PG_POPULAR} from "@/app/constants/constants";
+import Logo from "@/global_components/header/logo/Logo";
+import NavigationBar from "@/global_components/header/navigation/NavigationBar";
+import MemberInfo from "@/global_components/header/memberinfo/MemberInfo";
+import Link from "next/link";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -13,51 +14,16 @@ export default function Header() {
         setIsMenuOpen(!isMenuOpen);
     };
 
-    const {isLoggedIn} = useAuthState();
-
     return (
         <div className={css.header_container}>
             {/* 로고 */}
-            <div className={css.logo_section}>
-                <Link href="/" className={css.logo}>
-                    <span className={css.logo_icon}>📚</span>
-                    <span className={css.logo_text}>핑계사전</span>
-                </Link>
-            </div>
+            <Logo></Logo>
 
             {/* 네비게이션 메뉴 */}
-            <nav className={`${css.nav_menu} ${isMenuOpen ? css.nav_open : ''}`}>
-                <Link href={PG_EXCUSES} className={css.nav_link}>
-                    전체
-                </Link>
-                <Link href={PG_POPULAR} className={css.nav_link}>
-                    주간 TOP
-                </Link>
-                <Link href={PG_HALL_OF_FAME} className={css.nav_link}>
-                    명예의 전당
-                </Link>
-                <Link href={PG_GENERATOR} className={css.nav_link}>
-                    핑계 생성기
-                    <span className={`${css.ai_span} bg-red-500 rounded-lg ml-2`}>
-                        AI
-                    </span>
-                </Link>
-            </nav>
+            <NavigationBar></NavigationBar>
 
             {/* 사용자 액션 버튼 */}
-            <div className={css.user_actions}>
-                {isLoggedIn ?
-                    <span className={css.user_icon}>👤</span> :
-                    <>
-                        <Link href="/login" className={`${css.action_btn} ${css.login_btn}`}>
-                            로그인
-                        </Link>
-                        <Link href="/register" className={`${css.action_btn} ${css.register_btn}`}>
-                            회원가입
-                        </Link>
-                    </>
-                }
-            </div>
+            <MemberInfo></MemberInfo>
 
             {/* 모바일 메뉴 버튼 */}
             <button

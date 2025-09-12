@@ -17,6 +17,11 @@ export default function Reply({ reply, replyHook }: {
     const handleSubmitEdit = (e: React.MouseEvent<HTMLParagraphElement>) => {
         e.stopPropagation();
 
+        if(reply.content === editInput) {
+            setOnEditing(false);
+            return;
+        };
+
         apiPatch({
             endPoint: EP_UPDATE_OR_DELETE_REPLY(reply.id),
             body: {

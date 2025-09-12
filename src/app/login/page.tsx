@@ -20,11 +20,10 @@ export default function LoginPage() {
 
     const handleLogin = async () => {
 
-        sendLoginRequest({
+        login({
             email: emailInput,
             password: passwordInput,
             overwriteDefaultHandler: true,
-            login: login,
             onFail: () => {
                 // 로그인 창에 붉은 글씨로 안내
                 setShouldShowError(true);
