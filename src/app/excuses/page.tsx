@@ -30,6 +30,19 @@ export default function Board() {
         })
     }, [currentPage]);
 
+    const deletePost = (postId: number) => {
+        setPosts(posts => {
+            const index = posts.findIndex(post => post.postId === postId);
+
+            if (index === -1) return posts; // 못 찾으면 원본 그대로
+
+            return [
+                ...posts.slice(0, index),
+                ...posts.slice(index + 1)
+            ];
+        });
+    }
+
     if (isLoading) {
         return (
             <div className="w-full max-w-4xl mx-auto flex items-center justify-center p-4 min-h-screen">
@@ -62,7 +75,7 @@ export default function Board() {
             <div className="space-y-6 mb-8">
                 {posts.map((post, index) => (
                     <ReplyProvider key={index}>
-                        <PostCard postProp={post}></PostCard>
+                        <PostCard postProp={post} deletePost={deletePost}></PostCard>
                     </ReplyProvider>
                 ))}
             </div>

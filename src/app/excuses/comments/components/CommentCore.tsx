@@ -129,38 +129,40 @@ export default function CommentCore({ comment, commentHook, toggleRepliesExpande
                         <p>💬</p>
                         <p>{comment.replyCount}</p>
                     </div>
-                    <div className="flex gap-2" ref={isOnEditing ? editingButtonRef : undefined}>
-                        {isOnEditing ?
-                            <>
-                                {/*수정 완료 버튼*/}
-                                <p
-                                    className="text-xs font-bold p-1 rounded-xl text-blue-400"
-                                    onClick={(e) => handleSubmitEdit(e)}
-                                >완료</p>
-                                {/*수정 취소 버튼*/}
-                                <p
-                                    className="text-xs font-bold p-1 rounded-2xl text-red-400"
-                                    onClick={(e) => {
-                                        setOnEditing(false);
-                                        e.stopPropagation();
-                                    }}
-                                >취소</p>
-                            </>
-                            :
-                            <>
-                                {/*수정 버튼*/}
-                                <p
-                                    className="text-xs p-1 rounded-xl text-blue-400"
-                                    onClick={(e) => handleStartEdit(e)}
-                                >수정</p>
-                                {/*삭제 버튼*/}
-                                <p
-                                    className="text-xs p-1 rounded-2xl text-red-400"
-                                    onClick={(e) => handleDelete(e)}
-                                >삭제</p>
-                            </>
-                        }
-                    </div>
+                    {comment.author?.id !== memberId ? <></> :
+                        <div className="flex gap-2" ref={isOnEditing ? editingButtonRef : undefined}>
+                            {isOnEditing ?
+                                <>
+                                    {/*수정 완료 버튼*/}
+                                    <p
+                                        className="text-xs font-bold p-1 rounded-xl text-blue-400"
+                                        onClick={(e) => handleSubmitEdit(e)}
+                                    >완료</p>
+                                    {/*수정 취소 버튼*/}
+                                    <p
+                                        className="text-xs font-bold p-1 rounded-2xl text-red-400"
+                                        onClick={(e) => {
+                                            setOnEditing(false);
+                                            e.stopPropagation();
+                                        }}
+                                    >취소</p>
+                                </>
+                                :
+                                <>
+                                    {/*수정 버튼*/}
+                                    <p
+                                        className="text-xs p-1 rounded-xl text-blue-400"
+                                        onClick={(e) => handleStartEdit(e)}
+                                    >수정</p>
+                                    {/*삭제 버튼*/}
+                                    <p
+                                        className="text-xs p-1 rounded-2xl text-red-400"
+                                        onClick={(e) => handleDelete(e)}
+                                    >삭제</p>
+                                </>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>

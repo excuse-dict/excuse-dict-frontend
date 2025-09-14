@@ -12,6 +12,7 @@ export const EP_REPLIES = (commentId: number) => `/api/v1/posts/comments/${comme
 export const EP_POST = "/api/v1/posts";
 export const EP_TAGS = "/api/v1/posts/tags"
 export const EP_UPDATE_OR_DELETE_COMMENT = (commentId: number) => `/api/v1/posts/comments/${commentId}`;
+export const EP_UPDATE_OR_DELETE_POST = (postId: number) => `/api/v1/posts/${postId}`;
 export const EP_UPDATE_OR_DELETE_REPLY = (replyId: number) => `/api/v1/posts/comments/replies/${replyId}`;
 export const EP_VERIFICATION_CODE_REQ = "/api/v1/auth/verify/codes";
 export const EP_VERIFY_SIGNUP = "/api/v1/auth/verify/signup";

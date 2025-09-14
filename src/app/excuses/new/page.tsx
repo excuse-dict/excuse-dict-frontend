@@ -23,7 +23,7 @@ export default function NewExcusePage(){
             return;
         }
         if(excuseInput.length < 5 || excuseInput.length > 100){
-            Swal.fire("오류", "핑계는 5~100 글자 사이로로 입력해주세요.", "warning");
+            Swal.fire("오류", "핑계는 5~100 글자 사이로 입력해주세요.", "warning");
             return;
         }
         Swal.fire({

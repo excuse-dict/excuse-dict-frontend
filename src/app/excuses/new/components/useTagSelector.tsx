@@ -2,21 +2,32 @@
 
 import {useState} from "react";
 import {TAG_CATEGORIES} from "@/app/constants/constants";
+import TagInterface from "@/app/excuses/new/components/TagInterface";
+import {string} from "postcss-selector-parser";
 
 type TagKey = `${string}:${string}`;
 
-export const useTagSelector = () => {
+export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
+
+    const createTagKey = (tag: {value: string, category: string}): TagKey =>
+        `${tag.category}:${tag.value}`;
+
+    const initializeTags = (): Set<string> => {
+        if(!tags || tags.size == 0) return new Set();
+
+        const set = new Set<string>();
+
+        tags.forEach(tag => set.add(createTagKey(tag)));
+        return set;
+    }
 
     const [isSelectorOpen, setSelectorOpen] = useState(false);
     const [isTagsLoading, setTagsLoading] = useState(false);
     const [filterTypes, setFilterTypes] = useState<Array<string>>([]);
     const [searchInput, setSearchInput] = useState('');
     const [searchedTags, setSearchedTags] = useState<Array<{value: string, category: string}>>([]);
-    const [selectedTags, setSelectedTags] = useState<Set<string>>(new Set());
+    const [selectedTags, setSelectedTags] = useState<Set<string>>(initializeTags()); // category:value 형태로 넣어야 함
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(TAG_CATEGORIES.map(category => category.value)));
-
-    const createTagKey = (tag: {value: string, category: string}): TagKey =>
-        `${tag.category}:${tag.value}`;
 
     // 태그 선택
     const addSelectedTag = (tag: {value: string, category: string}) => {
@@ -69,7 +80,12 @@ export const useTagSelector = () => {
         setSelectedCategories(new Set());
     }
 
+    const isKeyMatchForTag = (key: string) => {
+
+    }
+
     return {
+        createTagKey,
         isSelectorOpen, setSelectorOpen,
         isTagsLoading, setTagsLoading,
         filterTypes, setFilterTypes,

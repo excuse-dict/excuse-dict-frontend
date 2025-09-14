@@ -1,9 +1,11 @@
+import TagInterface from "@/app/excuses/new/components/TagInterface";
+
 export interface PostInterface {
     postId: number,
     excuse: {
         situation: string,
         excuse: string,
-        tags: Array<Object>,
+        tags: Array<TagInterface>,
     },
     author: any;
     upvoteCount: number;

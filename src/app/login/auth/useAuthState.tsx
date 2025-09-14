@@ -61,8 +61,7 @@ export const useAuthState = create<AuthState>()(
                         });
 
                         // 원래 위치로 돌아가기
-                        const path = getRedirectPath();
-                        window.location.href = path;
+                        window.location.href = getRedirectPath();
                     },
                     onFail: onFail
                 });

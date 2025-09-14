@@ -3,11 +3,14 @@ import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {EP_UPDATE_OR_DELETE_REPLY} from "@/app/constants/constants";
 import {useEdit} from "@/app/excuses/comments/hooks/useEdit";
+import {useAuthState} from "@/app/login/auth/useAuthState";
 
 export default function Reply({ reply, replyHook }: {
     reply: ReplyInterface,
     replyHook: ReturnType<typeof useReply>
 }) {
+
+    const { memberId } = useAuthState();
 
     const { updateReply, deleteReply, voteToReply } = replyHook;
     const { isOnEditing, setOnEditing, editInput, setEditInput,
@@ -98,38 +101,40 @@ export default function Reply({ reply, replyHook }: {
                         <p>💬</p>
                         <p>{reply.replyCount}</p>
                     </div>
-                    <div className="flex gap-2" ref={isOnEditing ? editingButtonRef : undefined}>
-                        {isOnEditing ?
-                            <>
-                                {/*수정 완료 버튼*/}
-                                <p
-                                    className="text-xs font-bold p-1 rounded-xl text-blue-400 cursor-pointer"
-                                    onClick={(e) => handleSubmitEdit(e)}
-                                >완료</p>
-                                {/*수정 취소 버튼*/}
-                                <p
-                                    className="text-xs font-bold p-1 rounded-2xl text-red-400 cursor-pointer"
-                                    onClick={(e) => {
-                                        setOnEditing(false);
-                                        e.stopPropagation();
-                                    }}
-                                >취소</p>
-                            </>
-                            :
-                            <>
-                                {/*수정 버튼*/}
-                                <p
-                                    className="text-xs p-1 rounded-xl text-blue-400 cursor-pointer"
-                                    onClick={(e) => handleStartEdit(e)}
-                                >수정</p>
-                                {/*삭제 버튼*/}
-                                <p
-                                    className="text-xs p-1 rounded-2xl text-red-400 cursor-pointer"
-                                    onClick={(e) => handleDelete(e)}
-                                >삭제</p>
-                            </>
-                        }
-                    </div>
+                    {reply.author?.id !== memberId ? <></> :
+                        <div className="flex gap-2" ref={isOnEditing ? editingButtonRef : undefined}>
+                            {isOnEditing ?
+                                <>
+                                    {/*수정 완료 버튼*/}
+                                    <p
+                                        className="text-xs font-bold p-1 rounded-xl text-blue-400 cursor-pointer"
+                                        onClick={(e) => handleSubmitEdit(e)}
+                                    >완료</p>
+                                    {/*수정 취소 버튼*/}
+                                    <p
+                                        className="text-xs font-bold p-1 rounded-2xl text-red-400 cursor-pointer"
+                                        onClick={(e) => {
+                                            setOnEditing(false);
+                                            e.stopPropagation();
+                                        }}
+                                    >취소</p>
+                                </>
+                                :
+                                <>
+                                    {/*수정 버튼*/}
+                                    <p
+                                        className="text-xs p-1 rounded-xl text-blue-400 cursor-pointer"
+                                        onClick={(e) => handleStartEdit(e)}
+                                    >수정</p>
+                                    {/*삭제 버튼*/}
+                                    <p
+                                        className="text-xs p-1 rounded-2xl text-red-400 cursor-pointer"
+                                        onClick={(e) => handleDelete(e)}
+                                    >삭제</p>
+                                </>
+                            }
+                        </div>
+                    }
                 </div>
             </div>
         </div>

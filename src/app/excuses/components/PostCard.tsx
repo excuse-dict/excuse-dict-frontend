@@ -5,16 +5,27 @@ import {useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
 import {usePost} from "@/app/excuses/hooks/usePost";
 import VoteButton from "@/app/excuses/components/VoteButton";
+import {useRouter} from "next/navigation";
+import {usePostCache} from "@/app/excuses/edit/hook/PostCache";
+import Swal from "sweetalert2";
+import {toast} from "react-toastify";
+import {apiDelete} from "@/axios/requests/delete/apiDelete";
+import {EP_UPDATE_OR_DELETE_POST} from "@/app/constants/constants";
 
-export default function PostCard({postProp}: {
-    postProp: PostInterface
+export default function PostCard({ postProp, deletePost }: {
+    postProp: PostInterface,
+    deletePost: (postId: number) => void,
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
     const postHook = usePost(postProp);
     const { post } = postHook;
 
-    const authState = useAuthState()
+    const postCacheHook = usePostCache(); // 수정 버튼 누를 시 수정 페이지로 넘길 캐시 데이터 저장소
+
+    const authState = useAuthState();
+    const router = useRouter();
+
     const {memberId} = authState;
     const [isExpanded, setExpanded] = useState<boolean>(false);
 
@@ -31,6 +42,31 @@ export default function PostCard({postProp}: {
         setExpanded(!isExpanded);
     }
 
+    const handleEditPost = () => {
+        postCacheHook.setCachedPost(post);
+        router.push("/excuses/edit")
+    }
+
+    const handleDeletePost = () => {
+        Swal.fire({
+            title: "확인",
+            text: "게시물을 삭제하시겠습니까?",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: "삭제",
+            cancelButtonText: "취소",
+            heightAuto: false,
+        }).then(() => {
+            apiDelete({
+                endPoint: EP_UPDATE_OR_DELETE_POST(post.postId),
+                onSuccess: () => {
+                    toast("게시물이 삭제되었습니다.");
+                    deletePost(post.postId);
+                }
+            })
+        })
+    }
+
     if(!post) return <></>;
 
     return (
@@ -41,7 +77,7 @@ export default function PostCard({postProp}: {
         >
             {/*상단 섹션*/}
             <section
-                className={'cursor-pointer'}
+                className={'flex flex-col cursor-pointer'}
                 onClick={handleCardClick}
             >
                 {/* 작성자 정보 */}
@@ -97,6 +133,7 @@ export default function PostCard({postProp}: {
                             <span className="font-semibold">{post.commentCount}</span>
                         </div>
                     </div>
+                    {/*태그*/}
                     <div className={'flex gap-2'}>
                         {post.excuse.tags.map((tag: any, index: number) => {
                             return <span
@@ -107,6 +144,18 @@ export default function PostCard({postProp}: {
                         })}
                     </div>
                 </div>
+                {post.author?.id !== memberId ? <></> :
+                    <div className="flex mt-2 gap-4 ml-auto">
+                        <button
+                            className="!bg-transparent !text-blue-400 text-sm"
+                            onClick={handleEditPost}
+                        >✏️수정</button>
+                        <button
+                            className="!bg-transparent !text-red-400 text-sm"
+                            onClick={handleDeletePost}
+                        >🗑️삭제</button>
+                    </div>
+                }
             </section>
 
             {/* 댓글 섹션 - 확장될 때만 표시 */}
