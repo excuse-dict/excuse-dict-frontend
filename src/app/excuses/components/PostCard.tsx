@@ -94,7 +94,9 @@ export default function PostCard({ postProp, deletePost }: {
                                 {post.author.nickname || '익명'}
                             </p>
                             {/*작성일시*/}
-                            <p className="text-sm text-gray-500">{getDatetimeFormat(post.createdAt)}</p>
+                            <p className="text-sm text-gray-500">
+                                {`${getDatetimeFormat(post.createdAt)}${post.createdAt !== post.modifiedAt ? ' (수정됨)' : ''}`}
+                            </p>
                         </div>
                     </div>
 

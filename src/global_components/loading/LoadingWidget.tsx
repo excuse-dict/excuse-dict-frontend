@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import css from './LoadingWidget.module.css'
 
 export default function LoadingWidget({ color, isLoading, isSucceed, loadingTitle, successTitle, failTitle }:{
