@@ -6,6 +6,7 @@ import css from './page.module.css'
 import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import {useRouter} from 'next/navigation';
 import {useAuthState} from "@/app/login/auth/useAuthState";
+import {toast} from "react-toastify";
 
 export default function LoginPage() {
 
@@ -28,6 +29,15 @@ export default function LoginPage() {
             },
         })
     }
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // 리퀘스트 토큰 만료로 넘어온 경우 토스트 표시
+        if(urlParams.get('expired') === 'true'){
+            toast("로그인 유지 기한이 만료되었습니다. 다시 로그인해 주세요.");
+        }
+    }, []);
 
     useEffect(() => {
         if(!shouldShowError) return;

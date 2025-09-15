@@ -29,14 +29,6 @@ export const getErrorMessage = (error: any) => {
 export const onFailDefault = (error: any) => {
     const message: string = getErrorMessage(error);
 
-    /*Swal.fire({
-        title: "오류",
-        text: message,
-        icon: 'error',
-        scrollbarPadding: false,
-        heightAuto: false,
-    });*/
-
     toast.error(message);
 }
 
@@ -51,7 +43,6 @@ export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = t
 }) => {
 
     console.log("GET요청 실패(에러): ", error);
-
 
     if (originalRequest.endPoint !== EP_LOGIN
         && ["ACCESS_TOKEN_EXPIRED", "AUTHENTICATION_FAILED"].includes(error?.response?.data?.code)) {
@@ -74,16 +65,17 @@ export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = t
 // 인증 잘못될 시 강제 로그아웃
 const forceLogout = () => {
     useAuthState.getState().logout();
-    window.location.href = PG_LOGIN;
+    window.location.href = `${PG_LOGIN}?expired=true`;
 }
 
 // 액세스 토큰 재발급 시도
 const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
 
-    const { refreshToken, login, memberId } = {
+    const { refreshToken, login, memberId, nickname } = {
         refreshToken: useAuthState.getState().refreshToken,
-        login: useAuthState.getState().login,
-        memberId: useAuthState.getState().memberId
+        login: useAuthState.getState().setStateAfterLogin,
+        memberId: useAuthState.getState().memberId,
+        nickname: useAuthState.getState().nickname,
     };
 
     if(!refreshToken){
@@ -101,7 +93,8 @@ const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
             login({
                 accessToken: response?.headers?.authorization,
                 refreshToken: refreshToken,
-                id: memberId
+                id: memberId,
+                nickname: nickname || '',
             })
 
             // 원 요청 재시도

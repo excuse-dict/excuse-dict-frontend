@@ -19,6 +19,7 @@ interface AuthState {
         overwriteDefaultHandler?: boolean;
         onFail?: () => void;
     }) => void,
+    setStateAfterLogin: (params: LoginParams) => void,
     logout: () => void;
 }
 
@@ -85,6 +86,7 @@ export const useAuthState = create<AuthState>()(
                 memberId: null,
                 nickname: null,
                 login: sendLoginRequest,
+                setStateAfterLogin,
                 logout: () => set({
                     isLoggedIn: false,
                     accessToken: null,

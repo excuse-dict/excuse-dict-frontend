@@ -26,3 +26,24 @@ export const getDatetimeFormat = (dateString: string) => {
         return "Invalid Datetime";
     }
 };
+
+export const isTimePassed = (refTime: string | null, seconds: number) => {
+
+    if(!refTime) return true;
+
+    const then = parseInt(refTime);
+
+    if(isNaN(then)) return true;
+
+    return (Date.now() - then) >= seconds * 1000;
+}
+
+export const getTimeDiffForNowInSeconds = (refTime: string | null) => {
+    if(!refTime) return -1;
+
+    const then = parseInt(refTime);
+
+    if(isNaN(then)) return -1;
+
+    return Math.ceil((Date.now() - then) / 1000);
+}

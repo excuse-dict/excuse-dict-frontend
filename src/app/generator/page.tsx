@@ -4,9 +4,17 @@ import TextBox from "@/global_components/input/text/TextBox";
 import {useState} from "react";
 import css from '../../global_components/loading/LoadingWidget.module.css';
 import {apiGet} from "@/axios/requests/get/apiGet";
-import {EP_GENERATE_EXCUSE} from "@/app/constants/constants";
+import {
+    EP_GENERATE_EXCUSE,
+    GENERATOR_COOLDOWN_FOR_MEMBER,
+    GENERATOR_COOLDOWN_FOR_NONMEMBER,
+    SS_GENERATOR_LAST_CALL_KEY
+} from "@/app/constants/constants";
 import {toast} from "react-toastify";
 import CopyableTextbox from "@/global_components/text/CopyableTextbox";
+import {getTimeDiffForNowInSeconds, isTimePassed} from "@/lib/TimeHelper";
+import {useAuthState} from "@/app/login/auth/useAuthState";
+import {useApiCooldown} from "@/global_components/cooldown/useApiCooldown";
 
 export default function ExcuseGeneratorPage(){
 
@@ -15,6 +23,17 @@ export default function ExcuseGeneratorPage(){
 
     const [isLoading, setLoading] = useState(false);
     const [isSucceed, setSucceed] = useState(false);
+
+    const { isLoggedIn } = useAuthState();
+
+    const getApiCallCooldown = () => {
+        return isLoggedIn ? GENERATOR_COOLDOWN_FOR_MEMBER : GENERATOR_COOLDOWN_FOR_NONMEMBER;
+    }
+
+    const { remainingTime, isInCooldown, countStart } = useApiCooldown({
+        storageKey: SS_GENERATOR_LAST_CALL_KEY,
+        cooldown: getApiCallCooldown(),
+    });
 
     const handleGenerate = () => {
 
@@ -25,6 +44,7 @@ export default function ExcuseGeneratorPage(){
 
         setLoading(true);
         setSucceed(false);
+        countStart();
 
         apiGet({
             endPoint: EP_GENERATE_EXCUSE,
@@ -41,6 +61,20 @@ export default function ExcuseGeneratorPage(){
 
     const isInputValid = () => {
         return situationInput.length >= 5 && situationInput.length <= 100;
+    }
+
+
+    const getButtonName = () => {
+
+        // 쿨타임 아닐 때
+        if(!isInCooldown) return (isSucceed ? "재" : '') + "생성";
+
+        // 쿨타임 중일 때
+        return `재생성(${remainingTime})`;
+    }
+
+    const isButtonDisabled = () => {
+        return !isInputValid() || isInCooldown;
     }
 
     return (
@@ -73,16 +107,10 @@ export default function ExcuseGeneratorPage(){
             )}
             {/*AI응답 요청 버튼*/}
             <button
-                className='global_button mt-8 ml-auto w-20 p-1 rounded'
-                disabled={!isInputValid()}
-                style={!isInputValid() ? {
-                    background: 'gray',
-                    cursor: 'not-allowed',
-                    opacity: 0.6,
-                    color: '#9ca3af'
-                } : {}}
+                className={`global_button ${isButtonDisabled() ? 'disabled-button' : ''} mt-8 ml-auto w-20 p-1 rounded`}
+                disabled={isButtonDisabled()}
                 onClick={handleGenerate}
-            >{(isSucceed ? "재" : '') + "생성"}</button>
+            >{getButtonName()}</button>
         </div>
     );
 }

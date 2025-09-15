@@ -1,5 +1,5 @@
 import {ReplyInterface, UpdateReplyDto, useReply} from "@/app/excuses/comments/hooks/useReply";
-import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
+import {getDatetimeFormat} from "@/lib/TimeHelper";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {EP_UPDATE_OR_DELETE_REPLY} from "@/app/constants/constants";
 import {useEdit} from "@/app/excuses/comments/hooks/useEdit";

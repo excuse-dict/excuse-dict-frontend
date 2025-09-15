@@ -72,3 +72,10 @@ export const MAX_SELECTED_TAGS = 10;
 
 // 대댓글 페이지 사이즈
 export const REPLY_PAGE_SIZE = 5;
+
+// 세션 스토리지 관련
+export const SS_GENERATOR_LAST_CALL_KEY = "generatorLastCall";
+
+// 핑계 생성기 api 호출 쿨타임
+export const GENERATOR_COOLDOWN_FOR_NONMEMBER = 60;
+export const GENERATOR_COOLDOWN_FOR_MEMBER = 5;

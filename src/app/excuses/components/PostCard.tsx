@@ -1,5 +1,5 @@
 import {PostInterface} from "@/app/excuses/posts/PostInterface";
-import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
+import {getDatetimeFormat} from "@/lib/TimeHelper";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";

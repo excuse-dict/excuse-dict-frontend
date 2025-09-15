@@ -1,4 +1,4 @@
-import {getDatetimeFormat} from "@/lib/GetDatetimeFormat";
+import {getDatetimeFormat} from "@/lib/TimeHelper";
 import {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import {VoteType} from "@/app/excuses/votes/VoteInterface";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
