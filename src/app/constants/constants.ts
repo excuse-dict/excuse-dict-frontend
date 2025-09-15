@@ -3,7 +3,8 @@ export const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const EP_CHECK_EMAIL_AVAILABILITY = "/api/v1/emails/check-availability"
 export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";
 export const EP_COMMENT = (postId: number) => `/api/v1/posts/${postId}/comments`;
-export const EP_GENERATE_EXCUSE = "/api/v1/excuses/generate";
+export const EP_GENERATE_EXCUSE_FOR_MEMBER = "/api/v1/excuses/generate/members";
+export const EP_GENERATE_EXCUSE_FOR_GUESTS = "/api/v1/excuses/generate/guests";
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
 export const EP_LOGIN = "/api/v1/auth/login";
@@ -77,5 +78,5 @@ export const REPLY_PAGE_SIZE = 5;
 export const SS_GENERATOR_LAST_CALL_KEY = "generatorLastCall";
 
 // 핑계 생성기 api 호출 쿨타임
-export const GENERATOR_COOLDOWN_FOR_NONMEMBER = 60;
+export const GENERATOR_COOLDOWN_FOR_GUEST = 60;
 export const GENERATOR_COOLDOWN_FOR_MEMBER = 5;

@@ -3,18 +3,16 @@
 import TextBox from "@/global_components/input/text/TextBox";
 import {useState} from "react";
 import css from '../../global_components/loading/LoadingWidget.module.css';
-import {apiGet} from "@/axios/requests/get/apiGet";
 import {
-    EP_GENERATE_EXCUSE,
     GENERATOR_COOLDOWN_FOR_MEMBER,
-    GENERATOR_COOLDOWN_FOR_NONMEMBER,
-    SS_GENERATOR_LAST_CALL_KEY
+    GENERATOR_COOLDOWN_FOR_GUEST,
+    SS_GENERATOR_LAST_CALL_KEY, EP_GENERATE_EXCUSE_FOR_MEMBER, EP_GENERATE_EXCUSE_FOR_GUESTS
 } from "@/app/constants/constants";
 import {toast} from "react-toastify";
 import CopyableTextbox from "@/global_components/text/CopyableTextbox";
-import {getTimeDiffForNowInSeconds, isTimePassed} from "@/lib/TimeHelper";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useApiCooldown} from "@/global_components/cooldown/useApiCooldown";
+import {apiPost} from "@/axios/requests/post/apiPost";
 
 export default function ExcuseGeneratorPage(){
 
@@ -27,7 +25,7 @@ export default function ExcuseGeneratorPage(){
     const { isLoggedIn } = useAuthState();
 
     const getApiCallCooldown = () => {
-        return isLoggedIn ? GENERATOR_COOLDOWN_FOR_MEMBER : GENERATOR_COOLDOWN_FOR_NONMEMBER;
+        return isLoggedIn ? GENERATOR_COOLDOWN_FOR_MEMBER : GENERATOR_COOLDOWN_FOR_GUEST;
     }
 
     const { remainingTime, isInCooldown, countStart } = useApiCooldown({
@@ -46,16 +44,21 @@ export default function ExcuseGeneratorPage(){
         setSucceed(false);
         countStart();
 
-        apiGet({
-            endPoint: EP_GENERATE_EXCUSE,
-            params: {
+        apiPost({
+            endPoint: (isLoggedIn ? EP_GENERATE_EXCUSE_FOR_MEMBER : EP_GENERATE_EXCUSE_FOR_GUESTS),
+            body: {
                 situation: situationInput,
             },
             onSuccess: (response) => {
                 setAnswer(response.data);
                 setLoading(false);
                 setSucceed(true);
-            }
+            },
+            onFail: (error) => {
+                setLoading(false);
+                setSucceed(false);
+            },
+            overwriteDefaultOnFail: false,
         });
     }
 
