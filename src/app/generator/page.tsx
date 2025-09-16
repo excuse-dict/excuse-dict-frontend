@@ -6,13 +6,15 @@ import css from '../../global_components/loading/LoadingWidget.module.css';
 import {
     GENERATOR_COOLDOWN_FOR_MEMBER,
     GENERATOR_COOLDOWN_FOR_GUEST,
-    SS_GENERATOR_LAST_CALL_KEY, EP_GENERATE_EXCUSE_FOR_MEMBER, EP_GENERATE_EXCUSE_FOR_GUESTS
+    SS_GENERATOR_LAST_CALL_KEY, EP_GENERATE_EXCUSE_FOR_MEMBER, EP_GENERATE_EXCUSE_FOR_GUESTS, PG_LOGIN
 } from "@/app/constants/constants";
 import {toast} from "react-toastify";
 import CopyableTextbox from "@/global_components/text/CopyableTextbox";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useApiCooldown} from "@/global_components/cooldown/useApiCooldown";
 import {apiPost} from "@/axios/requests/post/apiPost";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 export default function ExcuseGeneratorPage(){
 
@@ -23,6 +25,8 @@ export default function ExcuseGeneratorPage(){
     const [isSucceed, setSucceed] = useState(false);
 
     const { isLoggedIn } = useAuthState();
+
+    const router = useRouter();
 
     const getApiCallCooldown = () => {
         return isLoggedIn ? GENERATOR_COOLDOWN_FOR_MEMBER : GENERATOR_COOLDOWN_FOR_GUEST;
@@ -83,7 +87,7 @@ export default function ExcuseGeneratorPage(){
     return (
         <div className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white">
             <h1 className="font-bold text-2xl">핑계 생성기</h1>
-            <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 만들기</span>
+            <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 마련하기</span>
             {/*상황 기입란*/}
             <TextBox
                 value={situationInput}
@@ -114,6 +118,12 @@ export default function ExcuseGeneratorPage(){
                 disabled={isButtonDisabled()}
                 onClick={handleGenerate}
             >{getButtonName()}</button>
+            {isLoggedIn || !isButtonDisabled() ? <></> :
+                <p
+                    className="ml-auto mt-2 text-xs text-blue-500 cursor-pointer hover:underline"
+                    onClick={() => router.push(PG_LOGIN)}
+                >기다리기 싫다면? 로그인</p>
+            }
         </div>
     );
 }

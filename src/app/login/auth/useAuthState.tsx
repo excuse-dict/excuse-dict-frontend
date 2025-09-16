@@ -7,25 +7,25 @@ import {useRouter} from "next/navigation";
 import {apiPost} from "@/axios/requests/post/apiPost";
 
 interface AuthState {
-    isLoggedIn: boolean;
-    accessToken: string | null;
-    refreshToken: string | null;
-    memberId: number | null;
-    nickname: string | null;
+    isLoggedIn: boolean,
+    accessToken: string | null,
+    refreshToken: string | null,
+    memberId: number | null,
+    nickname: string | null,
 
     login: (params: {
-        email: string;
-        password: string;
-        overwriteDefaultHandler?: boolean;
-        onFail?: () => void;
+        email: string,
+        password: string,
+        overwriteDefaultHandler?: boolean,
+        onFail?: () => void,
     }) => void,
     setStateAfterLogin: (params: LoginParams) => void,
-    logout: () => void;
+    logout: () => void,
 }
 
 export interface LoginParams {
-    accessToken: string;
-    refreshToken: string;
+    accessToken: string,
+    refreshToken: string,
     id: number | null,
     nickname: string,
 }
@@ -87,15 +87,20 @@ export const useAuthState = create<AuthState>()(
                 nickname: null,
                 login: sendLoginRequest,
                 setStateAfterLogin,
-                logout: () => set({
-                    isLoggedIn: false,
-                    accessToken: null,
-                    refreshToken: null,
-                    memberId: null,
-                    nickname: null,
-                }),
+                logout: () => {
+                    set({
+                        isLoggedIn: false,
+                        accessToken: null,
+                        refreshToken: null,
+                        memberId: null,
+                        nickname: null,
+                    });
+                    window.location.href = PG_HOME;
+                },
             };
         },
-        { name: 'auth-storage' }
+        {
+            name: 'auth-storage',
+        }
     )
 );
