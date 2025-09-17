@@ -13,13 +13,12 @@ import CopyableTextbox from "@/global_components/text/CopyableTextbox";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useApiCooldown} from "@/global_components/cooldown/useApiCooldown";
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {router} from "next/client";
 import {useRouter} from "next/navigation";
 
 export default function ExcuseGeneratorPage(){
 
     const [situationInput, setSituationInput] = useState('');
-    const [answer, setAnswer] = useState('');
+    const [answer, setAnswer] = useState<string[]>([]);
 
     const [isLoading, setLoading] = useState(false);
     const [isSucceed, setSucceed] = useState(false);
@@ -85,7 +84,7 @@ export default function ExcuseGeneratorPage(){
     }
 
     return (
-        <div className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white">
+        <div className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white transition-all duration-800 ease-out">
             <h1 className="font-bold text-2xl">핑계 생성기</h1>
             <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 마련하기</span>
             {/*상황 기입란*/}
@@ -97,32 +96,43 @@ export default function ExcuseGeneratorPage(){
                 max={100}
                 containerStyle="w-full mt-16"
             ></TextBox>
-            {isLoading ?
-                /*로딩 스피너*/
-                <div className={`${css.loading_spinner} !w-12 !h-12 mt-8`}></div>
-            : (
-                isSucceed ? (
-                    /*AI의 답변*/
-                    <div>
-                        <div className="text-center text-2xl mt-4 mb-4">↓</div>
-                        <CopyableTextbox
-                            text={answer}
-                            style="bg-blue-200 rounded p-4"
-                        ></CopyableTextbox>
-                    </div>
-                ) : <></>
-            )}
+            <div className="overflow-hidden transition-all duration-500 ease-out" style={{ 
+                maxHeight: isLoading || isSucceed ? '1000px' : '0px', 
+                opacity: isLoading || isSucceed ? 1 : 0 
+            }}>
+                {isLoading ?
+                    /*로딩 스피너*/
+                    <div className={`${css.loading_spinner} !w-12 !h-12 mt-8`}></div>
+                    : (
+                        isSucceed ? (
+                            /*AI의 답변*/
+                            <div className="animate-fadeIn">
+                                <div className="text-center text-2xl mt-4 mb-4">↓</div>
+                                <ul className="flex flex-col gap-2">
+                                    {answer.map((answer, key) => (
+                                        <li key={key} className="flex flex-col transform transition-all duration-500 ease-out delay-300">
+                                            <CopyableTextbox
+                                                text={answer}
+                                                style="bg-blue-200 rounded p-4"
+                                            ></CopyableTextbox>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ) : <></>
+                    )}
+            </div>
             {/*AI응답 요청 버튼*/}
             <button
                 className={`global_button ${isButtonDisabled() ? 'disabled-button' : ''} mt-8 ml-auto w-20 p-1 rounded`}
                 disabled={isButtonDisabled()}
                 onClick={handleGenerate}
             >{getButtonName()}</button>
-            {isLoggedIn || !isButtonDisabled() ? <></> :
+            {isLoggedIn || !isInCooldown ? <></> :
                 <p
                     className="ml-auto mt-2 text-xs text-blue-500 cursor-pointer hover:underline"
                     onClick={() => router.push(PG_LOGIN)}
-                >기다리기 싫다면? 로그인</p>
+                >기다리기 싫다면? 로그인↗</p>
             }
         </div>
     );

@@ -27,7 +27,7 @@ export default function CopyableTextbox({text, style}: {
 
     return (
         <div
-            className={`${css.textbox} relative cursor-pointer ${style}`}
+            className={`${css.textbox} cursor-pointer ${style}`}
             onClick={(e) => copyToClipboard(e)}
         >
             {text + '🗐'}
