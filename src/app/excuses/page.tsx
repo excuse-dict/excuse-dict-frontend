@@ -4,8 +4,8 @@ import {useState, useEffect} from 'react';
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_POST} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
-import {PostInterface} from "@/app/excuses/posts/PostInterface";
-import PostCard from "@/app/excuses/components/PostCard";
+import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
+import PostCard from "@/app/excuses/posts/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 

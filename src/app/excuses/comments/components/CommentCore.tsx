@@ -96,7 +96,7 @@ export default function CommentCore({ comment, commentHook, toggleRepliesExpande
                     </span>
                     {/*작성일시*/}
                     <span className="text-xs text-gray-500">
-                        {getDatetimeFormat(comment.createdAt)}
+                        {getDatetimeFormat(comment.createdAt, "DAYS")}
                         {comment.createdAt !== comment.modifiedAt ? " (수정됨)" : ''}
                     </span>
                 </div>

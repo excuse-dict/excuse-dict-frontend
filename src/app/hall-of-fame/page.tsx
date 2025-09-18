@@ -4,8 +4,9 @@ import {usePage} from "@/global_components/page/usePage";
 import {useEffect, useState} from "react";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_HALL_OF_FAME} from "@/app/constants/constants";
-import {PostInterface} from "@/app/excuses/posts/PostInterface";
-import PostCard from "@/app/excuses/components/PostCard";
+import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
+import PostCard from "@/app/excuses/posts/components/PostCard";
+import HallOfFamePost from "@/app/excuses/posts/components/HallOfFamePost";
 
 export default function HallOfFamePage(){
 
@@ -26,9 +27,12 @@ export default function HallOfFamePage(){
             <p className="font-bold text-4xl">명예의 전당</p>
             <p className="font-light mt-4">레전드 미꾸라지 뱀장어들</p>
             <div className="bg-white">
-                {posts.map((post) => (
-                    <div key={post.postId}>
-                        <PostCard postProp={post} deletePost={() =>{}}></PostCard>
+                {posts.map((post, index) => (
+                    <div key={post.postId} className="flex flex-col gap-8">
+                        <HallOfFamePost
+                            postProp={post}
+                            ranking={index + 1}
+                        ></HallOfFamePost>
                     </div>
                 ))}
             </div>

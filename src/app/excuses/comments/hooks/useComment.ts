@@ -1,4 +1,4 @@
-import {PostInterface} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_COMMENT, EP_UPDATE_OR_DELETE_COMMENT, EP_VOTE_TO_COMMENT} from "@/app/constants/constants";
 import {apiGet} from "@/axios/requests/get/apiGet";

@@ -1,5 +1,4 @@
-import {PostInterface} from "@/app/excuses/posts/PostInterface";
-import {getDatetimeFormat} from "@/lib/TimeHelper";
+import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
@@ -11,6 +10,7 @@ import Swal from "sweetalert2";
 import {toast} from "react-toastify";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 import {EP_UPDATE_OR_DELETE_POST} from "@/app/constants/constants";
+import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
 
 export default function PostCard({ postProp, deletePost }: {
     postProp: PostInterface,
@@ -27,11 +27,7 @@ export default function PostCard({ postProp, deletePost }: {
     const router = useRouter();
 
     const {memberId} = authState;
-    const [isExpanded, setExpanded] = useState<boolean>(false);
-
-    const isMine = (): boolean => {
-        return post.author.id === memberId;
-    }
+    const [isExpanded, setExpanded] = useState(false);
 
     const handleCardClick = (e: React.MouseEvent<HTMLElement>) => {
         // 버튼이나 입력 필드 클릭시에는 카드 확장 방지
@@ -80,26 +76,9 @@ export default function PostCard({ postProp, deletePost }: {
                 className={'flex flex-col cursor-pointer'}
                 onClick={handleCardClick}
             >
-                {/* 작성자 정보 */}
                 <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center space-x-3">
-                        {/*프로필 아이콘*/}
-                        <div
-                            className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
-                            {post.author.nickname?.charAt(0)?.toUpperCase() || '?'}
-                        </div>
-                        <div>
-                            {/*작성자 닉네임*/}
-                            <p className={`font-semibold ${isMine() ? 'text-[var(--strong-purple)]' : 'text-gray-800'}`}>
-                                {post.author.nickname || '익명'}
-                            </p>
-                            {/*작성일시*/}
-                            <p className="text-sm text-gray-500">
-                                {`${getDatetimeFormat(post.createdAt)}${post.createdAt !== post.modifiedAt ? ' (수정됨)' : ''}`}
-                            </p>
-                        </div>
-                    </div>
-
+                    {/* 작성자 정보 */}
+                    <AuthorInfo post={post}></AuthorInfo>
                     {/* 확장 상태 표시 아이콘 */}
                     <div className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
                         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

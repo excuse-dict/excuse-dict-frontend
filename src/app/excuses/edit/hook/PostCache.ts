@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import {PostInterface} from "@/app/excuses/posts/PostInterface";
+import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 
 interface PostCache {
     cachedPost: PostInterface | null;

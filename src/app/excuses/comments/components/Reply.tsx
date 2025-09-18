@@ -66,7 +66,7 @@ export default function Reply({ reply, replyHook }: {
                     </span>
                     {/*작성일시*/}
                     <span className="text-xs text-gray-500">
-                        {getDatetimeFormat(reply.createdAt)}
+                        {getDatetimeFormat(reply.createdAt, "DAYS")}
                         {reply.createdAt !== reply.modifiedAt ? " (수정됨)" : ''}
                     </span>
                 </div>
