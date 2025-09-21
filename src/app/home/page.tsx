@@ -10,10 +10,10 @@ export default function Home() {
     const contentWidth = 'w-4/5';
 
     const router = useRouter();
-    const { requireAuth } = useAuthGuard();
+    const { confirmLogin } = useAuthGuard();
 
     const handleWritePost = () => {
-        if(requireAuth("게시글을 작성하려면 로그인해주세요")) router.push(PG_NEW_EXCUSE);
+        if(confirmLogin("게시글을 작성하려면 로그인해주세요")) router.push(PG_NEW_EXCUSE);
     }
 
     return (

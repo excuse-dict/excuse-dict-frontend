@@ -46,7 +46,8 @@ export default function HallOfFamePost({postProp, ranking}: {
             case 3:
                 return 'bg-[#CE8946]'
             default:
-                return 'bg-blue-400'
+                const opacity = Math.max(0.2, 1 - (ranking - 4) * 0.01)
+                return `bg-blue-400 opacity-[${opacity}]` // 순위 내려갈 수록 점점 연해짐
         }
     }
 
@@ -59,7 +60,7 @@ export default function HallOfFamePost({postProp, ranking}: {
             case 3:
                 return 'bg-gradient-to-b from-orange-100 to-orange-200 border-orange-600' // 동메달
             default:
-                return 'bg-slate-100 border-slate-400' // 기본
+                return ''
         }
     }
 
@@ -67,11 +68,12 @@ export default function HallOfFamePost({postProp, ranking}: {
         <div className="flex w-full">
             {/*순위 라벨*/}
             <div className={`flex flex-col h-full items-center ${getLabelColor(ranking)}`}>
-                <div className="flex-1 flex w-full items-start justify-center">
-                    <p className={`text-xl w-full text-center mt-1 border-t-4 border-b-4 ${getMedalBg(ranking)}`}>
-                        {getMedal(ranking)}
-                    </p>
-                </div>
+                {ranking > 3 ? <div className="flex-1"></div>
+                    : <div className="flex-1 flex w-full items-start justify-center">
+                        <p className={`text-xl w-full text-center mt-1 border-t-4 border-b-4 ${getMedalBg(ranking)}`}>
+                            {getMedal(ranking)}
+                        </p>
+                    </div>}
                 <div className="flex-1 flex p-2 justify-center">
                     <p className="font-bold text-xl">{`#${ranking}`}</p>
                 </div>

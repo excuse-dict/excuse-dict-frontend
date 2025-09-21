@@ -29,7 +29,6 @@ export default function HallOfFamePage(){
             <div className="bg-white">
                 {posts.map((post, index) => (
                     <div className="flex" key={post.postId}>
-
                         <HallOfFamePost
                             postProp={post}
                             ranking={index + 1}
