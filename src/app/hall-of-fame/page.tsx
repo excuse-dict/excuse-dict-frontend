@@ -28,7 +28,8 @@ export default function HallOfFamePage(){
             <p className="font-light mt-4">레전드 미꾸라지 뱀장어들</p>
             <div className="bg-white">
                 {posts.map((post, index) => (
-                    <div key={post.postId} className="flex flex-col gap-8">
+                    <div className="flex" key={post.postId}>
+
                         <HallOfFamePost
                             postProp={post}
                             ranking={index + 1}
