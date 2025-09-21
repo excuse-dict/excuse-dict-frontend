@@ -1,17 +1,23 @@
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_VOTE_TO_POST} from "@/app/constants/constants";
-import {usePost} from "@/app/excuses/hooks/usePost";
+import {usePostState} from "@/app/excuses/hooks/usePostState";
+import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
 
 type VoteType = "UPVOTE" | "DOWNVOTE";
 
 export default function VoteButton({ postState, voteType }: {
-    postState: ReturnType<typeof usePost>,
+    postState: ReturnType<typeof usePostState>,
     voteType: VoteType,
 }) {
     const { post, upvote, cancelUpvote, downvote, cancelDownvote } = postState;
     const myVoteType: string = post?.myVote?.voteType;
 
+    const { confirmLogin } = useAuthGuard();
+
     const handleVote = () => {
+
+        if(!confirmLogin()) return;
+
         apiPost({
             endPoint: EP_VOTE_TO_POST(post.postId),
             body: {

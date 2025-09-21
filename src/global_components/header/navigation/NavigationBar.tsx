@@ -1,6 +1,6 @@
 import css from "@/global_components/header/Header.module.css";
 import Link from "next/link";
-import {PG_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_POPULAR} from "@/app/constants/constants";
+import {PG_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_POPULAR, PG_WEEKLY_TOP} from "@/app/constants/constants";
 import {useState} from "react";
 
 export default function NavigationBar(){
@@ -10,7 +10,7 @@ export default function NavigationBar(){
             <Link href={PG_EXCUSES} className={css.nav_link}>
                 전체
             </Link>
-            <Link href={PG_POPULAR} className={css.nav_link}>
+            <Link href={PG_WEEKLY_TOP} className={css.nav_link}>
                 주간 TOP
             </Link>
             <Link href={PG_HALL_OF_FAME} className={css.nav_link}>

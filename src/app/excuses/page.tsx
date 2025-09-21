@@ -8,12 +8,16 @@ import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import PostCard from "@/app/excuses/posts/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
+import {usePosts} from "@/app/excuses/hooks/usePosts";
 
 export default function Board() {
     const boardPage = usePage();
     const {currentPage, setPageInfo} = boardPage;
-    const [posts, setPosts] = useState<PostInterface[]>([]);
+
     const [isLoading, setloading] = useState(true);
+
+    const postsHook = usePosts();
+    const { posts, setPosts } = postsHook;
 
     useEffect(() => {
         setloading(true);
@@ -29,19 +33,6 @@ export default function Board() {
             }
         })
     }, [currentPage]);
-
-    const deletePost = (postId: number) => {
-        setPosts(posts => {
-            const index = posts.findIndex(post => post.postId === postId);
-
-            if (index === -1) return posts; // 못 찾으면 원본 그대로
-
-            return [
-                ...posts.slice(0, index),
-                ...posts.slice(index + 1)
-            ];
-        });
-    }
 
     if (isLoading) {
         return (
@@ -75,7 +66,7 @@ export default function Board() {
             <div className="space-y-6 mb-8">
                 {posts.map((post, index) => (
                     <ReplyProvider key={index}>
-                        <PostCard postProp={post} deletePost={deletePost}></PostCard>
+                        <PostCard postProp={post} postsHook={postsHook}></PostCard>
                     </ReplyProvider>
                 ))}
             </div>

@@ -8,7 +8,7 @@ export default function CommentForm({ commentInput, setCommentInput, handleComme
     hideProfileImage?: boolean,
 }){
 
-    const { requireAuth } = useAuthGuard();
+    const { confirmLogin } = useAuthGuard();
 
     return (
         <form onSubmit={(e: React.FormEvent<HTMLFormElement>) => {
@@ -34,7 +34,7 @@ export default function CommentForm({ commentInput, setCommentInput, handleComme
                         placeholder="댓글을 입력하세요..."
                         onFocus={(e) => {
                             e.stopPropagation()
-                            if (!requireAuth()) e.target.blur();
+                            if (!confirmLogin()) e.target.blur();
                         }}
                     />
                     <div className="flex justify-end mt-3">

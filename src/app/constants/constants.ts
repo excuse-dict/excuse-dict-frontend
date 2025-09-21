@@ -23,18 +23,19 @@ export const EP_VERIFY_RESET_PASSWORD = "/api/v1/auth/verify/reset-password";
 export const EP_VOTE_TO_POST = (postId: number) => `/api/v1/posts/${postId}/votes`;
 export const EP_VOTE_TO_COMMENT = (commentId: number) => `/api/v1/posts/comments/${commentId}/votes`;
 export const EP_VOTE_TO_REPLY = (replyId: number) => `/api/v1/posts/comments/replies/${replyId}/votes`;
+export const EP_WEEKLY_TOP = "/api/v1/posts/weekly-top";
 
 // 페이지 주소
+export const PG_EXCUSES = "/excuses";
+export const PG_GENERATOR = "/generator";
+export const PG_HALL_OF_FAME = "/hall-of-fame";
 export const PG_HOME = '/home';
 export const PG_LOGIN = '/login';
+export const PG_NEW_EXCUSE = "/excuses/new";
 export const PG_REGISTER = "/register";
 export const PG_PASSWORD_RESET = "/password-reset";
 export const PG_PASSWORD_RESET_VERIFIED = '/password-reset-verified';
-export const PG_POPULAR = "/popular";
-export const PG_HALL_OF_FAME = "/hall-of-fame";
-export const PG_NEW_EXCUSE = "/excuses/new";
-export const PG_GENERATOR = "/generator";
-export const PG_EXCUSES = "/excuses";
+export const PG_WEEKLY_TOP = "/weekly-top";
 
 // 회원가입 제약조건
 export const MAX_EMAIL_LENGTH = 30;

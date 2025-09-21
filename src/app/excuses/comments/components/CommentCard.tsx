@@ -5,11 +5,11 @@ import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comme
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import CommentList from "@/app/excuses/comments/components/CommentList";
-import {usePost} from "@/app/excuses/hooks/usePost";
+import {usePostState} from "@/app/excuses/hooks/usePostState";
 
 export default function CommentCard({isExpanded, postHook}: {
     isExpanded: boolean,
-    postHook: ReturnType<typeof usePost>,
+    postHook: ReturnType<typeof usePostState>,
 }) {
 
     const commentPageHook = usePage();

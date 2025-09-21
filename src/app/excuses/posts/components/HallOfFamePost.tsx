@@ -3,7 +3,7 @@ import VoteButton from "@/app/excuses/components/VoteButton";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
 import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
 import {useState} from "react";
-import {usePost} from "@/app/excuses/hooks/usePost";
+import {usePostState} from "@/app/excuses/hooks/usePostState";
 
 export default function HallOfFamePost({postProp, ranking}: {
     postProp: PostInterface,
@@ -11,7 +11,7 @@ export default function HallOfFamePost({postProp, ranking}: {
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
-    const postHook = usePost(postProp);
+    const postHook = usePostState(postProp);
     const {post} = postHook;
     const [isExpanded, setExpanded] = useState(false);
 
@@ -76,72 +76,75 @@ export default function HallOfFamePost({postProp, ranking}: {
                     <p className="font-bold text-xl">{`#${ranking}`}</p>
                 </div>
             </div>
-            <article
-                className={`flex-1 p-8 !cursor-default !bg-white shadow-md hover:shadow-lg transition-all duration-300 ${
-                    isExpanded ? 'shadow-xl' : ''
-                }`}
-            >
-                {/*상단 섹션*/}
-                <section
-                    className={'flex flex-col cursor-pointer'}
-                    onClick={handleCardClick}
+            <div className={`w-full pt-1 ${getLabelColor(ranking)}`}>
+                <article
+                    className={`flex-1 rounded-l shadow-xl global-button pl-6 pr-4 pt-2 pb-2 !cursor-default !bg-white hover:shadow-lg transition-all duration-300 ${
+                        isExpanded ? 'shadow-xl' : ''
+                    }`}
                 >
-                    <div className="flex items-center justify-between mb-4">
-                        {/* 작성자 정보 */}
-                        <AuthorInfo post={post}></AuthorInfo>
-                        {/* 확장 상태 표시 아이콘 */}
-                        <div
-                            className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
-                            <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
-                                 viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7"/>
-                            </svg>
-                        </div>
-                    </div>
-
-                    {/* 상황 (제목) */}
-                    <h2 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
-                        {post.excuse.situation || '제목 없음'}
-                    </h2>
-
-                    {/* 변명 내용 */}
-                    <div className="bg-gray-50 rounded-lg p-4 mb-4">
-                        <p className="text-gray-700 leading-relaxed">
-                            {post.excuse.excuse || '내용 없음'}
-                        </p>
-                    </div>
-
-                    {/* 투표 버튼, 댓글수 */}
-                    <div className="flex items-center justify-between">
-                        <div className="flex items-center space-x-4">
-                            {/*추천 버튼*/}
-                            <VoteButton postState={postHook} voteType={"UPVOTE"}></VoteButton>
-                            {/* 비추천 버튼 */}
-                            <VoteButton postState={postHook} voteType={"DOWNVOTE"}></VoteButton>
-                            {/*댓글 수*/}
+                    {/*상단 섹션*/}
+                    <section
+                        className={'flex flex-col p-2 bg-white cursor-pointer'}
+                        onClick={handleCardClick}
+                    >
+                        <div className="flex items-center justify-between mb-4">
+                            {/* 작성자 정보 */}
+                            <AuthorInfo post={post}></AuthorInfo>
+                            {/* 확장 상태 표시 아이콘 */}
                             <div
-                                className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"
-                            >
-                                <span className="text-lg group-hover:scale-110 transition-transform">💬</span>
-                                <span className="font-semibold">{post.commentCount}</span>
+                                className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
+                                <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor"
+                                     viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                          d="M19 9l-7 7-7-7"/>
+                                </svg>
                             </div>
                         </div>
-                        {/*태그*/}
-                        <div className={'flex gap-2'}>
-                            {post.excuse.tags.map((tag: any, index: number) => {
-                                return <span
-                                    key={index}
-                                    className={'text-blue-500 text-sm'}
-                                >{`#${(tag as { value: string }).value}`}
-                        </span>;
-                            })}
-                        </div>
-                    </div>
-                </section>
 
-                {/* 댓글 섹션 - 확장될 때만 표시 */}
-                <CommentCard isExpanded={isExpanded} postHook={postHook}></CommentCard>
-            </article>
+                        {/* 상황 (제목) */}
+                        <h2 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
+                            {post.excuse.situation || '제목 없음'}
+                        </h2>
+
+                        {/* 변명 내용 */}
+                        <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                            <p className="text-gray-700 leading-relaxed">
+                                {post.excuse.excuse || '내용 없음'}
+                            </p>
+                        </div>
+
+                        {/* 투표 버튼, 댓글수 */}
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center space-x-4">
+                                {/*추천 버튼*/}
+                                <VoteButton postState={postHook} voteType={"UPVOTE"}></VoteButton>
+                                {/* 비추천 버튼 */}
+                                <VoteButton postState={postHook} voteType={"DOWNVOTE"}></VoteButton>
+                                {/*댓글 수*/}
+                                <div
+                                    className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"
+                                >
+                                    <span className="text-lg group-hover:scale-110 transition-transform">💬</span>
+                                    <span className="font-semibold">{post.commentCount}</span>
+                                </div>
+                            </div>
+                            {/*태그*/}
+                            <div className={'flex gap-2'}>
+                                {post.excuse.tags.map((tag: any, index: number) => {
+                                    return <span
+                                        key={index}
+                                        className={'text-blue-500 text-sm'}
+                                    >{`#${(tag as { value: string }).value}`}
+                        </span>;
+                                })}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* 댓글 섹션 - 확장될 때만 표시 */}
+                    <CommentCard isExpanded={isExpanded} postHook={postHook}></CommentCard>
+                </article>
+            </div>
         </div>
     )
 }

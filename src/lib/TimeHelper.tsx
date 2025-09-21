@@ -1,4 +1,4 @@
-export type TimeFormatThreshold = 'MINUTES | HOURS | DAYS | MONTHS | YEARS';
+export type TimeFormatThreshold = 'MINUTES' | 'HOURS' | 'DAYS' | 'MONTHS' | 'YEARS';
 
 const format = (date: Date) => {
     return date.toLocaleDateString('ko-KR', {

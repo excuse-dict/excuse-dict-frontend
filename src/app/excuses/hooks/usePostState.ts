@@ -1,8 +1,10 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 
-export const usePost = (initialPost: PostInterface) => {
+export const usePostState = (
+    initialPost: PostInterface,
+) => {
 
     const [post, setPost] = useState<PostInterface>(initialPost);
 

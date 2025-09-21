@@ -1,8 +1,8 @@
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
-import {useState} from "react";
+import React, {useState} from "react";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
-import {usePost} from "@/app/excuses/hooks/usePost";
+import {usePostState} from "@/app/excuses/hooks/usePostState";
 import VoteButton from "@/app/excuses/components/VoteButton";
 import {useRouter} from "next/navigation";
 import {usePostCache} from "@/app/excuses/edit/hook/PostCache";
@@ -11,15 +11,19 @@ import {toast} from "react-toastify";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 import {EP_UPDATE_OR_DELETE_POST} from "@/app/constants/constants";
 import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
+import TagInterface from "@/app/excuses/new/components/TagInterface";
+import {usePosts} from "@/app/excuses/hooks/usePosts";
 
-export default function PostCard({ postProp, deletePost }: {
+export default function PostCard({ postProp, postsHook }: {
     postProp: PostInterface,
-    deletePost: (postId: number) => void,
+    postsHook: ReturnType<typeof usePosts>,
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
-    const postHook = usePost(postProp);
-    const { post } = postHook;
+    const postStateHook = usePostState(postProp);
+    const { post } = postStateHook;
+
+    const { deletePost } = postsHook;
 
     const postCacheHook = usePostCache(); // 수정 버튼 누를 시 수정 페이지로 넘길 캐시 데이터 저장소
 
@@ -103,9 +107,9 @@ export default function PostCard({ postProp, deletePost }: {
                 <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-4">
                         {/*추천 버튼*/}
-                        <VoteButton postState={postHook} voteType={"UPVOTE"}></VoteButton>
+                        <VoteButton postState={postStateHook} voteType={"UPVOTE"}></VoteButton>
                         {/* 비추천 버튼 */}
-                        <VoteButton postState={postHook} voteType={"DOWNVOTE"}></VoteButton>
+                        <VoteButton postState={postStateHook} voteType={"DOWNVOTE"}></VoteButton>
                         {/*댓글 수*/}
                         <div
                             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700 transition-all duration-200 group hover:bg-blue-50 px-3 py-1.5 rounded-lg"
@@ -116,7 +120,7 @@ export default function PostCard({ postProp, deletePost }: {
                     </div>
                     {/*태그*/}
                     <div className={'flex gap-2'}>
-                        {post.excuse.tags.map((tag: any, index: number) => {
+                        {post.excuse.tags.map((tag: TagInterface, index: number) => {
                             return <span
                                 key={index}
                                 className={'text-blue-500 text-sm'}
@@ -140,7 +144,7 @@ export default function PostCard({ postProp, deletePost }: {
             </section>
 
             {/* 댓글 섹션 - 확장될 때만 표시 */}
-            <CommentCard isExpanded={isExpanded} postHook={postHook}></CommentCard>
+            <CommentCard isExpanded={isExpanded} postHook={postStateHook}></CommentCard>
         </article>
     );
 }

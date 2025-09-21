@@ -3,19 +3,25 @@
 import css from './page.module.css'
 import {useRouter} from "next/navigation";
 import {PG_NEW_EXCUSE} from "@/app/constants/constants";
+import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
 
 export default function Home() {
 
     const contentWidth = 'w-4/5';
 
     const router = useRouter();
+    const { requireAuth } = useAuthGuard();
+
+    const handleWritePost = () => {
+        if(requireAuth("게시글을 작성하려면 로그인해주세요")) router.push(PG_NEW_EXCUSE);
+    }
 
     return (
         <div className={`global_container ${contentWidth}`}>
             <header className={`flex ${contentWidth} mb-4`}>
                 <button
                     className='global_button ml-auto w-16 h-8 text-sm rounded-md'
-                    onClick={() => router.push(PG_NEW_EXCUSE)}
+                    onClick={handleWritePost}
                 >+글쓰기</button>
             </header>
             <section className={`${css.section} ${contentWidth}`}>

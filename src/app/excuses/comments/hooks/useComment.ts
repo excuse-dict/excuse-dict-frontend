@@ -8,7 +8,7 @@ import {usePage} from "@/global_components/page/usePage";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 import {toast} from "react-toastify";
 import {VoteType} from "@/app/excuses/votes/VoteInterface";
-import {usePost} from "@/app/excuses/hooks/usePost";
+import {usePostState} from "@/app/excuses/hooks/usePostState";
 
 
 export interface UpdateCommentDto{
@@ -17,7 +17,7 @@ export interface UpdateCommentDto{
 }
 
 export const useComment = ({ postHook, pageHook }: {
-    postHook: ReturnType<typeof usePost>,
+    postHook: ReturnType<typeof usePostState>,
     pageHook: ReturnType<typeof usePage>
 }) => {
 
