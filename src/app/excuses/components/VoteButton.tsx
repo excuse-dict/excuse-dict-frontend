@@ -2,11 +2,12 @@ import {apiPost} from "@/axios/requests/post/apiPost";
 import {EP_VOTE_TO_POST} from "@/app/constants/constants";
 import {usePostState} from "@/app/excuses/hooks/usePostState";
 import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
+import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 
 type VoteType = "UPVOTE" | "DOWNVOTE";
 
-export default function VoteButton({ postState, voteType }: {
-    postState: ReturnType<typeof usePostState>,
+export default function VoteButton<T extends PostInterface>({ postState, voteType }: {
+    postState: ReturnType<typeof usePostState<T>>,
     voteType: VoteType,
 }) {
     const { post, upvote, cancelUpvote, downvote, cancelDownvote } = postState;

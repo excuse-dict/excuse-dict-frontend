@@ -16,8 +16,8 @@ export interface UpdateCommentDto{
     updatedData: Partial<CommentInterface>
 }
 
-export const useComment = ({ postHook, pageHook }: {
-    postHook: ReturnType<typeof usePostState>,
+export const useComment = <T extends PostInterface>({ postHook, pageHook }: {
+    postHook: ReturnType<typeof usePostState<T>>,
     pageHook: ReturnType<typeof usePage>
 }) => {
 

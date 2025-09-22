@@ -7,9 +7,9 @@ import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import CommentList from "@/app/excuses/comments/components/CommentList";
 import {usePostState} from "@/app/excuses/hooks/usePostState";
 
-export default function CommentCard({isExpanded, postHook}: {
+export default function CommentCard<T extends PostInterface>({isExpanded, postHook}: {
     isExpanded: boolean,
-    postHook: ReturnType<typeof usePostState>,
+    postHook: ReturnType<typeof usePostState<T>>,
 }) {
 
     const commentPageHook = usePage();

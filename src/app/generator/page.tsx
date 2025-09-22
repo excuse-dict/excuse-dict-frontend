@@ -53,7 +53,8 @@ export default function ExcuseGeneratorPage(){
                 situation: situationInput,
             },
             onSuccess: (response) => {
-                setAnswer(response.data);
+                const answer = Array.isArray(response.data?.data) ? response.data?.data : [response.data?.data];
+                setAnswer(answer);
                 setLoading(false);
                 setSucceed(true);
             },

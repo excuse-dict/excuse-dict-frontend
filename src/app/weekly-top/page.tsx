@@ -6,6 +6,7 @@ import PostCard from "@/app/excuses/posts/components/PostCard";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_WEEKLY_TOP} from "@/app/constants/constants";
+import WeeklyTopPost from "@/app/weekly-top/components/WeeklyTopPost";
 
 export default function WeeklyTopPage(){
 
@@ -29,7 +30,7 @@ export default function WeeklyTopPage(){
                 {posts.map((post, index) => (
                     <div className="flex" key={post.postId}>
 
-                        <PostCard postProp={post} postsHook={postsHook}></PostCard>
+                        <WeeklyTopPost postProp={post} postsHook={postsHook}></WeeklyTopPost>
                     </div>
                 ))}
             </div>

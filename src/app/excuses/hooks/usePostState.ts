@@ -2,11 +2,11 @@ import React, {useEffect, useState} from "react";
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 
-export const usePostState = (
-    initialPost: PostInterface,
+export const usePostState = <T extends PostInterface> (
+    initialPost: T,
 ) => {
 
-    const [post, setPost] = useState<PostInterface>(initialPost);
+    const [post, setPost] = useState<T>(initialPost);
 
     const upvote = () => {
         setPost(prev => ({
