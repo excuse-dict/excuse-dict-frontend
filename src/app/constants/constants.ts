@@ -9,6 +9,7 @@ export const EP_HALL_OF_FAME = "/api/v1/posts/hall-of-fame";
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
 export const EP_LOGIN = "/api/v1/auth/login";
+export const EP_OVERVIEW = "/api/v1/posts/overview";
 export const EP_REFRESH_ACCESS_TOKEN = "/api/v1/auth/refresh";
 export const EP_RESET_PASSWORD = "/api/v1/members/passwords/reset";
 export const EP_REPLIES = (commentId: number) => `/api/v1/posts/comments/${commentId}/replies`;

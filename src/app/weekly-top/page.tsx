@@ -7,10 +7,11 @@ import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_WEEKLY_TOP} from "@/app/constants/constants";
 import WeeklyTopPost from "@/app/weekly-top/components/WeeklyTopPost";
+import {WeeklyTopPostInterface} from "@/app/weekly-top/interface/WeeklyTopPostInterface";
 
 export default function WeeklyTopPage(){
 
-    const postsHook = usePosts();
+    const postsHook = usePosts<WeeklyTopPostInterface>();
     const { posts, setPosts } = postsHook;
 
     const { currentPage } = usePage();
@@ -29,7 +30,6 @@ export default function WeeklyTopPage(){
             <div className="bg-white">
                 {posts.map((post, index) => (
                     <div className="flex" key={post.postId}>
-
                         <WeeklyTopPost postProp={post} postsHook={postsHook}></WeeklyTopPost>
                     </div>
                 ))}

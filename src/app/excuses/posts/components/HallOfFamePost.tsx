@@ -4,10 +4,10 @@ import CommentCard from "@/app/excuses/comments/components/CommentCard";
 import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
 import {useState} from "react";
 import {usePostState} from "@/app/excuses/hooks/usePostState";
+import {HallOfFamePostInterface} from "@/app/hall-of-fame/interface/HallOfFamePostInterface";
 
-export default function HallOfFamePost({postProp, ranking}: {
-    postProp: PostInterface,
-    ranking: number
+export default function HallOfFamePost({postProp}: {
+    postProp: HallOfFamePostInterface
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
@@ -67,18 +67,18 @@ export default function HallOfFamePost({postProp, ranking}: {
     return (
         <div className="flex w-full">
             {/*순위 라벨*/}
-            <div className={`flex flex-col h-full items-center ${getLabelColor(ranking)}`}>
-                {ranking > 3 ? <div className="flex-1"></div>
+            <div className={`flex flex-col h-full items-center ${getLabelColor(post.rank)}`}>
+                {post.rank > 3 ? <div className="flex-1"></div>
                     : <div className="flex-1 flex w-full items-start justify-center">
-                        <p className={`text-xl w-full text-center mt-1 border-t-4 border-b-4 ${getMedalBg(ranking)}`}>
-                            {getMedal(ranking)}
+                        <p className={`text-xl w-full text-center mt-1 border-t-4 border-b-4 ${getMedalBg(post.rank)}`}>
+                            {getMedal(post.rank)}
                         </p>
                     </div>}
                 <div className="flex-1 flex p-2 justify-center">
-                    <p className="font-bold text-xl">{`#${ranking}`}</p>
+                    <p className="font-bold text-xl">{`#${post.rank}`}</p>
                 </div>
             </div>
-            <div className={`w-full pt-1 ${getLabelColor(ranking)}`}>
+            <div className={`w-full pt-1 ${getLabelColor(post.rank)}`}>
                 <article
                     className={`flex-1 rounded-l shadow-xl global-button pl-6 pr-4 pt-2 pb-2 !cursor-default !bg-white hover:shadow-lg transition-all duration-300 ${
                         isExpanded ? 'shadow-xl' : ''

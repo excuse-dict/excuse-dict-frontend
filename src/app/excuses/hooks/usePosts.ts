@@ -1,9 +1,9 @@
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
-import React, {useState} from "react";
+import {useState} from "react";
 
-export const usePosts = () => {
+export const usePosts = <T extends PostInterface>() => {
 
-    const [posts, setPosts] = useState<PostInterface[]>([]);
+    const [posts, setPosts] = useState<T[]>([]);
 
     const deletePost = (postId: number) => {
         setPosts(posts => {

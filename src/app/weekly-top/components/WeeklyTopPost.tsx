@@ -17,7 +17,7 @@ import {WeeklyTopPostInterface} from "@/app/weekly-top/interface/WeeklyTopPostIn
 
 export default function WeeklyTopPost({ postProp, postsHook }: {
     postProp: WeeklyTopPostInterface,
-    postsHook: ReturnType<typeof usePosts>,
+    postsHook: ReturnType<typeof usePosts<WeeklyTopPostInterface>>,
 }) {
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
     const postStateHook = usePostState(postProp);
