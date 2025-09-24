@@ -1,12 +1,10 @@
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import css from "./carousel.module.css";
-import {PostType} from "@/global_components/carousel/Carousel";
 import {WeeklyTopPostInterface} from "@/app/weekly-top/interface/WeeklyTopPostInterface";
 import {HallOfFamePostInterface} from "@/app/hall-of-fame/interface/HallOfFamePostInterface";
 
-export default function PostCarouselCard<T extends PostInterface>({ post, postType }: {
+export default function PostCarouselCard<T extends PostInterface>({ post }: {
     post: T,
-    postType: PostType,
 }){
 
     function isWeeklyTop(post: PostInterface): post is WeeklyTopPostInterface {

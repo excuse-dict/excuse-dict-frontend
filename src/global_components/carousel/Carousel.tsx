@@ -12,13 +12,13 @@ export default function Carousel<T extends PostInterface>({ posts, postType }: {
             {posts.map((post) => {
                 switch (postType){
                     case "POST":
-                        return <PostCarouselCard post={post} postType={'POST'} key={post.postId} />
+                        return <PostCarouselCard post={post} key={post.postId} />
                     case "WEEKLY_TOP":
-                        return <PostCarouselCard post={post} postType={'WEEKLY_TOP'} key={post.postId} />
+                        return <PostCarouselCard post={post} key={post.postId} />
                     case "HALL_OF_FAME":
-                        return <PostCarouselCard post={post} postType={'HALL_OF_FAME'} key={post.postId} />
+                        return <PostCarouselCard post={post} key={post.postId} />
                     default:
-                        return <PostCarouselCard post={post} postType={'POST'} key={post.postId} />
+                        return <PostCarouselCard post={post} key={post.postId} />
                 }
             })}
         </div>
