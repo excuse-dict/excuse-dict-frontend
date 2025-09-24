@@ -12,8 +12,8 @@ export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefa
     isRetry?: boolean,
 }) => {
 
-    console.log("POST 요청 전송: " + API_URL + endPoint);
-    console.log("body: ", body ?? {});
+    /*console.log("POST 요청 전송: " + API_URL + endPoint);
+    console.log("body: ", body ?? {});*/
 
     const token = useAuthState.getState().accessToken;
     const headers = {
@@ -26,7 +26,7 @@ export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefa
         const response: any = await axios.post(API_URL + endPoint, body ?? {}, { headers });
 
         // 요청 성공
-        console.log("POST 요청 성공: ", response);
+        //console.log("POST 요청 성공: ", response);
         onSuccess?.(response);
 
         return response; // 응답 리턴

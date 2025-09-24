@@ -42,7 +42,7 @@ export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = t
 
 }) => {
 
-    console.log("GET요청 실패(에러): ", error);
+    //console.log("GET요청 실패(에러): ", error);
 
     if (originalRequest.endPoint !== EP_LOGIN
         && ["ACCESS_TOKEN_EXPIRED", "AUTHENTICATION_FAILED"].includes(error?.response?.data?.code)) {
@@ -79,7 +79,7 @@ const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
     };
 
     if(!refreshToken){
-        console.log("refreshToken 없음: ", refreshToken);
+        //console.log("refreshToken 없음: ", refreshToken);
         forceLogout();
         return;
     }

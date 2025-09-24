@@ -12,8 +12,8 @@ export const apiDelete = async ({ endPoint, params, onSuccess, onFail, overwrite
     isRetry?: boolean,
 }) => {
 
-    console.log("DELETE 요청 전송: " + API_URL + endPoint);
-    console.log("params: ", params ?? {});
+    /*console.log("DELETE 요청 전송: " + API_URL + endPoint);
+    console.log("params: ", params ?? {});*/
 
     const token = useAuthState.getState().accessToken;
     const headers = {
@@ -28,7 +28,7 @@ export const apiDelete = async ({ endPoint, params, onSuccess, onFail, overwrite
         });
 
         // 요청 성공
-        console.log("DELETE 요청 성공: ", response);
+        //console.log("DELETE 요청 성공: ", response);
         onSuccess?.(response);
 
         return response; // 응답 리턴

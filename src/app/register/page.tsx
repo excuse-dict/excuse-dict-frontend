@@ -15,7 +15,6 @@ import PasswordConfirmInput from './components/password_input/PasswordConfirmInp
 import Modal from '@/global_components/modal/Modal';
 import NicknameInput from './components/nickname_input/NicknameInput';
 import Swal from 'sweetalert2';
-import {sendLoginRequest} from '../login/functions/LoginRequest';
 import {useRouter} from 'next/navigation';
 import {usePasswordInput} from './components/password_input/usePasswordInput';
 import VerificationModalContent from './verification/VerificationModalContent';
@@ -79,10 +78,9 @@ export default function RegisterPage() {
         Swal.fire("회원가입 완료", `${nicknameInput}님 환영합니다!`, "success")
             .then(() => {
                 // 자동 로그인 요청 전송
-                sendLoginRequest({
+                login({
                     email: emailInput,
                     password: passwordInput,
-                    login: login,
                     onFail: () => router.push(PG_LOGIN)
                 });
             });
