@@ -36,8 +36,8 @@ pipeline {
 
                         npm install
 
-                        # 린트 검사 없이 빌드
-                        DISABLE_ESLINT=true npm run build
+                        # ESLint 무시하고 빌드
+                        npx next build --no-lint
                     '''
                 }
             }
