@@ -37,6 +37,7 @@ pipeline {
                         npm install
 
                         # ESLint 무시하고 빌드
+                        # 프로덕션에서는 빌드 주석 해제
                         npx next build --no-lint
                     '''
                 }
@@ -46,12 +47,15 @@ pipeline {
         stage('Start App') {
             steps {
                 echo 'Starting app in background...'
-                sh '''
-                    # /var/lib/jenkins/workspace/JOB이름/ 에서 앱 시작
-                    nohup npm start > /tmp/nextjs.log 2>&1 &
-                    echo $! > /tmp/nextjs.pid
-                    echo "App started in background"
-                '''
+                withCredentials([
+                    string(credentialsId: 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY', variable: 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY')
+                ]) {
+                    sh '''
+                        export NEXT_PUBLIC_RECAPTCHA_SITE_KEY="${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}"
+                        pm2 stop excuse-dict-frontend || true
+                        pm2 start npm --name "excuse-dict-frontend" -- start
+                    '''
+                }
             }
         }
 
@@ -64,7 +68,7 @@ pipeline {
                     # 헬스체크
                     curl -f http://localhost:3000 || {
                         echo "Health check failed!"
-                        pm2 logs ${APP_NAME} --lines 20
+                        pm2 logs excuse-dict-frontend --lines 20 || true
                         exit 1
                     }
 
