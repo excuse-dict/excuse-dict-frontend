@@ -12,9 +12,9 @@ import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import Swal from "sweetalert2";
 import {toast} from "react-toastify";
 
-export function useEmailVerification({purpose, afterViolation}: {
+export function useEmailVerification({purpose, onViolation}: {
     purpose: string,
-    afterViolation?: () => void,
+    onViolation?: () => void,
 }) {
     const [emailInput, setEmailInput] = useState('');
     const [isEmailVerified, setEmailVerified] = useState(false);
@@ -54,7 +54,7 @@ export function useEmailVerification({purpose, afterViolation}: {
         // 쿨다운 경과했는지 검증
         if(timeToResend > 0){
             toast.error(`연달아 코드를 발급하실 수 없습니다. ${timeToResend}초 후에 다시 시도해주세요.`);
-            if(afterViolation) afterViolation();
+            if(onViolation) onViolation();
             return;
         }
 
@@ -62,7 +62,7 @@ export function useEmailVerification({purpose, afterViolation}: {
         const recaptchaToken = await executeRecaptcha();
         if (!recaptchaToken) {
             toast.error("보안 검증에 실패했습니다. 잠시 후 다시 시도해 주세요.");
-            if(afterViolation) afterViolation();
+            if(onViolation) onViolation();
             return;
         };
 

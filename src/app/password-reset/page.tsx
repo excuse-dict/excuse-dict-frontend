@@ -27,7 +27,10 @@ export default function PasswordResetPage() {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const router = useRouter();
-    const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.RESET_PASSWORD);
+    const emailVerification = useEmailVerification({
+        purpose: VERIFICATION_CODE_PURPOSE.RESET_PASSWORD,
+        onViolation: () => setModalOpen(false),
+    });
 
     const {
         emailInput, setEmailInput,
