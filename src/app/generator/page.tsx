@@ -1,12 +1,12 @@
 'use client';
 
 import TextBox from "@/global_components/input/text/TextBox";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import css from '../../global_components/loading/LoadingWidget.module.css';
 import {
     GENERATOR_COOLDOWN_FOR_MEMBER,
     GENERATOR_COOLDOWN_FOR_GUEST,
-    SS_GENERATOR_LAST_CALL_KEY, EP_GENERATE_EXCUSE_FOR_MEMBER, EP_GENERATE_EXCUSE_FOR_GUESTS, PG_LOGIN
+    SS_GENERATOR_LAST_CALL_KEY, EP_GENERATE_EXCUSE_FOR_MEMBER, EP_GENERATE_EXCUSE_FOR_GUESTS, PG_LOGIN, EP_GUEST_TOKEN
 } from "@/app/constants/constants";
 import {toast} from "react-toastify";
 import CopyableTextbox from "@/global_components/text/CopyableTextbox";
@@ -14,6 +14,8 @@ import {useAuthState} from "@/app/login/auth/useAuthState";
 import {useApiCooldown} from "@/global_components/cooldown/useApiCooldown";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {useRouter} from "next/navigation";
+import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
+import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 
 export default function ExcuseGeneratorPage(){
 
@@ -22,8 +24,10 @@ export default function ExcuseGeneratorPage(){
 
     const [isLoading, setLoading] = useState(false);
     const [isSucceed, setSucceed] = useState(false);
+    const [isGuestTokenReady, setGuestTokenReady] = useState(false);
 
     const { isLoggedIn } = useAuthState();
+    const { recaptchaRef, executeRecaptcha } = useRecaptcha();
 
     const router = useRouter();
 
@@ -36,7 +40,15 @@ export default function ExcuseGeneratorPage(){
         cooldown: getApiCallCooldown(),
     });
 
-    const handleGenerate = () => {
+    useEffect(() => {
+        // 게스트 토큰 있으면 그대로 리턴, 없으면 발급해서 리턴
+        apiPost({
+            endPoint: EP_GUEST_TOKEN,
+            onSuccess: () => setGuestTokenReady(true),
+        })
+    }, []);
+
+    const handleGenerate = async () => {
 
         if(!isInputValid()){
             toast("상황은 5~100자로 입력해주세요.");
@@ -47,10 +59,18 @@ export default function ExcuseGeneratorPage(){
         setSucceed(false);
         countStart();
 
+        const recaptchaToken = await executeRecaptcha();
+        if(!recaptchaToken){
+            toast.error("보안 검증에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+            setLoading(false);
+            return;
+        }
+
         apiPost({
             endPoint: (isLoggedIn ? EP_GENERATE_EXCUSE_FOR_MEMBER : EP_GENERATE_EXCUSE_FOR_GUESTS),
             body: {
                 situation: situationInput,
+                recaptchaToken: recaptchaToken,
             },
             onSuccess: (response) => {
                 const answer = Array.isArray(response.data?.data) ? response.data?.data : [response.data?.data];
@@ -81,7 +101,7 @@ export default function ExcuseGeneratorPage(){
     }
 
     const isButtonDisabled = () => {
-        return !isInputValid() || isInCooldown;
+        return !isInputValid() || isInCooldown || !isGuestTokenReady;
     }
 
     return (
@@ -135,6 +155,7 @@ export default function ExcuseGeneratorPage(){
                     onClick={() => router.push(PG_LOGIN)}
                 >기다리기 싫다면? 로그인↗</p>
             }
+            <ReCAPTCHAComponent recaptchaRef={recaptchaRef}></ReCAPTCHAComponent>
         </div>
     );
 }

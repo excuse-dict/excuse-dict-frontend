@@ -1,9 +1,12 @@
 import { useRef } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import Swal from "sweetalert2";
+import {toast} from "react-toastify";
 
 // 리캡챠 사용 훅
 export const useRecaptcha = () => {
+
+    // 리캡챠 컴포넌트를 조작하기 위한 ref
     const recaptchaRef = useRef<ReCAPTCHA>(null);
 
     const executeRecaptcha = async (): Promise<string | null> => {
@@ -13,7 +16,8 @@ export const useRecaptcha = () => {
                 const token = await recaptchaRef.current.executeAsync();
 
                 if(!token) {
-                    Swal.fire("오류", "보안 검증에 실패했습니다. 페이지를 새로고침하거나 잠시 후 다시 시도해 주세요.", "error");
+                    // 사용자는 굳이 몰라도 될듯
+                    //toast.error("보안 검증에 실패했습니다. 페이지를 새로고침하거나 잠시 후 다시 시도해 주세요.")
                     return null;
                 }
 
@@ -22,7 +26,7 @@ export const useRecaptcha = () => {
                 return null;
             }
         } catch (error) {
-            console.error('reCAPTCHA 실행 오류:', error);
+            //console.error('reCAPTCHA 실행 오류:', error);
             return null;
         }
     };

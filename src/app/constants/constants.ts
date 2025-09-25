@@ -5,6 +5,7 @@ export const EP_CHECK_EMAIL_REGISTERED = "/api/v1/members/emails/is-registered";
 export const EP_COMMENT = (postId: number) => `/api/v1/posts/${postId}/comments`;
 export const EP_GENERATE_EXCUSE_FOR_MEMBER = "/api/v1/excuses/generate/members";
 export const EP_GENERATE_EXCUSE_FOR_GUESTS = "/api/v1/excuses/generate/guests";
+export const EP_GUEST_TOKEN = "/api/v1/guests/tokens";
 export const EP_HALL_OF_FAME = "/api/v1/posts/hall-of-fame";
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";

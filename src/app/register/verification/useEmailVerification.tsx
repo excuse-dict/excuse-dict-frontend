@@ -10,6 +10,7 @@ import sendVerificationCode from "@/axios/requests/post/verificationCode";
 import { useEffect, useState } from "react";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import Swal from "sweetalert2";
+import {toast} from "react-toastify";
 
 export function useEmailVerification(purpose: string) {
     const [emailInput, setEmailInput] = useState('');
@@ -49,14 +50,14 @@ export function useEmailVerification(purpose: string) {
     const smtpRequest = async () => {
         // 쿨다운 경과했는지 검증
         if(timeToResend > 0){
-            Swal.fire("오류", `연달아 코드를 발급하실 수 없습니다. ${timeToResend}초 후에 다시 시도해주세요.`, 'warning');
+            toast.error(`연달아 코드를 발급하실 수 없습니다. ${timeToResend}초 후에 다시 시도해주세요.`);
             return;
         }
 
         // 리캡챠 토큰 검증
         const recaptchaToken = await executeRecaptcha();
         if (!recaptchaToken) {
-            console.log("오류: reCAPTCHA 토큰 검증 실패");
+            toast.error("보안 검증에 실패했습니다. 잠시 후 다시 시도해 주세요.");
             return;
         };
 

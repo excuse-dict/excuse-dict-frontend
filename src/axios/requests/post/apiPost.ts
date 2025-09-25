@@ -1,9 +1,9 @@
-import { API_URL } from "@/app/constants/constants";
-import { handleError } from "../../handleFailure";
+import {API_URL} from "@/app/constants/constants";
+import {handleError} from "../../handleFailure";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import axios from "axios";
 
-export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false }: {
+export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false}: {
     endPoint: string,
     body?: any,
     onSuccess?: (value: any) => void,
@@ -18,12 +18,18 @@ export const apiPost = async ({ endPoint, body, onSuccess, onFail, overwriteDefa
     const token = useAuthState.getState().accessToken;
     const headers = {
         'Content-Type': 'application/json',
-        ...(token && { Authorization: token }) // 토큰 있을 때만 추가
+        ...(token && {Authorization: token}) // 토큰 있을 때만 추가
     };
 
     try {
         // 요청 전송
-        const response: any = await axios.post(API_URL + endPoint, body ?? {}, { headers });
+        const response: any = await axios.post(
+            API_URL + endPoint,
+            body ?? {},
+            {
+                headers,
+                withCredentials: true   // 쿠키 포함
+            });
 
         // 요청 성공
         //console.log("POST 요청 성공: ", response);
