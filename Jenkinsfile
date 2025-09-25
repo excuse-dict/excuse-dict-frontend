@@ -52,8 +52,10 @@ pipeline {
                 ]) {
                     sh '''
                         export NEXT_PUBLIC_RECAPTCHA_SITE_KEY="${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}"
-                        pm2 stop excuse-dict-frontend || true
-                        pm2 start npm --name "excuse-dict-frontend" -- start
+                        sudo -u ubuntu pm2 stop excuse-dict-frontend || true
+
+                        # 프로덕션에서는 run dev 대신 start
+                        sudo -u ubuntu pm2 start npm --name "excuse-dict-frontend" -- start
                     '''
                 }
             }
