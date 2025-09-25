@@ -29,7 +29,10 @@ export default function RegisterPage() {
     const { login } = useAuthState();
 
     const router = useRouter();
-    const emailVerification = useEmailVerification(VERIFICATION_CODE_PURPOSE.REGISTRATION);
+    const emailVerification = useEmailVerification({
+        purpose: VERIFICATION_CODE_PURPOSE.REGISTRATION,
+        afterViolation: () => setModalOpen(false),
+    });
     const password = usePasswordInput();
 
     const {

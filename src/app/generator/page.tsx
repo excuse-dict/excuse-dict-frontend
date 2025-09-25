@@ -16,8 +16,9 @@ import {apiPost} from "@/axios/requests/post/apiPost";
 import {useRouter} from "next/navigation";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
+import {useLoadingDotAnimation} from "@/global_components/loading/hooks/useLoadingDotAnimation";
 
-export default function ExcuseGeneratorPage(){
+export default function ExcuseGeneratorPage() {
 
     const [situationInput, setSituationInput] = useState('');
     const [answer, setAnswer] = useState<string[]>([]);
@@ -26,8 +27,10 @@ export default function ExcuseGeneratorPage(){
     const [isSucceed, setSucceed] = useState(false);
     const [isGuestTokenReady, setGuestTokenReady] = useState(false);
 
-    const { isLoggedIn } = useAuthState();
-    const { recaptchaRef, executeRecaptcha } = useRecaptcha();
+    const {isLoggedIn} = useAuthState();
+    const {recaptchaRef, executeRecaptcha} = useRecaptcha();
+
+    const { dotCount } = useLoadingDotAnimation(isLoading, 300);
 
     const router = useRouter();
 
@@ -35,7 +38,7 @@ export default function ExcuseGeneratorPage(){
         return isLoggedIn ? GENERATOR_COOLDOWN_FOR_MEMBER : GENERATOR_COOLDOWN_FOR_GUEST;
     }
 
-    const { remainingTime, isInCooldown, countStart } = useApiCooldown({
+    const {remainingTime, isInCooldown, countStart} = useApiCooldown({
         storageKey: SS_GENERATOR_LAST_CALL_KEY,
         cooldown: getApiCallCooldown(),
     });
@@ -50,7 +53,7 @@ export default function ExcuseGeneratorPage(){
 
     const handleGenerate = async () => {
 
-        if(!isInputValid()){
+        if (!isInputValid()) {
             toast("상황은 5~100자로 입력해주세요.");
             return;
         }
@@ -60,7 +63,7 @@ export default function ExcuseGeneratorPage(){
         countStart();
 
         const recaptchaToken = await executeRecaptcha();
-        if(!recaptchaToken){
+        if (!recaptchaToken) {
             toast.error("보안 검증에 실패했습니다. 잠시 후 다시 시도해 주세요.");
             setLoading(false);
             return;
@@ -94,7 +97,7 @@ export default function ExcuseGeneratorPage(){
     const getButtonName = () => {
 
         // 쿨타임 아닐 때
-        if(!isInCooldown) return (isSucceed ? "재" : '') + "생성";
+        if (!isInCooldown) return (isSucceed ? "재" : '') + "생성";
 
         // 쿨타임 중일 때
         return `재생성(${remainingTime})`;
@@ -105,7 +108,8 @@ export default function ExcuseGeneratorPage(){
     }
 
     return (
-        <div className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white transition-all duration-800 ease-out">
+        <div
+            className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white transition-all duration-800 ease-out">
             <h1 className="font-bold text-2xl">핑계 생성기</h1>
             <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 마련하기</span>
             {/*상황 기입란*/}
@@ -117,13 +121,16 @@ export default function ExcuseGeneratorPage(){
                 max={100}
                 containerStyle="w-full mt-16"
             ></TextBox>
-            <div className="overflow-hidden transition-all duration-500 ease-out" style={{ 
-                maxHeight: isLoading || isSucceed ? '1000px' : '0px', 
-                opacity: isLoading || isSucceed ? 1 : 0 
+            <div className="overflow-hidden transition-all duration-500 ease-out" style={{
+                maxHeight: isLoading || isSucceed ? '1000px' : '0px',
+                opacity: isLoading || isSucceed ? 1 : 0
             }}>
                 {isLoading ?
                     /*로딩 스피너*/
-                    <div className={`${css.loading_spinner} !w-12 !h-12 mt-8`}></div>
+                    <div>
+                        <div className={`${css.loading_spinner} !w-12 !h-12 mt-8`}></div>
+                        <p className="font-light text-sm mt-2">{"생각 중" + '.'.repeat(dotCount)}</p>
+                    </div>
                     : (
                         isSucceed ? (
                             /*AI의 답변*/
@@ -131,7 +138,8 @@ export default function ExcuseGeneratorPage(){
                                 <div className="text-center text-2xl mt-4 mb-4">↓</div>
                                 <ul className="flex flex-col gap-2">
                                     {answer.map((answer, key) => (
-                                        <li key={key} className="flex flex-col transform transition-all duration-500 ease-out delay-300">
+                                        <li key={key}
+                                            className="flex flex-col transform transition-all duration-500 ease-out delay-300">
                                             <CopyableTextbox
                                                 text={answer}
                                                 style="bg-blue-200 rounded p-4"

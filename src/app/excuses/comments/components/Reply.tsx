@@ -98,8 +98,6 @@ export default function Reply({ reply, replyHook }: {
                             className={`${reply.myVote?.voteType === "DOWNVOTE" ? 'text-red-500 font-bold' : ''}`}
                             onClick={() => voteToReply({ reply: reply, voteType: "DOWNVOTE" })}
                         >{`👎${reply.downvoteCount}`}</button>
-                        <p>💬</p>
-                        <p>{reply.replyCount}</p>
                     </div>
                     {reply.author?.id !== memberId ? <></> :
                         <div className="flex gap-2" ref={isOnEditing ? editingButtonRef : undefined}>

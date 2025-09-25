@@ -17,7 +17,6 @@ export interface ReplyInterface {
     author: MemberInterface,
     upvoteCount: number,
     downvoteCount: number,
-    replyCount: number,
     myVote: ReplyVoteInterface | null,
     createdAt: string,
     modifiedAt: string,
