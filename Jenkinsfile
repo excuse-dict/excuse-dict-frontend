@@ -38,7 +38,7 @@ pipeline {
 
                         # ESLint 무시하고 빌드
                         # 프로덕션에서는 빌드 주석 해제
-                        npx next build --no-lint
+                        # npx next build --no-lint
                     '''
                 }
             }
@@ -55,7 +55,7 @@ pipeline {
                         sudo -u ubuntu pm2 stop excuse-dict-frontend || true
 
                         # 프로덕션에서는 run dev 대신 start
-                        sudo -u ubuntu pm2 start npm --name "excuse-dict-frontend" -- start
+                        sudo -u ubuntu pm2 start npm --name "excuse-dict-frontend" -- run dev
                     '''
                 }
             }
