@@ -28,7 +28,7 @@ pipeline {
             steps {
                 echo 'Installing dependencies and building...'
                 withCredentials([
-                    string(credentialsId: 'recaptcha-site-key', variable: 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY')
+                    string(credentialsId: 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY', variable: 'NEXT_PUBLIC_RECAPTCHA_SITE_KEY')
                 ]) {
                     sh '''
                         # /var/lib/jenkins/workspace/JOB이름/ 에서 작업
