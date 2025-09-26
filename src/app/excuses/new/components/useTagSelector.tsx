@@ -79,10 +79,6 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
         setSelectedCategories(new Set());
     }
 
-    const isKeyMatchForTag = (key: string) => {
-
-    }
-
     return {
         createTagKey,
         isSelectorOpen, setSelectorOpen,

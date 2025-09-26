@@ -9,7 +9,7 @@ import ModalContent from '@/global_components/modal/content/ModalContent';
 
 export default function VerificationModalContent({ emailVerification, onSuccess }: {
     emailVerification: ReturnType<typeof useEmailVerification>
-    onSuccess: (value: any) => void,
+    onSuccess: (value: unknown) => void,
 }) {
 
     const {
@@ -35,6 +35,7 @@ export default function VerificationModalContent({ emailVerification, onSuccess 
             smtpRequest();
             setInitialSend(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // 만료까지 남은 시간 안내

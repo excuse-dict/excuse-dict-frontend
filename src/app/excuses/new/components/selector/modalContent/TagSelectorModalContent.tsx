@@ -15,7 +15,7 @@ export default function TagSelectorModalContent({
 }) {
 
     const {
-        isTagsLoading, setTagsLoading,
+        setTagsLoading,
         selectedTags,
         searchedTags, setSearchedTags,
         selectedCategories
@@ -57,10 +57,14 @@ export default function TagSelectorModalContent({
 
     useEffect(() => {
         searchTags();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     useEffect(() => {
         setFilterChanged(true);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedCategories, searchValue]);
 
     return (

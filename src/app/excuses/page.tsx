@@ -10,16 +10,16 @@ import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 
 export default function Board() {
-    const boardPage = usePage();
-    const {currentPage, setPageInfo} = boardPage;
+    const pageHook = usePage();
+    const {currentPage, setPageInfo} = pageHook;
 
-    const [isLoading, setloading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
 
     const postsHook = usePosts();
     const { posts, setPosts } = postsHook;
 
     useEffect(() => {
-        setloading(true);
+        setLoading(true);
         apiGet({
             endPoint: EP_POST,
             params: {
@@ -28,9 +28,11 @@ export default function Board() {
             onSuccess: (reponse) => {
                 setPosts(reponse?.data?.data?.page?.content);
                 setPageInfo(reponse?.data?.data?.pageInfo);
-                setloading(false);
+                setLoading(false);
             }
         })
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     if (isLoading) {
@@ -71,7 +73,7 @@ export default function Board() {
             </div>
 
             {/* 페이지네이션 */}
-            <PageContainer page={boardPage}></PageContainer>
+            <PageContainer page={pageHook}></PageContainer>
         </div>
     );
 }

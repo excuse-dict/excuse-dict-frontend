@@ -15,7 +15,7 @@ export default function CommentList({ comments, commentHook, nextPageSize, loadM
         <div className="space-y-4">
             {comments.length > 0 ? (
                 <ul className="space-y-4 list-none">
-                    {comments.map((comment: CommentInterface, index: number) => (
+                    {comments.map((comment: CommentInterface) => (
                         <li key={comment.id}>
                             <Comment
                                 comment={comment}

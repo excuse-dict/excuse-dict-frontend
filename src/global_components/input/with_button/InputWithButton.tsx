@@ -1,6 +1,5 @@
-import {MAX_EMAIL_LENGTH} from "@/app/constants/constants";
 import css from './InputWithButton.module.css';
-import {ChangeEvent, MouseEventHandler} from "react";
+import {ChangeEvent} from "react";
 
 export default function InputWithButton({
                                             labelText, placeholder, type,

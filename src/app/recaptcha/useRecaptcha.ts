@@ -23,7 +23,7 @@ export const useRecaptcha = () => {
             } else {
                 return null;
             }
-        } catch (error) {
+        } catch {
             //console.error('reCAPTCHA 실행 오류:', error);
             return null;
         }

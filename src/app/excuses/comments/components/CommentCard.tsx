@@ -29,6 +29,7 @@ export default function CommentCard<T extends PostInterface>({isExpanded, postHo
         if (!isExpanded) return;
         getComments();
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isExpanded, currentPage, commentCount]);
 
 

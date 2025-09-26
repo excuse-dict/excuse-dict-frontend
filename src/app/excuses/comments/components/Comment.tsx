@@ -41,6 +41,8 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
 
         // 대댓글 펼쳐질 때 서버에서 조회
         getReplies(comment.id);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isRepliesExpanded, currentPage, comment.id]);
 
     useEffect(() => {
@@ -49,7 +51,7 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
         // 답글 목록 접을 때 상태 초기화
         setReplies([]);
         setCurrentPage(0);
-    }, [isRepliesExpanded]);
+    }, [isRepliesExpanded, setReplies, setCurrentPage]);
 
     const toggleRepliesExpanded = () => {
         // 이미 펼쳐져 있었으면 접기 (0으로 초기화)

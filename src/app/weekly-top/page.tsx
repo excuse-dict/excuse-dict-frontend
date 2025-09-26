@@ -20,6 +20,7 @@ export default function WeeklyTopPage(){
             endPoint: EP_WEEKLY_TOP,
             onSuccess: (response) => setPosts(response?.data?.data?.page?.content)
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
     return(
@@ -27,7 +28,7 @@ export default function WeeklyTopPage(){
             <p className="font-bold text-4xl">주간 TOP</p>
             <p className="font-light mt-4">최근 떠오르는 핑계들을 둘러보세요</p>
             <div className="bg-white">
-                {posts.map((post, index) => (
+                {posts.map((post) => (
                     <div className="flex" key={post.postId}>
                         <WeeklyTopPost postProp={post} postsHook={postsHook}></WeeklyTopPost>
                     </div>

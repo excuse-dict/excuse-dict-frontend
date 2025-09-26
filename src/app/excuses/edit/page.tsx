@@ -28,7 +28,7 @@ export default function EditExcusePage(){
             toast("게시글 정보를 불러올 수 없습니다.");
             router.back();
         }
-    }, [cachedPost]);
+    }, [cachedPost, router]);
 
     const isEdited = () => {
         return isSituationChanged() || isExcuseChanged() || isTagsChanged();

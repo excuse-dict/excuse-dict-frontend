@@ -31,7 +31,7 @@ export function useEmailVerification({purpose, onViolation}: {
                 return EP_VERIFY_RESET_PASSWORD;
             default:
                 return "";
-        };
+        }
     }
 
     const verifyEndpoint: string = getVerifyEndpoint(purpose);
@@ -61,7 +61,7 @@ export function useEmailVerification({purpose, onViolation}: {
             toast.error("보안 검증에 실패했습니다. 잠시 후 다시 시도해 주세요.");
             if(onViolation) onViolation();
             return;
-        };
+        }
 
         // 이메일 전송 시작
         setTimeToResend(VERIFICATION_CODE_COOLDOWN);
@@ -76,7 +76,7 @@ export function useEmailVerification({purpose, onViolation}: {
                 setSendingSucceed(true);
                 setTimeLeft(calculateTimeLeft(response.data.data.expiryTime));
             },
-            onFail: (error) => {
+            onFail: () => {
                 setEmailSending(false);
                 setSendingSucceed(false);
                 setTimeLeft(-1);

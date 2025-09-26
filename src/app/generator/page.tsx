@@ -81,7 +81,7 @@ export default function ExcuseGeneratorPage() {
                 setLoading(false);
                 setSucceed(true);
             },
-            onFail: (error) => {
+            onFail: () => {
                 setLoading(false);
                 setSucceed(false);
             },

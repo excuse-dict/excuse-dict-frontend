@@ -31,7 +31,7 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
         inputRef.current = input;
 
         setNicknameInput(input);
-        handleTimer(e);
+        handleTimer();
     }
 
     const isNicknameLengthValid = () => {
@@ -39,7 +39,7 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
     }
 
     // 이 안의 로직은 사용자가 입력을 멈추고 ${waitTime}ms 후에 실행됨
-    const handleTimer = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleTimer = () => {
         // 기존 타이머가 있다면 초기화
         if (timeRef.current) clearTimeout(timeRef.current);
 
@@ -66,7 +66,7 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
         setFailText("닉네임 사용 가능");
     }
 
-    const handleFailure = (error: any) => {
+    const handleFailure = (error: unknown) => {
         setNicknameAvailable(false);
         setNicknameCheckLoading(false);
         setFailText(getErrorMessage(error));

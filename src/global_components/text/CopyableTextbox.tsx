@@ -12,7 +12,7 @@ export default function CopyableTextbox({text, style}: {
         try{
             // HTTPS에서만 작동하는 최신 방법
             await navigator.clipboard.writeText(text);
-        } catch (error){
+        } catch {
             // 폴백 -> 구식 방법
             const textArea = document.createElement('textarea');
             textArea.value = text;

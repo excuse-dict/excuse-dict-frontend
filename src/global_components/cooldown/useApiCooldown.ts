@@ -12,6 +12,8 @@ export const useApiCooldown = ({storageKey, cooldown}: {
     useEffect(() => {
         // 새로고침 시 상태 복원
         updateCooldown();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
@@ -21,6 +23,8 @@ export const useApiCooldown = ({storageKey, cooldown}: {
 
             return () => clearInterval(interval);
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isInCooldown])
 
     const updateCooldown = () => {

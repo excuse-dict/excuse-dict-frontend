@@ -29,7 +29,7 @@ export interface LoginParams {
 
 export const useAuthState = create<AuthState>()(
     persist(
-        (set, get) => {
+        (set) => {
             const setStateAfterLogin = ({accessToken, refreshToken, id, nickname}: LoginParams) => {
                 set({
                     isLoggedIn: true,

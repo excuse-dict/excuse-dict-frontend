@@ -1,4 +1,6 @@
 import TagInterface from "@/app/excuses/new/components/TagInterface";
+import {VoteInterface} from "@/app/excuses/votes/VoteInterface";
+import {MemberInterface} from "@/app/members/MemberInterface";
 
 export interface PostInterface {
     postId: number,
@@ -7,10 +9,10 @@ export interface PostInterface {
         excuse: string,
         tags: Array<TagInterface>,
     },
-    author: any;
+    author: MemberInterface;
     upvoteCount: number;
     downvoteCount: number;
-    myVote: any;
+    myVote: VoteInterface;
     commentCount: number;
     createdAt: string;
     modifiedAt: string;

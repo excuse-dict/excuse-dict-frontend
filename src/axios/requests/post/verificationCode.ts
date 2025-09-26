@@ -5,8 +5,8 @@ export default async function sendVerificationCode({ email, purpose, recaptchaTo
     email: string,
     purpose: string,
     recaptchaToken: string,
-    onSuccess?: (value: any) => void,
-    onFail?: (value: any) => void,
+    onSuccess?: (value: unknown) => void,
+    onFail?: (value: unknown) => void,
 }){
     return await apiPost({
         endPoint: EP_VERIFICATION_CODE_REQ,

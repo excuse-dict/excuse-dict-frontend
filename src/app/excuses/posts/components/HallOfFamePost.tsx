@@ -4,6 +4,7 @@ import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
 import {useState} from "react";
 import {usePostState} from "@/app/excuses/hooks/usePostState";
 import {HallOfFamePostInterface} from "@/app/hall-of-fame/interface/HallOfFamePostInterface";
+import TagInterface from "@/app/excuses/new/components/TagInterface";
 
 export default function HallOfFamePost({postProp}: {
     postProp: HallOfFamePostInterface
@@ -131,7 +132,7 @@ export default function HallOfFamePost({postProp}: {
                             </div>
                             {/*태그*/}
                             <div className={'flex gap-2'}>
-                                {post.excuse.tags.map((tag: any, index: number) => {
+                                {post.excuse.tags.map((tag: TagInterface, index: number) => {
                                     return <span
                                         key={index}
                                         className={'text-blue-500 text-sm'}

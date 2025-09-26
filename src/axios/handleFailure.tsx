@@ -12,9 +12,9 @@ interface OriginalRequest {
     endPoint: string,
     params?: object,
     body?: object,
-    onSuccess?: (response: any) => void,
+    onSuccess?: (response: unknown) => void,
     overwriteDefaultOnFail?: boolean,
-    onFail?: (error: any) => void,
+    onFail?: (error: unknown) => void,
 };
 
 export const getErrorMessage = (error: any) => {

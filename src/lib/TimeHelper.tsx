@@ -42,7 +42,7 @@ export const getDatetimeFormat = (dateString: string, threshold: TimeFormatThres
         const years = Math.floor(diffInMs / (1000 * 60 * 60 * 24 * 365));
         return `${years}년 전`;
 
-    } catch (error){
+    } catch {
         return "Invalid Datetime";
     }
 };

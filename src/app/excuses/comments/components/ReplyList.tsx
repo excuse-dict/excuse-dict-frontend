@@ -11,7 +11,7 @@ export default function ReplyList({ replies, replyHook, nextPageSize, loadMoreRe
         <div>
             {/*대댓글 리스트*/}
             <ul className="list-none">
-                {replies.map((comment: ReplyInterface, index: number) => (
+                {replies.map((comment: ReplyInterface) => (
                     <li key={comment.id}>
                         <Reply
                             reply={comment}
