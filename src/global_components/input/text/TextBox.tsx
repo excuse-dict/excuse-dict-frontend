@@ -1,7 +1,7 @@
 'use client';
 
 import css from './TextBox.module.css';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useRef} from "react";
 
 export default function TextBox({
                                     value,

@@ -1,8 +1,7 @@
-import { API_URL } from "../../../app/constants/constants"
-import { handleError } from "../../handleFailure";
+import {API_URL} from "../../../app/constants/constants"
+import {handleError} from "../../handleFailure";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import axios from "axios";
-import {on} from "next/dist/client/components/react-dev-overlay/pages/bus";
 
 export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false }:
     {

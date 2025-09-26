@@ -1,7 +1,6 @@
 import SelectableTagContainer
     from "@/app/excuses/new/components/selector/modalContent/container/SelectableTagContainer";
 import {useEffect, useState} from "react";
-import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_TAGS, MAX_SELECTED_TAGS} from "@/app/constants/constants";
 import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
 import {usePage} from "@/global_components/page/usePage";

@@ -1,15 +1,12 @@
 import {
-    EP_VERIFICATION_CODE_REQ,
     EP_VERIFY_RESET_PASSWORD,
     EP_VERIFY_SIGNUP,
     VERIFICATION_CODE_COOLDOWN,
     VERIFICATION_CODE_PURPOSE
 } from "@/app/constants/constants";
-import { apiPost } from "@/axios/requests/post/apiPost";
 import sendVerificationCode from "@/axios/requests/post/verificationCode";
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
-import Swal from "sweetalert2";
 import {toast} from "react-toastify";
 
 export function useEmailVerification({purpose, onViolation}: {

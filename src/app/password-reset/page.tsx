@@ -7,20 +7,12 @@ import {useRouter} from "next/navigation";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {useEmailVerification} from "@/app/register/verification/useEmailVerification";
 import VerificationModalContent from "@/app/register/verification/VerificationModalContent";
-import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 
 import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 import PasswordInput from "@/app/register/components/password_input/PasswordInput";
 import PasswordConfirm from "@/app/register/components/password_input/PasswordConfirmInput";
 import {usePasswordInput} from "@/app/register/components/password_input/usePasswordInput";
-import {
-    EP_RESET_PASSWORD,
-    EP_CHECK_EMAIL_AVAILABILITY,
-    EP_CHECK_EMAIL_REGISTERED,
-    EP_VERIFICATION_CODE_REQ,
-    PG_PASSWORD_RESET_VERIFIED,
-    VERIFICATION_CODE_PURPOSE
-} from "../constants/constants";
+import {EP_CHECK_EMAIL_REGISTERED, EP_RESET_PASSWORD, VERIFICATION_CODE_PURPOSE} from "../constants/constants";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 
 export default function PasswordResetPage() {

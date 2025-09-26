@@ -1,9 +1,6 @@
 import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
-import Swal from 'sweetalert2';
-import axios from 'axios';
-import {API_URL, EP_LOGIN, PG_HOME} from '@/app/constants/constants';
-import {useRouter} from "next/navigation";
+import {EP_LOGIN, PG_HOME} from '@/app/constants/constants';
 import {apiPost} from "@/axios/requests/post/apiPost";
 
 interface AuthState {

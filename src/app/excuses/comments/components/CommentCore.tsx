@@ -2,7 +2,7 @@ import {getDatetimeFormat} from "@/lib/TimeHelper";
 import {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import {VoteType} from "@/app/excuses/votes/VoteInterface";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
-import React, {useEffect, useRef, useState} from "react";
+import React from "react";
 import {askToLogin} from "@/app/login/functions/AskToLogin";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";

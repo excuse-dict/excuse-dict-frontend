@@ -1,6 +1,6 @@
 import {MemberInterface} from "@/app/members/MemberInterface";
-import {CommentVoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
-import {UpdateCommentDto, useComment} from "@/app/excuses/comments/hooks/useComment";
+import {CommentVoteInterface} from "@/app/excuses/votes/VoteInterface";
+import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
 import React, {useContext, useEffect} from "react";
 import {ReplyContext} from "@/app/excuses/contexts/ReplyContext";

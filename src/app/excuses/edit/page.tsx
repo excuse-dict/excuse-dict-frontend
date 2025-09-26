@@ -3,8 +3,7 @@
 import InputComponent from "@/global_components/input/text/InputComponent";
 import TextBox from "@/global_components/input/text/TextBox";
 import TagSelector from "@/app/excuses/new/components/selector/TagSelector";
-import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_POST, EP_UPDATE_OR_DELETE_POST, EP_UPDATE_OR_DELETE_REPLY, PG_EXCUSES} from "@/app/constants/constants";
+import {EP_UPDATE_OR_DELETE_POST} from "@/app/constants/constants";
 import {useEffect, useState} from "react";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import Swal from "sweetalert2";

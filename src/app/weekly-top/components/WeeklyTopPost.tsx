@@ -1,4 +1,3 @@
-import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {usePostState} from "@/app/excuses/hooks/usePostState";
 import {usePostCache} from "@/app/excuses/edit/hook/PostCache";

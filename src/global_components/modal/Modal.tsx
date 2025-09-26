@@ -1,4 +1,3 @@
-import { useState } from "react";
 import css from "./Modal.module.css"
 import ModalContent from "./content/ModalContent";
 

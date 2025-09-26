@@ -1,8 +1,7 @@
 'use client';
 
 import {usePage} from "@/global_components/page/usePage";
-import {useEffect, useState} from "react";
-import PostCard from "@/app/excuses/posts/components/PostCard";
+import {useEffect} from "react";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_WEEKLY_TOP} from "@/app/constants/constants";

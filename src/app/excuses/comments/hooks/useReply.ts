@@ -8,7 +8,7 @@ import {apiPost} from "@/axios/requests/post/apiPost";
 import {ReplyContext} from "@/app/excuses/contexts/ReplyContext";
 import {toast} from "react-toastify";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
-import {ReplyVoteInterface, VoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
+import {ReplyVoteInterface, VoteType} from "@/app/excuses/votes/VoteInterface";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 
 export interface ReplyInterface {

@@ -3,7 +3,6 @@
 import {useState} from "react";
 import {TAG_CATEGORIES} from "@/app/constants/constants";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
-import {string} from "postcss-selector-parser";
 
 type TagKey = `${string}:${string}`;
 

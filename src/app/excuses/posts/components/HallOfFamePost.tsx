@@ -1,4 +1,3 @@
-import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import VoteButton from "@/app/excuses/components/VoteButton";
 import CommentCard from "@/app/excuses/comments/components/CommentCard";
 import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";

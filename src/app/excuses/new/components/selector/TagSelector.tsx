@@ -1,10 +1,8 @@
 'use client';
 
-import SelectableTag from "@/app/excuses/new/components/selector/modalContent/container/tag/SelectableTag";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import Modal from "@/global_components/modal/Modal";
 import TagSelectorModalContent from "@/app/excuses/new/components/selector/modalContent/TagSelectorModalContent";
-import SelectableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/SelectableTagContainer";
 import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
 
 export default function TagSelector({ tagSelector }:{

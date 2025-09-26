@@ -1,5 +1,4 @@
 import {useCallback, useMemo, useState} from "react";
-import Swal from "sweetalert2";
 import {ALLOWED_SPECIAL_CHARS_REGEX, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH} from "@/app/constants/constants";
 
 export function usePasswordInput(){

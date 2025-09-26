@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import css from './ModalContent.module.css';
 
 export default function ModalContent({ children, align = 'center' }: {

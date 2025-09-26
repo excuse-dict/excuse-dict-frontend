@@ -1,13 +1,11 @@
-
 import css from './VerificationModalContent.module.css'
-import { useEffect, useState } from "react";
-import { apiPost } from "@/axios/requests/post/apiPost";
+import {useEffect, useState} from "react";
+import {apiPost} from "@/axios/requests/post/apiPost";
 import Swal from "sweetalert2";
 import LoadingWidget from "@/global_components/loading/LoadingWidget";
 import CodeInput from "@/global_components/input/code/CodeInput";
-import { useEmailVerification } from "./useEmailVerification";
+import {useEmailVerification} from "./useEmailVerification";
 import ModalContent from '@/global_components/modal/content/ModalContent';
-import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 
 export default function VerificationModalContent({ emailVerification, onSuccess }: {
     emailVerification: ReturnType<typeof useEmailVerification>

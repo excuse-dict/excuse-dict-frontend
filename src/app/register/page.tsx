@@ -1,12 +1,7 @@
 'use client'
 
 import {useState} from 'react';
-import {
-    EP_MEMBERS,
-    PG_HOME,
-    PG_LOGIN,
-    VERIFICATION_CODE_PURPOSE
-} from '../constants/constants';
+import {EP_MEMBERS, PG_LOGIN, VERIFICATION_CODE_PURPOSE} from '../constants/constants';
 import css from './page.module.css'
 import {apiPost} from '@/axios/requests/post/apiPost';
 import EmailInput from './components/email_input/EmailInput';

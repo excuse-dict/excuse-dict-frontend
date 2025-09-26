@@ -1,7 +1,6 @@
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
-import {useEffect, useState} from "react";
+import {useEffect} from "react";
 import {usePage} from "@/global_components/page/usePage";
-import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
 import CommentForm from "@/app/excuses/comments/components/CommentForm";
 import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import CommentList from "@/app/excuses/comments/components/CommentList";

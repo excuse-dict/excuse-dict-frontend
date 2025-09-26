@@ -1,7 +1,6 @@
-import { useState } from "react";
+import {useState} from "react";
 import css from './PasswordInput.module.css'
-import pageCss from '../../page.module.css';
-import { usePasswordInput } from "./usePasswordInput";
+import {usePasswordInput} from "./usePasswordInput";
 
 export default function PasswordConfirm({ title, placeholder, password }:
     {

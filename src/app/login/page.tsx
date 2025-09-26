@@ -3,7 +3,7 @@
 import {useEffect, useState} from 'react';
 import LoginInput from './components/LoginInput';
 import css from './page.module.css'
-import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
+import {PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import {useRouter} from 'next/navigation';
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {toast} from "react-toastify";

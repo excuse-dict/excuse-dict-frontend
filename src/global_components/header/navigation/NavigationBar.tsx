@@ -1,7 +1,6 @@
 import css from "@/global_components/header/Header.module.css";
 import Link from "next/link";
 import {PG_EXCUSES, PG_GENERATOR, PG_HALL_OF_FAME, PG_WEEKLY_TOP} from "@/app/constants/constants";
-import {useState} from "react";
 
 export default function NavigationBar(){
 

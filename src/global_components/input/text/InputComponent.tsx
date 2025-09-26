@@ -1,7 +1,5 @@
 'use client';
 
-import {useState} from "react";
-
 export default function InputComponent({ value, setValue, label, type, placeholder, onChange, labelStyle, inputContainerStyle }: {
     value: string,
     setValue: (value: string) => void,

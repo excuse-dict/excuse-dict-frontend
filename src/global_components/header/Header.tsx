@@ -1,11 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import {useState} from 'react';
 import css from './Header.module.css';
 import Logo from "@/global_components/header/logo/Logo";
 import NavigationBar from "@/global_components/header/navigation/NavigationBar";
 import MemberInfo from "@/global_components/header/memberinfo/MemberInfo";
-import Link from "next/link";
 
 export default function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);

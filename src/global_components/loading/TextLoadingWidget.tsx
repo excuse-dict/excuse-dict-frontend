@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from "react";
 import css from './TextLoadingWidget.module.css'
 import {useTextLoading} from "@/global_components/loading/hooks/useTextLoading";
 

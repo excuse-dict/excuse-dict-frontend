@@ -1,9 +1,4 @@
-import {
-    ALLOWED_SPECIAL_CHARS,
-    ALLOWED_SPECIAL_CHARS_REGEX,
-    MAX_PASSWORD_LENGTH,
-    MIN_PASSWORD_LENGTH
-} from "@/app/constants/constants";
+import {ALLOWED_SPECIAL_CHARS, MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH} from "@/app/constants/constants";
 import {useState} from "react";
 import css from './PasswordInput.module.css'
 import {usePasswordInput} from "./usePasswordInput";

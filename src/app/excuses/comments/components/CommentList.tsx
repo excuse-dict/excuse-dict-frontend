@@ -1,5 +1,5 @@
 import Comment, {CommentInterface} from "@/app/excuses/comments/components/Comment";
-import {UpdateCommentDto, useComment} from "@/app/excuses/comments/hooks/useComment";
+import {useComment} from "@/app/excuses/comments/hooks/useComment";
 import {useState} from "react";
 
 export default function CommentList({ comments, commentHook, nextPageSize, loadMoreComments}: {
