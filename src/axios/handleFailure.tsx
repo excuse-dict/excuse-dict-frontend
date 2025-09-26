@@ -6,26 +6,27 @@ import {apiGet} from "@/axios/requests/get/apiGet";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {toast} from "react-toastify";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
+import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
+import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
 
 interface OriginalRequest {
     method: 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE',
     endPoint: string,
-    params?: object,
+    params?: Record<string, unknown>,
     body?: object,
-    onSuccess?: (response: unknown) => void,
+    onSuccess?: (response: AxiosResponseInterface) => void,
     overwriteDefaultOnFail?: boolean,
-    onFail?: (error: unknown) => void,
-};
+    onFail?: (error: AxiosErrorInterface) => void,
+}
 
-export const getErrorMessage = (error: any) => {
-    return error?.response?.data?.body?.detail ||
-        error?.response?.data?.message ||
+export const getErrorMessage = (error: AxiosErrorInterface) => {
+    return error?.response?.data?.message ||
         error?.message ||
         "오류가 발생하였습니다.";
 }
 
 // 기본 에러 처리 함수
-export const onFailDefault = (error: any) => {
+export const onFailDefault = (error: AxiosErrorInterface) => {
     const message: string = getErrorMessage(error);
 
     toast.error(message);
@@ -34,8 +35,8 @@ export const onFailDefault = (error: any) => {
 // 에러 처리 메인
 export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = true, originalRequest}: {
     isRetry: boolean,
-    error: any;
-    onFail?: (error: any) => void;
+    error: AxiosErrorInterface;
+    onFail?: (error: AxiosErrorInterface) => void;
     overwriteDefaultOnFail?: boolean;
     originalRequest: OriginalRequest;
 
@@ -153,6 +154,7 @@ const retryOriginalRequest = (originalRequest: OriginalRequest) => {
                 onFail: onFail,
                 isRetry: true,
             })
+            break;
         }
         default:{
             // TODO: PUT도 추가

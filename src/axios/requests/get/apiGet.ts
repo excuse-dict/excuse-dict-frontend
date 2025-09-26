@@ -1,14 +1,16 @@
-import {API_URL} from "../../../app/constants/constants"
+import {API_URL} from "@/app/constants/constants"
 import {handleError} from "../../handleFailure";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import axios from "axios";
+import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
+import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
 
 export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false }:
     {
         endPoint: string,
-        params?: object,
-        onSuccess?: (value: any) => void,
-        onFail?: (error?: any) => void,
+        params?: Record<string, unknown>,
+        onSuccess?: (value: AxiosResponseInterface) => void,
+        onFail?: (error: AxiosErrorInterface) => void,
         overwriteDefaultOnFail?: boolean,
         isRetry?: boolean,
     }) => {
@@ -23,7 +25,7 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
 
     try {
         // 요청 전송
-        const response: any = await axios.get(API_URL + endPoint, { params, headers });
+        const response: AxiosResponseInterface = await axios.get(API_URL + endPoint, { params, headers });
 
         // 성공
         //console.log("GET 요청 성공: ", response);
@@ -31,10 +33,10 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
   
         return response; // 응답 리턴
 
-    } catch (error: any) { // 요청 실패(에러)
+    } catch (error: unknown) { // 요청 실패(에러)
         handleError({
             isRetry: isRetry,
-            error: error,
+            error: error as AxiosErrorInterface,
             overwriteDefaultOnFail: overwriteDefaultOnFail,
             onFail: onFail,
             originalRequest: {

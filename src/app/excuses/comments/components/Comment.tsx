@@ -51,7 +51,8 @@ export default function Comment({comment, commentHook, isRepliesExpanded, setExp
         // 답글 목록 접을 때 상태 초기화
         setReplies([]);
         setCurrentPage(0);
-    }, [isRepliesExpanded, setReplies, setCurrentPage]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isRepliesExpanded]);
 
     const toggleRepliesExpanded = () => {
         // 이미 펼쳐져 있었으면 접기 (0으로 초기화)

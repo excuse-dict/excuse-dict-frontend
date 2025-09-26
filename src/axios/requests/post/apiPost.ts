@@ -2,12 +2,14 @@ import {API_URL} from "@/app/constants/constants";
 import {handleError} from "../../handleFailure";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import axios from "axios";
+import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
+import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
 
 export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false}: {
     endPoint: string,
-    body?: any,
-    onSuccess?: (value: any) => void,
-    onFail?: (error: any) => void,
+    body?: object,
+    onSuccess?: (value: AxiosResponseInterface) => void,
+    onFail?: (error: AxiosErrorInterface) => void,
     overwriteDefaultOnFail?: boolean,
     isRetry?: boolean,
 }) => {
@@ -23,7 +25,7 @@ export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefau
 
     try {
         // 요청 전송
-        const response: any = await axios.post(
+        const response: AxiosResponseInterface = await axios.post(
             API_URL + endPoint,
             body ?? {},
             {
@@ -37,10 +39,10 @@ export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefau
 
         return response; // 응답 리턴
 
-    } catch (error: any) { // 오류 발생
+    } catch (error: unknown) { // 오류 발생
         handleError({
             isRetry: isRetry,
-            error: error,
+            error: error as AxiosErrorInterface,
             overwriteDefaultOnFail: overwriteDefaultOnFail,
             onFail: onFail,
             originalRequest: {
