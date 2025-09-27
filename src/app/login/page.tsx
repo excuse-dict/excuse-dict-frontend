@@ -36,9 +36,6 @@ export default function LoginPage() {
             onFail: () => {
                 setShouldShowError(true);
                 setIsLoading(false);
-            },
-            onSuccess: () => {
-                setIsLoading(false);
             }
         })
     }
@@ -92,11 +89,7 @@ export default function LoginPage() {
                 className="relative bg-white/80 backdrop-blur-lg rounded-3xl shadow-2xl border border-white/20 p-8 w-full max-w-md">
                 {/* 헤더 */}
                 <div className="text-center mb-8">
-                    <div
-                        className="w-16 h-16 bg-gradient-to-r from-purple-500 to-blue-500 rounded-2xl mx-auto mb-4 flex items-center justify-center">
-                        <span className="text-white text-2xl font-bold">로</span>
-                    </div>
-                    <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
+                    <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mt-8 mb-2">
                         로그인
                     </h1>
                     <p className="text-gray-600 text-sm">계정에 로그인하여 서비스를 이용하세요</p>
