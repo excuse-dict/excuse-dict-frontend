@@ -21,7 +21,7 @@ export default function EditExcusePage(){
     const [excuseInput, setExcuseInput] = useState(cachedPost?.excuse?.excuse || '');
 
     const tagSelector = useTagSelector(new Set(cachedPost?.excuse?.tags));
-    const { selectedTags, createTagKey } = tagSelector;
+    const { selectedTags } = tagSelector;
 
     useEffect(() => {
         if(!cachedPost) {
@@ -44,8 +44,7 @@ export default function EditExcusePage(){
 
     const isTagsChanged = () => {
         cachedPost?.excuse?.tags.forEach((tag) => {
-            const key = createTagKey(tag);
-            if(!selectedTags.has(key)) return true;
+            if(!selectedTags.has(tag)) return true;
         });
         return false;
     }
