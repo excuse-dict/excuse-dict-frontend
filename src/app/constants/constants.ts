@@ -84,3 +84,6 @@ export const SS_GENERATOR_LAST_CALL_KEY = "generatorLastCall";
 // 핑계 생성기 api 호출 쿨타임
 export const GENERATOR_COOLDOWN_FOR_GUEST = 60;
 export const GENERATOR_COOLDOWN_FOR_MEMBER = 5;
+
+// 쿠키 저장 경로
+export const COOKIE_PATH = "/";

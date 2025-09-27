@@ -7,6 +7,8 @@ import {PG_PASSWORD_RESET, PG_REGISTER} from '../constants/constants';
 import {useRouter} from 'next/navigation';
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {toast} from "react-toastify";
+import {isLocalStorageAvailable} from "@/lib/CookieHelper";
+import NotAllowedContent from "@/global_components/error-contents/NotAllowedContent";
 
 export default function LoginPage() {
 
@@ -15,7 +17,15 @@ export default function LoginPage() {
     const [shouldShowError, setShouldShowError] = useState(false);
     const router = useRouter();
 
+    const [isLoginAvailable, setLoginAvailable] = useState(true);
+    const [isCheckingOfLoginAvailability, setCheckingOfLoginAvailability] = useState(true);
+
     const { sendLoginRequest } = useAuthState();
+
+    useEffect(() => {
+        setLoginAvailable(isLocalStorageAvailable());
+        setCheckingOfLoginAvailability(false);
+    }, []);
 
     const handleLogin = async () => {
 
@@ -46,6 +56,18 @@ export default function LoginPage() {
         },3000)
         return () => clearTimeout(timer);
     }, [shouldShowError]);
+
+    if (!isLoginAvailable) {
+        if (isCheckingOfLoginAvailability) {
+            return <></>;  // 또는 로딩 컴포넌트
+        }
+        return (
+            <NotAllowedContent
+                title={"로그인 이용 불가"}
+                subtitle={"로그인 상태를 저장하는 데 쿠키 허용이 필요합니다"}
+            />
+        );
+    }
 
     return (
         <div className={css.login_container}>

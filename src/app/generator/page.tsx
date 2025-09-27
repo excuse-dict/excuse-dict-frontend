@@ -17,7 +17,8 @@ import {useRouter} from "next/navigation";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 import {useLoadingDotAnimation} from "@/global_components/loading/hooks/useLoadingDotAnimation";
-import AINotAllowedContent from "@/app/generator/error-content/AINotAllowedContent";
+import NotAllowedContent from "@/global_components/error-contents/NotAllowedContent";
+import {removeFromCookie} from "@/lib/CookieHelper";
 
 export default function ExcuseGeneratorPage() {
 
@@ -27,7 +28,7 @@ export default function ExcuseGeneratorPage() {
     const [isLoading, setLoading] = useState(false);
     const [isSucceed, setSucceed] = useState(false);
     const [isGuestTokenReady, setGuestTokenReady] = useState(false);
-    const [isCookieAllowed, setCookieAllowed] = useState(true);
+    const [isCookieAvailable, setCookieAvailable] = useState(true);
     const [isSecretTabChecking, setIsSecretTabChecking] = useState(true);
 
     const {isLoggedIn} = useAuthState();
@@ -56,16 +57,19 @@ export default function ExcuseGeneratorPage() {
         // 비회원일 때만 실행
         if(!hasHydrated || isLoggedIn) return;
 
+        // 먼저 테스트 쿠키 삭제(혹시 있으면)
+        removeFromCookie("cookieTest");
+
         // 게스트 토큰 있으면 그대로 리턴, 없으면 발급해서 리턴
         apiPost({
             endPoint: EP_GUEST_TOKEN,
             onSuccess: () => {
                 // 쿠키에 값이 실제로 들어왔는지 확인
-                const isCookieAllowed = document.cookie.includes("cookieTest");
-                if(isCookieAllowed) {
+                const isCookieAvailable = document.cookie.includes("cookieTest");
+                if(isCookieAvailable) {
                     setGuestTokenReady(true);
                 } else {
-                    setCookieAllowed(false);
+                    setCookieAvailable(false);
                 }
                 setIsSecretTabChecking(false);
             },
@@ -134,7 +138,7 @@ export default function ExcuseGeneratorPage() {
 
     return (
         <>
-            {isCookieAllowed ? (isSecretTabChecking ? <></> : (
+            {isCookieAvailable ? (isSecretTabChecking ? <></> : (
                 <div className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white transition-all duration-800 ease-out">
                     <h1 className="font-bold text-2xl">핑계 생성기</h1>
                     <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 마련하기</span>
@@ -192,7 +196,7 @@ export default function ExcuseGeneratorPage() {
                     <ReCAPTCHAComponent recaptchaRef={recaptchaRef} />
                 </div>
             )) : (
-                <AINotAllowedContent />
+                <NotAllowedContent title={"AI 파업 중!"} subtitle={"쿠키가 없으면 머리가 안 돌아간대요"} />
             )}
         </>
     );

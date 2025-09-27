@@ -2,7 +2,7 @@ import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
 import {EP_LOGIN, PG_HOME} from '@/app/constants/constants';
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {isSessionStorageAvailable} from "@/lib/SessionStorageHelper";
+import {isSessionStorageAvailable} from "@/lib/CookieHelper";
 
 interface AuthState {
     isLoggedIn: boolean,
