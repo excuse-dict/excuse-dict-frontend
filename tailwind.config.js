@@ -1,12 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",  // 이 부분이 중요!
-    "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",  // 모든 src 하위 파일 포함
   ],
   theme: {
     extend: {},
   },
   plugins: [],
 }
-
