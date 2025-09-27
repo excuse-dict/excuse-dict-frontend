@@ -67,6 +67,7 @@ export default function ExcuseGeneratorPage() {
                 const isCookieAvailable = document.cookie.includes("cookieTest");
                 if(isCookieAvailable) {
                     setGuestTokenReady(true);
+                    setCookieAvailable(true);
                 } else {
                     setCookieAvailable(false);
                 }
@@ -116,7 +117,6 @@ export default function ExcuseGeneratorPage() {
         return situationInput.length >= 5 && situationInput.length <= 100;
     }
 
-
     const getButtonName = () => {
 
         // 쿨타임 아닐 때
@@ -134,10 +134,12 @@ export default function ExcuseGeneratorPage() {
         }
     }
 
-    if(isCookieAvailable === null) return <></>;
+    if(!isLoggedIn){
+        if(isCookieAvailable === null) return <></>;
 
-    if(!isCookieAvailable){
-        return <NotAllowedContent title={"AI 파업 중!"} subtitle={"쿠키가 없으면 머리가 안 돌아간대요"} />
+        if(!isCookieAvailable){
+            return <NotAllowedContent title={"AI 파업 중!"} subtitle={"쿠키가 없으면 머리가 안 돌아간대요"} />
+        }
     }
 
     return (
