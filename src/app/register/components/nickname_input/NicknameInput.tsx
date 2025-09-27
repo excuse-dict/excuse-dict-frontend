@@ -3,6 +3,7 @@ import {EP_NICKNAME_CHECK, MAX_NICKNAME_LENGTH, MIN_NICKNAME_LENGTH} from "@/app
 import {apiGet} from "@/axios/requests/get/apiGet";
 import TextLoadingWidget from "@/global_components/loading/TextLoadingWidget";
 import {getErrorMessage} from "@/axios/handleFailure";
+import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
 
 // 닉네임 입력창
 export default function NicknameInput({ nicknameInput, setNicknameInput }: {
@@ -66,7 +67,7 @@ export default function NicknameInput({ nicknameInput, setNicknameInput }: {
         setFailText("닉네임 사용 가능");
     }
 
-    const handleFailure = (error: unknown) => {
+    const handleFailure = (error: AxiosErrorInterface) => {
         setNicknameAvailable(false);
         setNicknameCheckLoading(false);
         setFailText(getErrorMessage(error));

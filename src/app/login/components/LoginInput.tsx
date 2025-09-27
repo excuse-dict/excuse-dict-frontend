@@ -1,10 +1,11 @@
 import css from './LoginInput.module.css'
 
-export default function LoginInput({ placeholder, type, input, setInput }: {
+export default function LoginInput({ placeholder, type, input, setInput, onKeyPress }: {
     placeholder: string,
     type?: string,
     input: string,
-    setInput: (value: string) => void
+    setInput: (value: string) => void,
+    onKeyPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void
 }){
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -18,6 +19,7 @@ export default function LoginInput({ placeholder, type, input, setInput }: {
             type={type}
             value={input}
             onChange={handleChange}
-        ></input>
+            onKeyPress={onKeyPress}
+        />
     );
 }

@@ -8,6 +8,7 @@ import sendVerificationCode from "@/axios/requests/post/verificationCode";
 import {useEffect, useState} from "react";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import {toast} from "react-toastify";
+import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
 
 export function useEmailVerification({purpose, onViolation}: {
     purpose: string,
@@ -71,7 +72,7 @@ export function useEmailVerification({purpose, onViolation}: {
             email: emailInput,
             purpose: purpose,
             recaptchaToken: recaptchaToken,
-            onSuccess: (response) => {
+            onSuccess: (response: AxiosResponseInterface) => {
                 setEmailSending(false); // 이메일 전송 완료!
                 setSendingSucceed(true);
                 setTimeLeft(calculateTimeLeft(response.data.data.expiryTime));
