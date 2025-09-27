@@ -10,11 +10,6 @@ export default function RemovableTagContainer({ tagSelector, emptyLabel, hideBor
 
     const { selectedTags, isTagsLoading } = tagSelector;
 
-    const parseTagKey = (tagKey: string): TagInterface => {
-        const [category, value] = tagKey.split(':');
-        return { category, value };
-    };
-
     const getTags = () => {
         const label = isTagsLoading ? '태그 불러오는 중...' : emptyLabel || '태그 없음';
         const tagArray = Array.from(selectedTags.values());
@@ -23,10 +18,10 @@ export default function RemovableTagContainer({ tagSelector, emptyLabel, hideBor
             <>
                 {!selectedTags || selectedTags?.size === 0 ?
                     <span className={'w-full text-[var(--placeholder-color)] text-center'}>{label}</span> : null}
-                {tagArray?.map((key, index) => (
+                {tagArray?.map((tag, index) => (
                     <RemovableTag
                         key={index}
-                        tagInterface={parseTagKey(key)}
+                        tagInterface={tag}
                         tagSelector={tagSelector}
                     ></RemovableTag>
                 ))}
