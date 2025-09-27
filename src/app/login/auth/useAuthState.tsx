@@ -2,6 +2,7 @@ import {create} from 'zustand';
 import {persist} from 'zustand/middleware';
 import {EP_LOGIN, PG_HOME} from '@/app/constants/constants';
 import {apiPost} from "@/axios/requests/post/apiPost";
+import {isSessionStorageAvailable} from "@/lib/SessionStorageHelper";
 
 interface AuthState {
     isLoggedIn: boolean,
@@ -10,7 +11,7 @@ interface AuthState {
     memberId: number | null,
     nickname: string | null,
 
-    login: (params: {
+    sendLoginRequest: (params: {
         email: string,
         password: string,
         overwriteDefaultHandler?: boolean,
@@ -68,12 +69,16 @@ export const useAuthState = create<AuthState>()(
             const getRedirectPath = () => {
                 if (typeof window === 'undefined') return PG_HOME;
 
-                const savedPath = sessionStorage.getItem('redirectAfterLogin');
-                if (savedPath) {
-                    sessionStorage.removeItem('redirectAfterLogin');
-                    return savedPath;
+                if(isSessionStorageAvailable()){
+                    const savedPath = sessionStorage.getItem('redirectAfterLogin');
+                    if (savedPath) {
+                        sessionStorage.removeItem('redirectAfterLogin');
+                        return savedPath;
+                    }
+                    return PG_HOME;
+                }else{
+                    return PG_HOME;
                 }
-                return PG_HOME;
             }
 
             return {
@@ -82,7 +87,7 @@ export const useAuthState = create<AuthState>()(
                 refreshToken: null,
                 memberId: null,
                 nickname: null,
-                login: sendLoginRequest,
+                sendLoginRequest,
                 setStateAfterLogin,
                 logout: () => {
                     set({

@@ -15,11 +15,11 @@ export default function LoginPage() {
     const [shouldShowError, setShouldShowError] = useState(false);
     const router = useRouter();
 
-    const { login } = useAuthState();
+    const { sendLoginRequest } = useAuthState();
 
     const handleLogin = async () => {
 
-        login({
+        sendLoginRequest({
             email: emailInput,
             password: passwordInput,
             overwriteDefaultHandler: true,

@@ -21,7 +21,7 @@ export default function RegisterPage() {
 
     const [isModalOpen, setModalOpen] = useState(false);
     const [nicknameInput, setNicknameInput] = useState('');
-    const { login } = useAuthState();
+    const { sendLoginRequest } = useAuthState();
 
     const router = useRouter();
     const emailVerification = useEmailVerification({
@@ -76,7 +76,7 @@ export default function RegisterPage() {
         Swal.fire("회원가입 완료", `${nicknameInput}님 환영합니다!`, "success")
             .then(() => {
                 // 자동 로그인 요청 전송
-                login({
+                sendLoginRequest({
                     email: emailInput,
                     password: passwordInput,
                     onFail: () => router.push(PG_LOGIN)

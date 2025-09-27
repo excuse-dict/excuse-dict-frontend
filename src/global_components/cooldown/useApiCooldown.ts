@@ -28,8 +28,12 @@ export const useApiCooldown = ({storageKey, cooldown}: {
     }, [isInCooldown])
 
     const updateCooldown = () => {
-
-        const lastCall = sessionStorage.getItem(storageKey);
+        let lastCall;
+        try{
+            lastCall = sessionStorage.getItem(storageKey);
+        }catch {
+            return;
+        }
         if (!lastCall) {
             setRemainingTime(0);
             setIsInCooldown(false);

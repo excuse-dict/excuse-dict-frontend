@@ -17,6 +17,7 @@ import {useRouter} from "next/navigation";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import ReCAPTCHAComponent from "@/app/recaptcha/ReCAPTCHAComponent";
 import {useLoadingDotAnimation} from "@/global_components/loading/hooks/useLoadingDotAnimation";
+import AINotAllowedContent from "@/app/generator/error-content/AINotAllowedContent";
 
 export default function ExcuseGeneratorPage() {
 
@@ -26,8 +27,12 @@ export default function ExcuseGeneratorPage() {
     const [isLoading, setLoading] = useState(false);
     const [isSucceed, setSucceed] = useState(false);
     const [isGuestTokenReady, setGuestTokenReady] = useState(false);
+    const [isCookieAllowed, setCookieAllowed] = useState(true);
+    const [isSecretTabChecking, setIsSecretTabChecking] = useState(true);
 
     const {isLoggedIn} = useAuthState();
+    const [hasHydrated, setHasHydrated] = useState(false);
+
     const {recaptchaRef, executeRecaptcha} = useRecaptcha();
 
     const { dotCount } = useLoadingDotAnimation(isLoading, 300);
@@ -44,12 +49,28 @@ export default function ExcuseGeneratorPage() {
     });
 
     useEffect(() => {
+        setHasHydrated(true);
+    }, []);
+
+    useEffect(() => {
+        // 비회원일 때만 실행
+        if(!hasHydrated || isLoggedIn) return;
+
         // 게스트 토큰 있으면 그대로 리턴, 없으면 발급해서 리턴
         apiPost({
             endPoint: EP_GUEST_TOKEN,
-            onSuccess: () => setGuestTokenReady(true),
+            onSuccess: () => {
+                // 쿠키에 값이 실제로 들어왔는지 확인
+                const isCookieAllowed = document.cookie.includes("cookieTest");
+                if(isCookieAllowed) {
+                    setGuestTokenReady(true);
+                } else {
+                    setCookieAllowed(false);
+                }
+                setIsSecretTabChecking(false);
+            },
         })
-    }, []);
+    }, [hasHydrated, isLoggedIn]);
 
     const handleGenerate = async () => {
 
@@ -104,66 +125,75 @@ export default function ExcuseGeneratorPage() {
     }
 
     const isButtonDisabled = () => {
-        return !isInputValid() || isInCooldown || !isGuestTokenReady;
+        if(isLoggedIn){
+            return !isInputValid() || isInCooldown;
+        }else{
+            return !isInputValid() || isInCooldown || !isGuestTokenReady;
+        }
     }
 
     return (
-        <div
-            className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white transition-all duration-800 ease-out">
-            <h1 className="font-bold text-2xl">핑계 생성기</h1>
-            <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 마련하기</span>
-            {/*상황 기입란*/}
-            <TextBox
-                value={situationInput}
-                setValue={setSituationInput}
-                placeholder="AI에게 상황을 설명해주세요"
-                min={5}
-                max={100}
-                containerStyle="w-full mt-16"
-            ></TextBox>
-            <div className="overflow-hidden transition-all duration-500 ease-out" style={{
-                maxHeight: isLoading || isSucceed ? '1000px' : '0px',
-                opacity: isLoading || isSucceed ? 1 : 0
-            }}>
-                {isLoading ?
-                    /*로딩 스피너*/
-                    <div>
-                        <div className={`${css.loading_spinner} !w-12 !h-12 mt-8`}></div>
-                        <p className="font-light text-sm mt-2">{"생각 중" + '.'.repeat(dotCount)}</p>
-                    </div>
-                    : (
-                        isSucceed ? (
-                            /*AI의 답변*/
-                            <div className="animate-fadeIn">
-                                <div className="text-center text-2xl mt-4 mb-4">↓</div>
-                                <ul className="flex flex-col gap-2">
-                                    {answer.map((answer, key) => (
-                                        <li key={key}
-                                            className="flex flex-col transform transition-all duration-500 ease-out delay-300">
-                                            <CopyableTextbox
-                                                text={answer}
-                                                style="bg-blue-200 rounded p-4"
-                                            ></CopyableTextbox>
-                                        </li>
-                                    ))}
-                                </ul>
+        <>
+            {isCookieAllowed ? (isSecretTabChecking ? <></> : (
+                <div className="flex flex-col m-auto p-10 items-center w-1/3 rounded bg-white transition-all duration-800 ease-out">
+                    <h1 className="font-bold text-2xl">핑계 생성기</h1>
+                    <span className="font-light text-sm">하늘이 무너져도 솟아날 구멍 마련하기</span>
+                    {/*상황 기입란*/}
+                    <TextBox
+                        value={situationInput}
+                        setValue={setSituationInput}
+                        placeholder="AI에게 상황을 설명해주세요"
+                        min={5}
+                        max={100}
+                        containerStyle="w-full mt-16"
+                    />
+                    <div className="overflow-hidden transition-all duration-500 ease-out" style={{
+                        maxHeight: isLoading || isSucceed ? '1000px' : '0px',
+                        opacity: isLoading || isSucceed ? 1 : 0
+                    }}>
+                        {isLoading ? (
+                            /*로딩 스피너*/
+                            <div>
+                                <div className={`${css.loading_spinner} !w-12 !h-12 mt-8`}></div>
+                                <p className="font-light text-sm mt-2">{"생각 중" + '.'.repeat(dotCount)}</p>
                             </div>
-                        ) : <></>
-                    )}
-            </div>
-            {/*AI응답 요청 버튼*/}
-            <button
-                className={`global_button ${isButtonDisabled() ? 'disabled-button' : ''} mt-8 ml-auto w-20 p-1 rounded`}
-                disabled={isButtonDisabled()}
-                onClick={handleGenerate}
-            >{getButtonName()}</button>
-            {isLoggedIn || !isInCooldown ? <></> :
-                <p
-                    className="ml-auto mt-2 text-xs text-blue-500 cursor-pointer hover:underline"
-                    onClick={() => router.push(PG_LOGIN)}
-                >기다리기 싫다면? 로그인↗</p>
-            }
-            <ReCAPTCHAComponent recaptchaRef={recaptchaRef}></ReCAPTCHAComponent>
-        </div>
+                        ) : (
+                            isSucceed ? (
+                                /*AI의 답변*/
+                                <div className="animate-fadeIn">
+                                    <div className="text-center text-2xl mt-4 mb-4">↓</div>
+                                    <ul className="flex flex-col gap-2">
+                                        {answer.map((answer, key) => (
+                                            <li key={key}
+                                                className="flex flex-col transform transition-all duration-500 ease-out delay-300">
+                                                <CopyableTextbox
+                                                    text={answer}
+                                                    style="bg-blue-200 rounded p-4"
+                                                />
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            ) : <></>
+                        )}
+                    </div>
+                    {/*AI응답 요청 버튼*/}
+                    <button
+                        className={`global_button ${isButtonDisabled() ? 'disabled-button' : ''} mt-8 ml-auto w-20 p-1 rounded`}
+                        disabled={isButtonDisabled()}
+                        onClick={handleGenerate}
+                    >{getButtonName()}</button>
+                    {isLoggedIn || !isInCooldown ? <></> :
+                        <p
+                            className="ml-auto mt-2 text-xs text-blue-500 cursor-pointer hover:underline"
+                            onClick={() => router.push(PG_LOGIN)}
+                        >기다리기 싫다면? 로그인↗</p>
+                    }
+                    <ReCAPTCHAComponent recaptchaRef={recaptchaRef} />
+                </div>
+            )) : (
+                <AINotAllowedContent />
+            )}
+        </>
     );
 }

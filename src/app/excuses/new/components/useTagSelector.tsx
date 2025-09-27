@@ -4,19 +4,14 @@ import {useState} from "react";
 import {TAG_CATEGORIES} from "@/app/constants/constants";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 
-type TagKey = `${string}:${string}`;
-
 export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
 
-    const createTagKey = (tag: {value: string, category: string}): TagKey =>
-        `${tag.category}:${tag.value}`;
-
-    const initializeTags = (): Set<string> => {
+    const initializeTags = (): Set<TagInterface> => {
         if(!tags || tags.size == 0) return new Set();
 
-        const set = new Set<string>();
+        const set = new Set<TagInterface>();
 
-        tags.forEach(tag => set.add(createTagKey(tag)));
+        tags.forEach(tag => set.add(tag));
         return set;
     }
 
@@ -24,14 +19,13 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
     const [isTagsLoading, setTagsLoading] = useState(false);
     const [filterTypes, setFilterTypes] = useState<Array<string>>([]);
     const [searchInput, setSearchInput] = useState('');
-    const [searchedTags, setSearchedTags] = useState<Array<{value: string, category: string}>>([]);
-    const [selectedTags, setSelectedTags] = useState<Set<string>>(initializeTags()); // category:value 형태로 넣어야 함
+    const [searchedTags, setSearchedTags] = useState<Array<TagInterface>>([]);
+    const [selectedTags, setSelectedTags] = useState<Set<TagInterface>>(initializeTags()); // category:value 형태로 넣어야 함
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(TAG_CATEGORIES.map(category => category.value)));
 
     // 태그 선택
-    const addSelectedTag = (tag: {value: string, category: string}) => {
-        const key = createTagKey(tag);
-        setSelectedTags(prev => new Set([...prev, key]));
+    const addSelectedTag = (tag: TagInterface) => {
+        setSelectedTags(prev => new Set([...prev, tag]));
     };
 
     // 카테고리 선택
@@ -40,11 +34,10 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
     }
 
     // 태그 선택 해제
-    const removeSelectedTag = (tag: {value: string, category: string}) => {
-        const key = createTagKey(tag);
+    const removeSelectedTag = (tag: TagInterface) => {
         setSelectedTags(prev => {
             const newSet = new Set(prev);
-            newSet.delete(key);
+            newSet.delete(tag);
             return newSet;
         });
     };
@@ -59,9 +52,8 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
     }
 
     // 태그 선택 여부 확인
-    const hasSelectedTag = (tag: {value: string, category: string}): boolean => {
-        const key = createTagKey(tag);
-        return selectedTags.has(key);
+    const hasSelectedTag = (tag: TagInterface): boolean => {
+        return selectedTags.has(tag);
     };
 
     // 카테고리 선택 여부 확인
@@ -80,7 +72,6 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
     }
 
     return {
-        createTagKey,
         isSelectorOpen, setSelectorOpen,
         isTagsLoading, setTagsLoading,
         filterTypes, setFilterTypes,
