@@ -17,14 +17,12 @@ export default function LoginPage() {
     const [shouldShowError, setShouldShowError] = useState(false);
     const router = useRouter();
 
-    const [isLoginAvailable, setLoginAvailable] = useState(true);
-    const [isCheckingOfLoginAvailability, setCheckingOfLoginAvailability] = useState(true);
+    const [isLoginAvailable, setLoginAvailable] = useState<boolean | null>(null);
 
     const { sendLoginRequest } = useAuthState();
 
     useEffect(() => {
         setLoginAvailable(isLocalStorageAvailable());
-        setCheckingOfLoginAvailability(false);
     }, []);
 
     const handleLogin = async () => {
@@ -57,10 +55,8 @@ export default function LoginPage() {
         return () => clearTimeout(timer);
     }, [shouldShowError]);
 
+    if(isLoginAvailable === null) return <></>;
     if (!isLoginAvailable) {
-        if (isCheckingOfLoginAvailability) {
-            return <></>;  // 또는 로딩 컴포넌트
-        }
         return (
             <NotAllowedContent
                 title={"로그인 이용 불가"}

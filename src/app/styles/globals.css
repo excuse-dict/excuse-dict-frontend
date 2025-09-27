@@ -96,42 +96,39 @@ a:hover {
   position: relative;
   overflow-x: hidden;
   overflow-y: auto;
-  /* Added simple-scroll class for styled scrollbars */
   @apply simple-scroll;
 
-  /* 개선된 그라디언트 배경 */
+  /* 그라디언트 배경 */
   background: linear-gradient(135deg, var(--purple-grey-dark) 0%, var(--purple-grey-light) 100%) fixed;
+}
 
-  /* 애니메이션 효과를 위한 오버레이 */
-  &::before {
-    content: '';
-    position: fixed;
-    top: var(--header-height);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 100vh;
-    background: 
-      radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.2) 0%, transparent 50%);
-    pointer-events: none;
-    z-index: 1;
-  }
+.app-background::before {
+  content: '';
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 100vh;
+  background:
+          radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+          radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
+          radial-gradient(circle at 40% 40%, rgba(102, 126, 234, 0.2) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
 
-  /* 떠다니는 원형 장식 */
-  &::after {
-    content: '';
-    position: fixed;
-    width: 300px;
-    height: 300px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.05);
-    top: calc(var(--header-height) - 150px);
-    right: -150px;
-    animation: float 6s ease-in-out infinite;
-    z-index: 1;
-  }
+.app-background::after {
+  content: '';
+  position: fixed;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  top: calc(var(--header-height) - 150px);
+  right: -150px;
+  animation: float 6s ease-in-out infinite;
+  z-index: 1;
 }
 
 @keyframes float {
