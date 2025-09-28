@@ -263,11 +263,7 @@ a:hover {
 
 /* 글로벌 버튼 */
 .global_button {
-  /*background: linear-gradient(135deg, var(--purple-grey-highlighted) 0%, var(--purple-grey) 100%);*/
-  background-color: var(--purple-grey-highlighted);
-  /*border: 1px solid var(--purple-grey-dark);*/
   cursor: pointer;
-  color: var(--global-font-dark);
   transition: var(--transition);
   position: relative;
   overflow: hidden;

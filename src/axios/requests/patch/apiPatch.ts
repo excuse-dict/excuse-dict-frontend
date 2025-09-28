@@ -15,8 +15,8 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
        isRetry?: boolean,
    }) => {
 
-    /*console.log("PATCH 요청 전송: " + API_URL + endPoint);
-    console.log("body: ", body);*/
+    console.log("PATCH 요청 전송: " + API_URL + endPoint);
+    console.log("body: ", body);
 
     const token = useAuthState.getState().accessToken;
     const headers = token ? {Authorization: token} : {};
@@ -26,7 +26,7 @@ export const apiPatch = async ({endPoint, body, onSuccess, onFail, overwriteDefa
         const response: AxiosResponseInterface = await axios.patch(API_URL + endPoint, body, {headers});
 
         // 성공
-        //console.log("PATCH 요청 성공: ", response);
+        console.log("PATCH 요청 성공: ", response);
         onSuccess?.(response);
 
         return response; // 응답 리턴

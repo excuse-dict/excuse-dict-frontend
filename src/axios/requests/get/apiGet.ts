@@ -15,8 +15,8 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
         isRetry?: boolean,
     }) => {
 
-    /*console.log("GET 요청 전송: " + API_URL + endPoint);
-    console.log("params: ", params);*/
+    console.log("GET 요청 전송: " + API_URL + endPoint);
+    console.log("params: ", params);
 
     const token = useAuthState.getState().accessToken;
     const headers = token ? { Authorization: token } : {};
@@ -28,7 +28,7 @@ export const apiGet = async ({ endPoint, params, onSuccess, onFail, overwriteDef
         const response: AxiosResponseInterface = await axios.get(API_URL + endPoint, { params, headers });
 
         // 성공
-        //console.log("GET 요청 성공: ", response);
+        console.log("GET 요청 성공: ", response);
         onSuccess?.(response);
   
         return response; // 응답 리턴

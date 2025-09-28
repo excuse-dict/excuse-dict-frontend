@@ -12,6 +12,7 @@ export const getBackgroundColorStyle = (category: string)=> {
         case "LOVE": return 'bg-[#ff6b9d]';
         case "RELIGIOUS": return 'bg-[#f4a261]';
         case "STUDY": return 'bg-[#6c5ce7]';
+        case "SUPERNATURAL": return 'bg-[#4A4A4A]';
         case "TRANSPORT": return 'bg-[#2a9d8f]';
         case "WEATHER": return 'bg-[#457b9d]';
         case "ETC": return 'bg-[#757575]';

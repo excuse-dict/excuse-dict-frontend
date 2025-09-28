@@ -8,6 +8,8 @@ import PostCard from "@/app/excuses/posts/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
+import {useSearch} from "@/global_components/search/useSearch";
+import Searcher from "@/global_components/search/Searcher";
 
 export default function Board() {
     const pageHook = usePage();
@@ -53,6 +55,11 @@ export default function Board() {
                 <h1 className="text-3xl font-bold text-gray-800 mb-2">변명 게시판</h1>
                 <p className="text-gray-600">다양한 변명들을 살펴보세요</p>
             </div>
+
+            {/*검색 & 필터*/}
+            <Searcher></Searcher>
+
+            <div className="mt-8"></div>
 
             {/* 게시물 없음 */}
             {posts.length === 0 && !isLoading && (

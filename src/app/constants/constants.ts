@@ -69,6 +69,7 @@ export const TAG_CATEGORIES = [
     { label: '연애', value: 'LOVE', emoji: '💕' },
     { label: '종교', value: 'RELIGIOUS', emoji: '🙏' },
     { label: '학업/공부', value: 'STUDY', emoji: '📖' },
+    { label: '심령', value: 'SUPERNATURAL', emoji: '👻' },
     { label: '교통', value: 'TRANSPORT', emoji: '🚗' },
     { label: '날씨', value: 'WEATHER', emoji: '🌤️' },
 ];
