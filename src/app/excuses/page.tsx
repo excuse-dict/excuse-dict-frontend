@@ -8,8 +8,8 @@ import PostCard from "@/app/excuses/posts/components/PostCard";
 import PageContainer from "@/app/excuses/components/PageContainer";
 import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
-import {useSearch} from "@/global_components/search/useSearch";
 import Searcher from "@/global_components/search/Searcher";
+import {useSearch} from "@/global_components/search/useSearch";
 
 export default function Board() {
     const pageHook = usePage();
@@ -20,12 +20,16 @@ export default function Board() {
     const postsHook = usePosts();
     const { posts, setPosts } = postsHook;
 
-    useEffect(() => {
+    const searchHook = useSearch();
+    const { searchInput } = searchHook;
+
+    const sendGetPostsRequest = () => {
         setLoading(true);
         apiGet({
             endPoint: EP_POST,
             params: {
-                page: currentPage
+                page: currentPage,
+                searchInput: searchInput,
             },
             onSuccess: (reponse) => {
                 setPosts(reponse?.data?.data?.page?.content);
@@ -33,6 +37,10 @@ export default function Board() {
                 setLoading(false);
             }
         })
+    }
+
+    useEffect(() => {
+        sendGetPostsRequest();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
@@ -57,7 +65,7 @@ export default function Board() {
             </div>
 
             {/*검색 & 필터*/}
-            <Searcher></Searcher>
+            <Searcher requestHandler={sendGetPostsRequest} searchHook={searchHook}></Searcher>
 
             <div className="mt-8"></div>
 
