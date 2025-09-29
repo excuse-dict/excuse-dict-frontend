@@ -13,6 +13,7 @@ import {EP_UPDATE_OR_DELETE_POST} from "@/app/constants/constants";
 import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
+import {highlightKeywords} from "@/lib/TextHelper";
 
 export default function PostCard({ postProp, postsHook }: {
     postProp: PostInterface,
@@ -93,7 +94,10 @@ export default function PostCard({ postProp, postsHook }: {
 
                 {/* 상황 (제목) */}
                 <h2 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
-                    {post.excuse.situation || '제목 없음'}
+                    {highlightKeywords(
+                        post.excuse.situation || '제목 없음',
+                        post.matchedWords
+                    )}
                 </h2>
 
                 {/* 변명 내용 */}

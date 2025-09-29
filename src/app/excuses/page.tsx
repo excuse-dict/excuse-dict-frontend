@@ -31,9 +31,9 @@ export default function Board() {
                 page: currentPage,
                 searchInput: searchInput,
             },
-            onSuccess: (reponse) => {
-                setPosts(reponse?.data?.data?.page?.content);
-                setPageInfo(reponse?.data?.data?.pageInfo);
+            onSuccess: (response) => {
+                setPosts(response?.data?.data?.page?.content);
+                setPageInfo(response?.data?.data?.pageInfo);
                 setLoading(false);
             }
         })

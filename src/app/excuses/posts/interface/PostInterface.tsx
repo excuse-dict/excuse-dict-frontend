@@ -10,6 +10,7 @@ export interface PostInterface {
         tags: Array<TagInterface>,
     },
     author: MemberInterface;
+    matchedWords: Array<string>,
     upvoteCount: number;
     downvoteCount: number;
     myVote: VoteInterface;
