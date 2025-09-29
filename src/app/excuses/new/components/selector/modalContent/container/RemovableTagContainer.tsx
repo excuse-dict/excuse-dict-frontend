@@ -1,5 +1,4 @@
 import RemovableTag from "@/app/excuses/new/components/selector/modalContent/container/tag/RemovableTag";
-import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 export default function RemovableTagContainer({ tagSelector, emptyLabel, hideBorder = false, hideBackground = false }: {
     tagSelector: ReturnType<typeof useTagSelector>,

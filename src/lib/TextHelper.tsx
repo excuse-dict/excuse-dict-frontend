@@ -1,11 +1,11 @@
 // 텍스트에서 키워드를 찾아서 하이라이트 처리
-import {SearchTypeInterface} from "@/global_components/search/useSearch";
+import {SearchTypeKey} from "@/global_components/search/useSearch";
 
 export const highlightKeywords = (
     text: string,
     keywords: string[] | null | undefined,
-    latestSearchType: SearchTypeInterface | null,
-    targetSearchType: SearchTypeInterface | SearchTypeInterface[],
+    latestSearchType: SearchTypeKey | null,
+    targetSearchType: SearchTypeKey | SearchTypeKey[],
 ) => {
 
     if (!keywords || keywords.length === 0) {
@@ -15,9 +15,6 @@ export const highlightKeywords = (
     const shouldHighlight = () => {
 
         if(latestSearchType == null) return false;
-
-        const getKey = (value: string) =>
-            Object.keys(SearchType).find(key => SearchType[key as keyof typeof SearchType] === value);
 
         return Array.isArray(targetSearchType)
             ? targetSearchType.includes(latestSearchType)
