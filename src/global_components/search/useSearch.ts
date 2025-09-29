@@ -1,13 +1,22 @@
 import {useState} from "react";
 
-export type SearchCondition =  '제목 + 내용' | '제목' | '내용' | '작성자';
+export const SearchType = {
+    SITUATION: { key: "SITUATION" as const, displayName: '제목' },
+    EXCUSE: { key: "EXCUSE" as const, displayName: '내용' },
+    SITUATION_AND_EXCUSE: { key: "SITUATION_AND_EXCUSE" as const, displayName: '제목 + 내용' },
+    AUTHOR: { key: "AUTHOR" as const, displayName: '작성자' },
+} as const;
+
+export type SearchTypeKey = typeof SearchType[keyof typeof SearchType]['key'];
 
 export const useSearch = () => {
     const [searchInput, setSearchInput] = useState('');
-    const [searchCondition, setSearchCondition] = useState<SearchCondition>('제목');
+    const [currentSearchType, setCurrentSearchType] = useState<SearchTypeKey>(SearchType.SITUATION.key);
+    const [latestSearchType, setLatestSearchType] = useState<SearchTypeKey | null>(null);
 
     return {
         searchInput, setSearchInput,
-        searchCondition, setSearchCondition,
+        currentSearchType, setCurrentSearchType,
+        latestSearchType, setLatestSearchType
     }
 }

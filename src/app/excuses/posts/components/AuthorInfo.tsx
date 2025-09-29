@@ -1,9 +1,12 @@
 import {getDatetimeFormat} from "@/lib/TimeHelper";
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import {useAuthState} from "@/app/login/auth/useAuthState";
+import {SearchType, SearchTypeKey} from "@/global_components/search/useSearch";
+import {highlightKeywords} from "@/lib/TextHelper";
 
-export default function AuthorInfo({ post }: {
+export default function AuthorInfo({ post, latestSearchType }: {
     post: PostInterface,
+    latestSearchType: SearchTypeKey | null,
 }){
 
     const { memberId } = useAuthState();
@@ -22,7 +25,12 @@ export default function AuthorInfo({ post }: {
             <div>
                 {/*작성자 닉네임*/}
                 <p className={`font-semibold ${isMine() ? 'text-[var(--strong-purple)]' : 'text-gray-800'}`}>
-                    {post.author.nickname || '익명'}
+                    {highlightKeywords(
+                        post.author.nickname || '익명',
+                        post.matchedWords,
+                        latestSearchType,
+                        SearchType.AUTHOR.key
+                    )}
                 </p>
                 {/*작성일시*/}
                 <p className="text-sm text-gray-500">

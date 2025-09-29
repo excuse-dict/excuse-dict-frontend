@@ -21,7 +21,7 @@ export default function Board() {
     const { posts, setPosts } = postsHook;
 
     const searchHook = useSearch();
-    const { searchInput } = searchHook;
+    const { searchInput, currentSearchType, setLatestSearchType } = searchHook;
 
     const sendGetPostsRequest = () => {
         setLoading(true);
@@ -30,11 +30,13 @@ export default function Board() {
             params: {
                 page: currentPage,
                 searchInput: searchInput,
+                searchType: currentSearchType,
             },
             onSuccess: (response) => {
                 setPosts(response?.data?.data?.page?.content);
                 setPageInfo(response?.data?.data?.pageInfo);
                 setLoading(false);
+                setLatestSearchType(currentSearchType);
             }
         })
     }
@@ -82,7 +84,7 @@ export default function Board() {
             <div className="space-y-6 mb-8">
                 {posts.map((post, index) => (
                     <ReplyProvider key={index}>
-                        <PostCard postProp={post} postsHook={postsHook}></PostCard>
+                        <PostCard postProp={post} postsHook={postsHook} searchHook={searchHook}></PostCard>
                     </ReplyProvider>
                 ))}
             </div>

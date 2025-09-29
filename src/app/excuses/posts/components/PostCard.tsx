@@ -14,10 +14,12 @@ import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {highlightKeywords} from "@/lib/TextHelper";
+import {SearchType, useSearch} from "@/global_components/search/useSearch";
 
-export default function PostCard({ postProp, postsHook }: {
+export default function PostCard({ postProp, postsHook, searchHook }: {
     postProp: PostInterface,
     postsHook: ReturnType<typeof usePosts>,
+    searchHook: ReturnType<typeof useSearch>,
 }) {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
@@ -25,6 +27,8 @@ export default function PostCard({ postProp, postsHook }: {
     const { post } = postStateHook;
 
     const { deletePost } = postsHook;
+
+    const { latestSearchType } = searchHook;
 
     const postCacheHook = usePostCache(); // 수정 버튼 누를 시 수정 페이지로 넘길 캐시 데이터 저장소
 
@@ -83,7 +87,7 @@ export default function PostCard({ postProp, postsHook }: {
             >
                 <div className="flex items-center justify-between mb-4">
                     {/* 작성자 정보 */}
-                    <AuthorInfo post={post}></AuthorInfo>
+                    <AuthorInfo post={post} latestSearchType={latestSearchType}></AuthorInfo>
                     {/* 확장 상태 표시 아이콘 */}
                     <div className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
                         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,14 +100,21 @@ export default function PostCard({ postProp, postsHook }: {
                 <h2 className="text-xl font-bold text-gray-800 mb-3 leading-relaxed">
                     {highlightKeywords(
                         post.excuse.situation || '제목 없음',
-                        post.matchedWords
+                        post.matchedWords,
+                        latestSearchType,
+                        [SearchType.SITUATION.key, SearchType.SITUATION_AND_EXCUSE.key]
                     )}
                 </h2>
 
                 {/* 변명 내용 */}
                 <div className="bg-gray-50 rounded-lg p-4 mb-4">
                     <p className="text-gray-700 leading-relaxed">
-                        {post.excuse.excuse || '내용 없음'}
+                        {highlightKeywords(
+                            post.excuse.excuse || '내용 없음',
+                            post.matchedWords,
+                            latestSearchType,
+                            [SearchType.EXCUSE.key, SearchType.SITUATION_AND_EXCUSE.key],
+                        )}
                     </p>
                 </div>
 
