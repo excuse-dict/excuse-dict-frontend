@@ -81,7 +81,7 @@ export default function WeeklyTopPost({ postProp, postsHook }: {
             >
                 <div className="flex items-center justify-between mb-4">
                     {/* 작성자 정보 */}
-                    <AuthorInfo post={post}></AuthorInfo>
+                    <AuthorInfo post={post} latestSearchType={null}></AuthorInfo>
                     {/* 확장 상태 표시 아이콘 */}
                     <div className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
                         <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

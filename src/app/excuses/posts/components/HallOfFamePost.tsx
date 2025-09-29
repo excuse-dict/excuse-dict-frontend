@@ -91,7 +91,7 @@ export default function HallOfFamePost({postProp}: {
                     >
                         <div className="flex items-center justify-between mb-4">
                             {/* 작성자 정보 */}
-                            <AuthorInfo post={post}></AuthorInfo>
+                            <AuthorInfo post={post} latestSearchType={null}></AuthorInfo>
                             {/* 확장 상태 표시 아이콘 */}
                             <div
                                 className={`transform transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
