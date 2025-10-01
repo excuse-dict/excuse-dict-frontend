@@ -15,8 +15,10 @@ import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {highlightKeywords} from "@/lib/TextHelper";
 import {SearchType, useSearch} from "@/global_components/search/useSearch";
+import {tagToKey} from "@/lib/TagHelper";
+import PostTag from "@/app/excuses/posts/components/PostTag";
 
-export default function PostCard({ postProp, postsHook, searchHook }: {
+export default function PostCard({postProp, postsHook, searchHook}: {
     postProp: PostInterface,
     postsHook: ReturnType<typeof usePosts>,
     searchHook: ReturnType<typeof useSearch>,
@@ -24,11 +26,11 @@ export default function PostCard({ postProp, postsHook, searchHook }: {
 
     // 전달받은 객체가 아니라 훅의 post를 써야 함 (props는 상태 관리 까다로움)
     const postStateHook = usePostState(postProp);
-    const { post } = postStateHook;
+    const {post} = postStateHook;
 
-    const { deletePost } = postsHook;
+    const {deletePost} = postsHook;
 
-    const { latestSearchType } = searchHook;
+    const {latestSearchType} = searchHook;
 
     const postCacheHook = usePostCache(); // 수정 버튼 누를 시 수정 페이지로 넘길 캐시 데이터 저장소
 
@@ -72,7 +74,7 @@ export default function PostCard({ postProp, postsHook, searchHook }: {
         })
     }
 
-    if(!post) return <></>;
+    if (!post) return <></>;
 
     return (
         <article
@@ -134,26 +136,20 @@ export default function PostCard({ postProp, postsHook, searchHook }: {
                         </div>
                     </div>
                     {/*태그*/}
-                    <div className={'flex gap-2'}>
-                        {post.excuse.tags.map((tag: TagInterface, index: number) => {
-                            return <span
-                                key={index}
-                                className={'text-blue-500 text-sm'}
-                            >{`#${(tag as { value: string }).value}`}
-                        </span>;
-                        })}
-                    </div>
+                    <PostTag post={post}/>
                 </div>
                 {post.author?.id !== memberId ? <></> :
                     <div className="flex mt-2 gap-4 ml-auto">
                         <button
                             className="!bg-transparent !text-blue-400 text-sm"
                             onClick={handleEditPost}
-                        >✏️수정</button>
+                        >✏️수정
+                        </button>
                         <button
                             className="!bg-transparent !text-red-400 text-sm"
                             onClick={handleDeletePost}
-                        >🗑️삭제</button>
+                        >🗑️삭제
+                        </button>
                     </div>
                 }
             </section>

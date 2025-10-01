@@ -14,8 +14,8 @@ export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefau
     isRetry?: boolean,
 }) => {
 
-    console.log("POST 요청 전송: " + API_URL + endPoint);
-    console.log("body: ", body ?? {});
+    /*console.log("POST 요청 전송: " + API_URL + endPoint);
+    console.log("body: ", body ?? {});*/
 
     const token = useAuthState.getState().accessToken;
     const headers = {

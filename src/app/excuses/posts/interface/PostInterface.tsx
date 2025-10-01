@@ -11,6 +11,7 @@ export interface PostInterface {
     },
     author: MemberInterface;
     matchedWords: Array<string>,
+    matchedTags: Array<string>,
     upvoteCount: number;
     downvoteCount: number;
     myVote: VoteInterface;
