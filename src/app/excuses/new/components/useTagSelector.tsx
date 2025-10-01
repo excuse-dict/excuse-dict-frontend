@@ -101,7 +101,8 @@ export const useTagSelector = (
         filterTypes, setFilterTypes,
         searchInput, setSearchInput,
         searchedTags, setSearchedTags,
-        selectedTags: useMemo(
+        selectedTagKeys: selectedTags,
+        selectedTagObjects: useMemo(
             () => new Set(Array.from(selectedTags).map(key => keyToTag(key))),
             [selectedTags]
         ),

@@ -7,15 +7,15 @@ export default function RemovableTagContainer({ tagSelector, emptyLabel, hideBor
     hideBackground?: boolean,
 }){
 
-    const { selectedTags, isTagsLoading } = tagSelector;
+    const { selectedTagObjects, isTagsLoading } = tagSelector;
 
     const getTags = () => {
         const label = isTagsLoading ? '태그 불러오는 중...' : emptyLabel || '태그 없음';
-        const tagArray = Array.from(selectedTags.values());
+        const tagArray = Array.from(selectedTagObjects.values());
 
         return (
             <>
-                {!selectedTags || selectedTags?.size === 0 ?
+                {!selectedTagObjects || selectedTagObjects?.size === 0 ?
                     <span className={'w-full text-[var(--placeholder-color)] text-center'}>{label}</span> : null}
                 {tagArray?.map((tag, index) => (
                     <RemovableTag

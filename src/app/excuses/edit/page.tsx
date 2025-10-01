@@ -21,7 +21,7 @@ export default function EditExcusePage(){
     const [excuseInput, setExcuseInput] = useState(cachedPost?.excuse?.excuse || '');
 
     const tagSelector = useTagSelector(new Set(cachedPost?.excuse?.tags));
-    const { selectedTags } = tagSelector;
+    const { selectedTagObjects } = tagSelector;
 
     useEffect(() => {
         if(!cachedPost) {
@@ -44,7 +44,7 @@ export default function EditExcusePage(){
 
     const isTagsChanged = () => {
         cachedPost?.excuse?.tags.forEach((tag) => {
-            if(!selectedTags.has(tag)) return true;
+            if(!selectedTagObjects.has(tag)) return true;
         });
         return false;
     }
@@ -78,7 +78,7 @@ export default function EditExcusePage(){
             body: {
                 ...(isSituationChanged() && { situation: situationInput }),
                 ...(isExcuseChanged() && { excuse: excuseInput }),
-                ...(isTagsChanged() && { tags: selectedTags }),
+                ...(isTagsChanged() && { tags: selectedTagObjects }),
             },
             onSuccess: () => {
                 toast("게시물이 수정되었습니다.");

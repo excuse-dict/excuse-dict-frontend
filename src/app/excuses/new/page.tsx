@@ -15,7 +15,7 @@ export default function NewExcusePage(){
     const [excuseInput, setExcuseInput] = useState('');
 
     const tagSelector = useTagSelector();
-    const { selectedTags } = tagSelector;
+    const { selectedTagObjects } = tagSelector;
 
     const handleClick = () => {
         if(situationInput.length < 3){
@@ -44,7 +44,7 @@ export default function NewExcusePage(){
             body: {
                 'situation': situationInput,
                 'excuse': excuseInput,
-                'tags': Array.from(selectedTags),
+                'tags': Array.from(selectedTagObjects),
             },
             onSuccess: (response) => {
                 const uri = response?.headers?.location;

@@ -66,6 +66,8 @@ export const useTagFilter = () => {
     excludeRef.current = excludeTagSelectorHook;
 
     return {
+        includedTagKeys: Array.from(includeTagSelectorHook.selectedTagKeys),
+        excludedTagKeys: Array.from(excludeTagSelectorHook.selectedTagKeys),
         includeTagSelectorHook,
         excludeTagSelectorHook,
     };

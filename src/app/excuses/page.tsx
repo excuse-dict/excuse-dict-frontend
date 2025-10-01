@@ -10,6 +10,8 @@ import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import Searcher from "@/global_components/search/Searcher";
 import {useSearch} from "@/global_components/search/useSearch";
+import {apiPost} from "@/axios/requests/post/apiPost";
+import {useTagFilter} from "@/global_components/search/useTagFilter";
 
 export default function Board() {
     const pageHook = usePage();
@@ -23,14 +25,19 @@ export default function Board() {
     const searchHook = useSearch();
     const { searchInput, currentSearchType, setLatestSearchType } = searchHook;
 
+    const tagFilterHook = useTagFilter();
+    const { includedTagKeys, excludedTagKeys } = tagFilterHook;
+
     const sendGetPostsRequest = () => {
         setLoading(true);
-        apiGet({
-            endPoint: EP_POST,
-            params: {
+        apiPost({
+            endPoint: EP_POST + "/search",
+            body: {
                 page: currentPage,
                 searchInput: searchInput,
                 searchType: currentSearchType,
+                includedTags: includedTagKeys,
+                excludedTags: excludedTagKeys
             },
             onSuccess: (response) => {
                 setPosts(response?.data?.data?.page?.content);
@@ -91,7 +98,11 @@ export default function Board() {
                 <PageContainer page={pageHook}></PageContainer>
             </div>
             {/*검색 & 필터*/}
-            <Searcher requestHandler={sendGetPostsRequest} searchHook={searchHook}></Searcher>
+            <Searcher
+                requestHandler={sendGetPostsRequest}
+                searchHook={searchHook}
+                tagFilterHook={tagFilterHook}
+            ></Searcher>
         </div>
     );
 }

@@ -11,13 +11,13 @@ export default function SelectableTag({ tagInterface, isSelected, tagSelector }:
 
 }){
     const { category, value } = tagInterface;
-    const { selectedTags, hasSelectedTag, addSelectedTag, removeSelectedTag } = tagSelector;
+    const { selectedTagObjects, hasSelectedTag, addSelectedTag, removeSelectedTag } = tagSelector;
 
     const handleSelect = () => {
         if(hasSelectedTag(tagInterface)){
             removeSelectedTag(tagInterface);
         }else{
-            if(selectedTags.size >= MAX_SELECTED_TAGS){
+            if(selectedTagObjects.size >= MAX_SELECTED_TAGS){
                 return;
             }
             addSelectedTag(tagInterface);

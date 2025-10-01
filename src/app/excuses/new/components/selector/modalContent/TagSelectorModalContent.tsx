@@ -16,7 +16,7 @@ export default function TagSelectorModalContent({
 
     const {
         setTagsLoading,
-        selectedTags,
+        selectedTagObjects,
         searchedTags, setSearchedTags,
         selectedCategories
     } = tagSelector;
@@ -110,8 +110,8 @@ export default function TagSelectorModalContent({
             >
                 <div>
                     <span>선택된 태그 (</span>
-                    <span className={selectedTags.size >= MAX_SELECTED_TAGS ? 'text-blue-500' : ''}>
-                    {`${selectedTags.size}개 / 최대 ${MAX_SELECTED_TAGS}개`}
+                    <span className={selectedTagObjects.size >= MAX_SELECTED_TAGS ? 'text-blue-500' : ''}>
+                    {`${selectedTagObjects.size}개 / 최대 ${MAX_SELECTED_TAGS}개`}
                 </span>
                     <span>)</span>
                 </div>
