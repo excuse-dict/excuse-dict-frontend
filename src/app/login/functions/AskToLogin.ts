@@ -9,7 +9,8 @@ export const askToLogin = () => {
         confirmButtonColor: 'white',
         cancelButtonColor: 'var(--purple-grey)',
         confirmButtonText: '로그인',
-        cancelButtonText: '아니오'
+        cancelButtonText: '아니오',
+        heightAuto: false,
     }).then((result) => {
         if (result.isConfirmed) {
             // 로그인 페이지로 이동

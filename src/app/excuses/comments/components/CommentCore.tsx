@@ -8,6 +8,7 @@ import {useAuthState} from "@/app/login/auth/useAuthState";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {EP_UPDATE_OR_DELETE_COMMENT} from "@/app/constants/constants";
 import {useEdit} from "@/app/excuses/comments/hooks/useEdit";
+import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
 
 export default function CommentCore({ comment, commentHook, toggleRepliesExpanded }: {
     comment: CommentInterface,
@@ -16,6 +17,8 @@ export default function CommentCore({ comment, commentHook, toggleRepliesExpande
 }){
 
     const { memberId } = useAuthState();
+    const { confirmLogin } = useAuthGuard();
+
     const { updateComment, deleteComment, voteToComment } = commentHook;
     const { isOnEditing, setOnEditing, editInput, setEditInput,
         editingTextareaRef, editingButtonRef, handleStartEdit} = useEdit(comment.content);
@@ -34,19 +37,16 @@ export default function CommentCore({ comment, commentHook, toggleRepliesExpande
         /*console.log("memberId: ", memberId);
         console.log("comment: ", comment);*/
 
-        if (!memberId) {
-            askToLogin();
-            return;
-        }
+        // 클릭 이벤트 전파 방지
+        e.stopPropagation();
+
+        if(!confirmLogin()) return;
 
         voteToComment({
             comment: comment,
-            memberId: memberId,
+            memberId: memberId || 0,
             voteType: voteType,
         });
-
-        // 클릭 이벤트 전파 방지
-        e.stopPropagation();
     }
 
 

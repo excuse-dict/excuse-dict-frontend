@@ -14,7 +14,7 @@ export const useTagFilter = () => {
         if (excludeRef.current?.hasSelectedTag(tag)) {
             const result = await Swal.fire({
                 title: '태그 이동',
-                text: `'${tag.value}' 태그가 제외 태그에 있습니다. 포함 태그로 이동하시겠습니까?`,
+                text: `[${tag.value}] 태그가 제외 태그에 있습니다. 포함 태그로 이동하시겠습니까?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: '이동',
@@ -35,7 +35,7 @@ export const useTagFilter = () => {
         if (includeRef.current?.hasSelectedTag(tag)) {
             const result = await Swal.fire({
                 title: '태그 이동',
-                text: `'${tag.value}' 태그가 포함 태그에 있습니다. 제외 태그로 이동하시겠습니까?`,
+                text: `[${tag.value}] 태그가 포함 태그에 있습니다. 제외 태그로 이동하시겠습니까?`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonText: '이동',

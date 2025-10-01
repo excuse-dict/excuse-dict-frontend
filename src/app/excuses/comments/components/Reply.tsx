@@ -4,6 +4,7 @@ import {apiPatch} from "@/axios/requests/patch/apiPatch";
 import {EP_UPDATE_OR_DELETE_REPLY} from "@/app/constants/constants";
 import {useEdit} from "@/app/excuses/comments/hooks/useEdit";
 import {useAuthState} from "@/app/login/auth/useAuthState";
+import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
 
 export default function Reply({ reply, replyHook }: {
     reply: ReplyInterface,
@@ -11,6 +12,8 @@ export default function Reply({ reply, replyHook }: {
 }) {
 
     const { memberId } = useAuthState();
+
+    const { confirmLogin } = useAuthGuard();
 
     const { updateReply, deleteReply, voteToReply } = replyHook;
     const { isOnEditing, setOnEditing, editInput, setEditInput,
@@ -91,12 +94,16 @@ export default function Reply({ reply, replyHook }: {
                         {/*추천 버튼*/}
                         <button
                             className={`${reply.myVote?.voteType === "UPVOTE" ? 'text-green-500 font-bold' : ''}`}
-                            onClick={() => voteToReply({ reply:reply, voteType: "UPVOTE"})}
+                            onClick={() => {
+                                if(confirmLogin()) voteToReply({ reply:reply, voteType: "UPVOTE"});
+                            }}
                         >{`👍${reply.upvoteCount}`}</button>
                         {/*비추천 버튼*/}
                         <button
                             className={`${reply.myVote?.voteType === "DOWNVOTE" ? 'text-red-500 font-bold' : ''}`}
-                            onClick={() => voteToReply({ reply: reply, voteType: "DOWNVOTE" })}
+                            onClick={() => {
+                                if(confirmLogin()) voteToReply({ reply: reply, voteType: "DOWNVOTE" });
+                            }}
                         >{`👎${reply.downvoteCount}`}</button>
                     </div>
                     {reply.author?.id !== memberId ? <></> :
