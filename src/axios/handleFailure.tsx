@@ -1,6 +1,6 @@
 import Swal from "sweetalert2"
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_LOGIN} from "@/app/constants/constants";
+import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_LOGIN} from "@/app/constants/constants";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
@@ -8,6 +8,7 @@ import {toast} from "react-toastify";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
 import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
+import {router} from "next/client";
 
 interface OriginalRequest {
     method: 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE',
@@ -44,15 +45,19 @@ export const handleError = ({ isRetry, error, onFail, overwriteDefaultOnFail = t
 
     //console.log("GET요청 실패(에러): ", error);
 
-    if (originalRequest.endPoint !== EP_LOGIN
-        && ["ACCESS_TOKEN_EXPIRED", "AUTHENTICATION_FAILED"].includes(error?.response?.data?.code)) {
-        // 재시도도 실패
-        if(isRetry){
-            forceLogout();
-        }else{
-            handleRefreshAccessToken(originalRequest);
+    if (originalRequest.endPoint !== EP_LOGIN){
+        if(error?.response?.data?.code === "ACCESS_TOKEN_EXPIRED") {
+            // 재시도도 실패
+            if(isRetry){
+                forceLogout();
+            }else{
+                handleRefreshAccessToken(originalRequest);
+            }
+            return;
+        } else if (error?.response?.data?.code === "AUTHENTICATION_FAILED"){
+            window.location.href = PG_LOGIN;
+            return;
         }
-        return;
     }
 
     // 기본 핸들러 처리
