@@ -11,11 +11,9 @@ import {toast} from "react-toastify";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 import {EP_UPDATE_OR_DELETE_POST} from "@/app/constants/constants";
 import AuthorInfo from "@/app/excuses/posts/components/AuthorInfo";
-import TagInterface from "@/app/excuses/new/components/TagInterface";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {highlightKeywords} from "@/lib/TextHelper";
 import {SearchType, useSearch} from "@/global_components/search/useSearch";
-import {tagToKey} from "@/lib/TagHelper";
 import PostTag from "@/app/excuses/posts/components/PostTag";
 
 export default function PostCard({postProp, postsHook, searchHook}: {
