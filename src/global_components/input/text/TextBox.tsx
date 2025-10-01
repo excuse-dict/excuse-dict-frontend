@@ -50,7 +50,7 @@ export default function TextBox({
     }
 
     return (
-        <div className={`${css.text_area_container} ${containerStyle || ''}`}>
+        <div className={`w-full ${css.text_area_container} ${containerStyle || ''}`}>
             <span className={'global_input_label'}>{label}</span>
             <div className={css.text_area_inner_container}>
                 <textarea

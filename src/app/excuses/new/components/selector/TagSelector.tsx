@@ -4,36 +4,40 @@ import {useTagSelector} from "@/app/excuses/new/components/useTagSelector";
 import Modal from "@/global_components/modal/Modal";
 import TagSelectorModalContent from "@/app/excuses/new/components/selector/modalContent/TagSelectorModalContent";
 import RemovableTagContainer from "@/app/excuses/new/components/selector/modalContent/container/RemovableTagContainer";
+import {createPortal} from "react-dom";
 
-export default function TagSelector({ tagSelector }:{
-    tagSelector: ReturnType<typeof useTagSelector>
+export default function TagSelector({label, tagSelectorHook}: {
+    label?: string,
+    tagSelectorHook: ReturnType<typeof useTagSelector>
 }) {
 
     const {
         isSelectorOpen, setSelectorOpen,
-    } = tagSelector;
+    } = tagSelectorHook;
 
     return (
-        <div className='global_input_container w-3/5'>
+        <div className="w-full">
             <div className='flex justify-between'>
-                <span className='global_input_label'>태그</span>
+                <span className='global_input_label'>{label || '태그'}</span>
                 <button
                     onClick={() => setSelectorOpen(true)}
-                >+추가</button>
+                >+추가
+                </button>
             </div>
             <RemovableTagContainer
-                tagSelector={tagSelector}
+                tagSelector={tagSelectorHook}
             ></RemovableTagContainer>
-            {!isSelectorOpen ? null :
+            {isSelectorOpen && createPortal(
                 <Modal
                     isOpen={isSelectorOpen}
                     setOpen={setSelectorOpen}
                 >
                     <TagSelectorModalContent
-                        tagSelector={tagSelector}
+                        tagSelector={tagSelectorHook}
                     ></TagSelectorModalContent>
                 </Modal>
-            }
+                , document.body
+            )}
         </div>
     );
 }

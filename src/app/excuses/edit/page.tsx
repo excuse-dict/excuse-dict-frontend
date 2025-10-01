@@ -105,7 +105,7 @@ export default function EditExcusePage(){
                 placeholder={"핑계를 입력해주세요."}
                 containerStyle={'w-3/5'}
             ></TextBox>
-            <TagSelector tagSelector={tagSelector}></TagSelector>
+            <TagSelector tagSelectorHook={tagSelector}></TagSelector>
             <div className="flex gap-4">
                 <button
                     disabled={!isEdited()}

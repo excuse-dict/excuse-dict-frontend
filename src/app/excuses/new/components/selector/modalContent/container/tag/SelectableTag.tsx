@@ -14,7 +14,6 @@ export default function SelectableTag({ tagInterface, isSelected, tagSelector }:
     const { selectedTags, hasSelectedTag, addSelectedTag, removeSelectedTag } = tagSelector;
 
     const handleSelect = () => {
-
         if(hasSelectedTag(tagInterface)){
             removeSelectedTag(tagInterface);
         }else{

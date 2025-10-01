@@ -1,17 +1,24 @@
 'use client';
 
-import {useState} from "react";
+import {useMemo, useState} from "react";
 import {TAG_CATEGORIES} from "@/app/constants/constants";
 import TagInterface from "@/app/excuses/new/components/TagInterface";
+import {keyToTag, tagToKey} from "@/lib/TagHelper";
 
-export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
+export const useTagSelector = (
+    tags?: Set<TagInterface> | undefined,
+    addOptions?: {
+        onBeforeAdd?: (tag: TagInterface) => boolean | Promise<boolean>,
+        onBeforeRemove?: (tag: TagInterface) => boolean | Promise<boolean>,
+    }
+) => {
 
-    const initializeTags = (): Set<TagInterface> => {
+    const initializeTags = (): Set<string> => {
         if(!tags || tags.size == 0) return new Set();
 
-        const set = new Set<TagInterface>();
+        const set = new Set<string>();
 
-        tags.forEach(tag => set.add(tag));
+        tags.forEach(tag => set.add(tagToKey(tag)));
         return set;
     }
 
@@ -20,12 +27,23 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
     const [filterTypes, setFilterTypes] = useState<Array<string>>([]);
     const [searchInput, setSearchInput] = useState('');
     const [searchedTags, setSearchedTags] = useState<Array<TagInterface>>([]);
-    const [selectedTags, setSelectedTags] = useState<Set<TagInterface>>(initializeTags()); // category:value 형태로 넣어야 함
+    const [selectedTags, setSelectedTags] = useState<Set<string>>(initializeTags());
     const [selectedCategories, setSelectedCategories] = useState<Set<string>>(new Set(TAG_CATEGORIES.map(category => category.value)));
 
     // 태그 선택
-    const addSelectedTag = (tag: TagInterface) => {
-        setSelectedTags(prev => new Set([...prev, tag]));
+    const addSelectedTag = async (tag: TagInterface) => {
+
+        // swal로 확인 필요시 멈춤
+        if(addOptions?.onBeforeAdd){
+            const shouldAdd = await addOptions.onBeforeAdd(tag);
+            if (!shouldAdd) return;
+        }
+
+        setSelectedTags(prev => {
+            const newSet = new Set(prev);
+            newSet.add(tagToKey(tag));
+            return newSet;
+        });
     };
 
     // 카테고리 선택
@@ -34,10 +52,16 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
     }
 
     // 태그 선택 해제
-    const removeSelectedTag = (tag: TagInterface) => {
+    const removeSelectedTag = async (tag: TagInterface) => {
+        // swal로 확인 필요시 멈춤
+        if (addOptions?.onBeforeRemove) {
+            const shouldRemove = await addOptions.onBeforeRemove(tag);
+            if (!shouldRemove) return;
+        }
+
         setSelectedTags(prev => {
             const newSet = new Set(prev);
-            newSet.delete(tag);
+            newSet.delete(tagToKey(tag));
             return newSet;
         });
     };
@@ -53,7 +77,7 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
 
     // 태그 선택 여부 확인
     const hasSelectedTag = (tag: TagInterface): boolean => {
-        return selectedTags.has(tag);
+        return selectedTags.has(tagToKey(tag));
     };
 
     // 카테고리 선택 여부 확인
@@ -77,7 +101,10 @@ export const useTagSelector = (tags?: Set<TagInterface> | undefined) => {
         filterTypes, setFilterTypes,
         searchInput, setSearchInput,
         searchedTags, setSearchedTags,
-        selectedTags,
+        selectedTags: useMemo(
+            () => new Set(Array.from(selectedTags).map(key => keyToTag(key))),
+            [selectedTags]
+        ),
         addSelectedTag, removeSelectedTag, hasSelectedTag,
         selectedCategories, setSelectedCategories,
         addSelectedCategory, removeSelectedCategory, hasSelectedCategory,

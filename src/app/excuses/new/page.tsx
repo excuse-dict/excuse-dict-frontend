@@ -63,27 +63,29 @@ export default function NewExcusePage(){
 
     return (
         <div className={`global_container w-3/5`}>
-            <InputComponent
-                value={situationInput}
-                setValue={setSituationInput}
-                inputContainerStyle={'w-3/5'}
-                label="제목"
-                placeholder="빠져나가고 싶은 상황을 입력해주세요."
-            ></InputComponent>
-            <TextBox
-                value={excuseInput}
-                setValue={setExcuseInput}
-                label={'핑계'}
-                min={5}
-                max={100}
-                placeholder={"핑계를 입력해주세요."}
-                containerStyle={'w-3/5'}
-            ></TextBox>
-            <TagSelector tagSelector={tagSelector}></TagSelector>
-            <button
-                className={`global_button rounded-md p-1 mt-8`}
-                onClick={handleClick}
-            >글쓰기</button>
+            <div className="w-3/5">
+                <InputComponent
+                    value={situationInput}
+                    setValue={setSituationInput}
+                    inputContainerStyle={'w-3/5'}
+                    label="제목"
+                    placeholder="빠져나가고 싶은 상황을 입력해주세요."
+                ></InputComponent>
+                <TextBox
+                    value={excuseInput}
+                    setValue={setExcuseInput}
+                    label={'핑계'}
+                    min={5}
+                    max={100}
+                    placeholder={"핑계를 입력해주세요."}
+                    containerStyle={'w-3/5'}
+                ></TextBox>
+                <TagSelector tagSelectorHook={tagSelector}></TagSelector>
+                <button
+                    className={`global_button rounded-md p-1 mt-8`}
+                    onClick={handleClick}
+                >글쓰기</button>
+            </div>
         </div>
     );
 }

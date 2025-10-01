@@ -59,38 +59,39 @@ export default function Board() {
     }
 
     return (
-        <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
-            {/* 헤더 */}
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-800 mb-2">변명 게시판</h1>
-                <p className="text-gray-600">다양한 변명들을 살펴보세요</p>
-            </div>
+        <div className="flex mx-auto w-[45%]">
+            <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
+                {/* 헤더 */}
+                <div className="mb-8">
+                    <h1 className="text-3xl font-bold text-gray-800 mb-2">변명 게시판</h1>
+                    <p className="text-gray-600">다양한 변명들을 살펴보세요</p>
+                </div>
 
+                <div className="mt-8"></div>
+
+                {/* 게시물 없음 */}
+                {posts.length === 0 && !isLoading && (
+                    <div className="text-center py-16">
+                        <div className="text-6xl mb-4">📝</div>
+                        <h3 className="text-xl font-semibold text-gray-700 mb-2">게시물이 없습니다</h3>
+                        <p className="text-gray-500">첫 번째 게시물을 작성해보세요!</p>
+                    </div>
+                )}
+
+                {/* 게시물 목록 */}
+                <div className="space-y-6 mb-8">
+                    {posts.map((post, index) => (
+                        <ReplyProvider key={index}>
+                            <PostCard postProp={post} postsHook={postsHook} searchHook={searchHook}></PostCard>
+                        </ReplyProvider>
+                    ))}
+                </div>
+
+                {/* 페이지네이션 */}
+                <PageContainer page={pageHook}></PageContainer>
+            </div>
             {/*검색 & 필터*/}
             <Searcher requestHandler={sendGetPostsRequest} searchHook={searchHook}></Searcher>
-
-            <div className="mt-8"></div>
-
-            {/* 게시물 없음 */}
-            {posts.length === 0 && !isLoading && (
-                <div className="text-center py-16">
-                    <div className="text-6xl mb-4">📝</div>
-                    <h3 className="text-xl font-semibold text-gray-700 mb-2">게시물이 없습니다</h3>
-                    <p className="text-gray-500">첫 번째 게시물을 작성해보세요!</p>
-                </div>
-            )}
-
-            {/* 게시물 목록 */}
-            <div className="space-y-6 mb-8">
-                {posts.map((post, index) => (
-                    <ReplyProvider key={index}>
-                        <PostCard postProp={post} postsHook={postsHook} searchHook={searchHook}></PostCard>
-                    </ReplyProvider>
-                ))}
-            </div>
-
-            {/* 페이지네이션 */}
-            <PageContainer page={pageHook}></PageContainer>
         </div>
     );
 }
