@@ -9,7 +9,7 @@ export default function PostTag({ post }:{
     return (
         <div className={'flex gap-2'}>
             {post.excuse.tags?.map((tag: TagInterface, index: number) => {
-                const isMatched = post.matchedTags.includes(tagToKey(tag));
+                const isMatched = post.matchedTags?.includes(tagToKey(tag));
                 return (
                     <span
                         key={index}
