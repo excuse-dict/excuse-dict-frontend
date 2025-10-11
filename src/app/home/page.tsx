@@ -4,7 +4,7 @@ import css from './page.module.css'
 import {useRouter} from "next/navigation";
 import {EP_OVERVIEW, PG_EXCUSES, PG_HALL_OF_FAME, PG_NEW_EXCUSE, PG_WEEKLY_TOP} from "@/app/constants/constants";
 import {useAuthGuard} from "@/app/login/auth/useAuthGuard";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import Carousel from "@/global_components/carousel/Carousel";
@@ -19,7 +19,8 @@ export default function Home() {
     const router = useRouter();
     const { confirmLogin } = useAuthGuard();
 
-    const { posts: recentPosts, setPosts: setRecentPosts } = usePosts<PostInterface>();
+    const [isPostsLoading, setPostsLoading] = useState(true);
+    const { posts: recentPosts, setPosts: setRecentPosts, } = usePosts<PostInterface>();
     const { posts: weeklyPosts, setPosts: setWeeklyPosts } = usePosts<WeeklyTopPostInterface>();
     const { posts: hofPosts, setPosts: setHofPosts } = usePosts<HallOfFamePostInterface>();
 
@@ -35,6 +36,8 @@ export default function Home() {
                         rank: index + 1
                     })
                 ));
+
+                setPostsLoading(false);
             }
         })
 
@@ -61,7 +64,7 @@ export default function Home() {
                         onClick={() => router.push(PG_EXCUSES)}
                     >+ 더보기</button>
                 </header>
-                <Carousel posts={recentPosts} postType={'POST'}></Carousel>
+                <Carousel posts={recentPosts} postType={'POST'} isLoading={isPostsLoading}></Carousel>
             </section>
             <section className={`${css.section} ${contentWidth}`}>
                 <header className={css.section_header}>
@@ -71,7 +74,7 @@ export default function Home() {
                         onClick={() => router.push(PG_WEEKLY_TOP)}
                     >+ 더보기</button>
                 </header>
-                <Carousel posts={weeklyPosts} postType={'WEEKLY_TOP'}></Carousel>
+                <Carousel posts={weeklyPosts} postType={'WEEKLY_TOP'} isLoading={isPostsLoading}></Carousel>
             </section>
             <section className={`${css.section} ${contentWidth}`}>
                 <header className={css.section_header}>
@@ -81,7 +84,7 @@ export default function Home() {
                         onClick={() => router.push(PG_HALL_OF_FAME)}
                     >+ 더보기</button>
                 </header>
-                <Carousel posts={hofPosts} postType={'HALL_OF_FAME'}></Carousel>
+                <Carousel posts={hofPosts} postType={'HALL_OF_FAME'} isLoading={isPostsLoading}></Carousel>
             </section>
         </div>
     );
