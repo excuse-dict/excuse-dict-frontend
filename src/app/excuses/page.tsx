@@ -5,7 +5,7 @@ import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_POST} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
 import PostCard from "@/app/excuses/posts/components/PostCard";
-import PageContainer from "@/app/excuses/components/PageContainer";
+import PageContainer from "@/global_components/page/PageContainer";
 import {ReplyProvider} from "@/app/excuses/contexts/ReplyContext";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import Searcher from "@/global_components/search/Searcher";
