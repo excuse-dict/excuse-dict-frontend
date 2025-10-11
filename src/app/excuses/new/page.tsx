@@ -82,7 +82,7 @@ export default function NewExcusePage(){
                 ></TextBox>
                 <TagSelector tagSelectorHook={tagSelector}></TagSelector>
                 <button
-                    className={`global_button rounded-md p-1 mt-8`}
+                    className={`global_button bg-[--strong-purple-light] rounded-md p-1 mt-8`}
                     onClick={handleClick}
                 >글쓰기</button>
             </div>

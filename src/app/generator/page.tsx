@@ -187,7 +187,7 @@ export default function ExcuseGeneratorPage() {
             </div>
             {/*AI응답 요청 버튼*/}
             <button
-                className={`global_button bg-purple-400 ${isButtonDisabled() ? 'disabled-button' : ''} mt-8 ml-auto w-20 p-1 rounded`}
+                className={`global_button bg-[--strong-purple-light] ${isButtonDisabled() ? 'disabled-button' : ''} mt-8 ml-auto w-20 p-1 rounded`}
                 disabled={isButtonDisabled()}
                 onClick={handleGenerate}
             >{getButtonName()}</button>

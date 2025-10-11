@@ -52,7 +52,7 @@ export default function Home() {
         <div className={`global_container ${contentWidth}`}>
             <header className={`flex ${contentWidth} mb-4`}>
                 <button
-                    className='global_button ml-auto w-16 h-8 text-sm rounded-md'
+                    className='global_button bg-[--strong-purple-light] ml-auto w-16 h-8 text-sm rounded-md'
                     onClick={handleWritePost}
                 >+글쓰기</button>
             </header>
