@@ -14,6 +14,8 @@ export function useEmailVerification({purpose, onViolation}: {
     purpose: string,
     onViolation?: () => void,
 }) {
+
+    const [isCheckingAvailability, setCheckingAvailability] = useState(false);
     const [emailInput, setEmailInput] = useState('');
     const [isEmailVerified, setEmailVerified] = useState(false);
     const [isEmailSending, setEmailSending] = useState(true);
@@ -81,6 +83,7 @@ export function useEmailVerification({purpose, onViolation}: {
                 setEmailSending(false);
                 setSendingSucceed(false);
                 setTimeLeft(-1);
+                if(onViolation) onViolation();
             },
         });
     }
@@ -108,6 +111,7 @@ export function useEmailVerification({purpose, onViolation}: {
     }, [timeLeft]);
 
     return {
+        isCheckingAvailability, setCheckingAvailability,
         emailInput, setEmailInput,
         isEmailVerified, setEmailVerified,
         isEmailSending, setEmailSending,
@@ -118,5 +122,6 @@ export function useEmailVerification({purpose, onViolation}: {
         recaptchaRef,
         executeRecaptcha,
         timeToResend,
+        onViolation
     }
 }

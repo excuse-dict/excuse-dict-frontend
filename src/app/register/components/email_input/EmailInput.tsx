@@ -33,15 +33,8 @@ export default function EmailInput({ emailVerification, setModalOpen }: {
             return;
         }
 
-        // 이메일 중복 확인
-        apiGet({
-            endPoint: EP_CHECK_EMAIL_AVAILABILITY,
-            params: { email: emailInput },
-            onSuccess: () => {
-                // 사용 가능 이메일 -> 모달 오픈
-                setModalOpen(true);
-            },
-        });
+        // 모달 열기
+        setModalOpen(true);
     }
 
     return (

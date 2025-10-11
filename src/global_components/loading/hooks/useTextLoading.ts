@@ -44,8 +44,14 @@ export const useTextLoading = ({
         return isSucceed ? successText : failText;
     };
 
+    const getDots = () => {
+        return '.'.repeat(dotCount);
+    }
+
     return {
         getDisplayText,
+        loadingText,
+        getDots,
         shouldConsiderAsLoading
     };
 };
