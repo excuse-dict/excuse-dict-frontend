@@ -33,6 +33,7 @@ export default function EmailInput({ emailVerificationHook, setModalOpen }: {
         // 빠르게 재요청 방지
         if(isEmailSending) {
             toast.error("이전 요청을 처리 중입니다. 잠시 후 다시 시도해 주세요.");
+            //setEmailSending(false);
             return;
         }
 

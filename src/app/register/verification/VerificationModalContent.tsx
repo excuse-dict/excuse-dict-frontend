@@ -24,7 +24,7 @@ export default function VerificationModalContent({emailVerificationHook, onSucce
         smtpRequest,
         verifyEndpoint,
         timeToResend,
-        codeAbortRef,
+        emailCheckAbortRef,
         onViolation,
     } = emailVerificationHook;
 
@@ -33,25 +33,11 @@ export default function VerificationModalContent({emailVerificationHook, onSucce
     const [codes, setCodes] = useState<string[]>(emptyCodes);
     const [isInitialSend, setInitialSend] = useState(true);
 
-    const emailCheckAbortRef = useRef<AbortController | null>(null);
-
     // 모달 열릴 때 자동으로 이메일 체크 및 코드 전송 요청
     useEffect(() => {
         checkEmailAvailabilityAndSendVerificationCode();
 
         if (isInitialSend) setInitialSend(false);
-
-        // 모달 언마운트 시 보냈던 요청 취소 및 상태 정리
-        return () => {
-            if(emailCheckAbortRef.current){
-                emailCheckAbortRef.current.abort();
-                emailCheckAbortRef.current = null;
-            }
-            if(codeAbortRef.current){
-                codeAbortRef.current.abort();
-                codeAbortRef.current = null;
-            }
-        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

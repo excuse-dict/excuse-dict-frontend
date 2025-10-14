@@ -26,6 +26,7 @@ export function useEmailVerification({purpose, onViolation}: {
     const { recaptchaRef, executeRecaptcha } = useRecaptcha();
 
     const codeAbortRef = useRef<AbortController | null>(null);
+    const emailCheckAbortRef = useRef<AbortController | null>(null);
 
     // 인증코드 검증 API 엔드포인트 결정
     const getVerifyEndpoint = (purpose: string) => {
@@ -125,6 +126,12 @@ export function useEmailVerification({purpose, onViolation}: {
             codeAbortRef.current.abort();
             codeAbortRef.current = null;
         }
+
+        if(emailCheckAbortRef.current){
+            emailCheckAbortRef.current.abort();
+            emailCheckAbortRef.current = null;
+        }
+
         // 이건 그대로 두고 보내놓은 요청이 완료되면 콜백이 false로 바꾸게 하는 게 맞음
         // setEmailSending(false);
     }
@@ -141,7 +148,7 @@ export function useEmailVerification({purpose, onViolation}: {
         recaptchaRef,
         executeRecaptcha,
         timeToResend,
-        codeAbortRef,
+        codeAbortRef, emailCheckAbortRef,
         onViolation
     }
 }
