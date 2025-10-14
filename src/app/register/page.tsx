@@ -24,7 +24,7 @@ export default function RegisterPage() {
     const { sendLoginRequest } = useAuthState();
 
     const router = useRouter();
-    const emailVerification = useEmailVerification({
+    const emailVerificationHook = useEmailVerification({
         purpose: VERIFICATION_CODE_PURPOSE.REGISTRATION,
         onViolation: () => setModalOpen(false),
     });
@@ -34,7 +34,7 @@ export default function RegisterPage() {
         emailInput,
         isEmailVerified, setEmailVerified,
         recaptchaRef
-    } = emailVerification;
+    } = emailVerificationHook;
 
     const {
         passwordInput,
@@ -91,7 +91,7 @@ export default function RegisterPage() {
                 <h2 className='mb-6 font-light text-sm'>환영합니다</h2>
                 <div className={css.reg_main}>
                     <EmailInput
-                        emailVerification={emailVerification}
+                        emailVerificationHook={emailVerificationHook}
                         setModalOpen={setModalOpen}
                     />
                     <div  // section을 div로 변경
@@ -136,9 +136,10 @@ export default function RegisterPage() {
             <Modal
                 isOpen={isModalOpen}
                 setOpen={setModalOpen}
+                onClose={emailVerificationHook.cancelRequest}
             >
                 <VerificationModalContent
-                    emailVerification={emailVerification}
+                    emailVerificationHook={emailVerificationHook}
                     onSuccess={() => {
                         setModalOpen(false);
                         Swal.fire("인증 완료", "인증 코드가 확인되었습니다.", 'success')

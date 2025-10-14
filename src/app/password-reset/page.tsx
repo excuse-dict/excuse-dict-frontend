@@ -145,7 +145,7 @@ export default function PasswordResetPage() {
                 setOpen={setModalOpen}
             >
                 <VerificationModalContent
-                    emailVerification={emailVerification}
+                    emailVerificationHook={emailVerification}
                     onSuccess={() => {
                         setModalOpen(false); // 모달 먼저 닫기
                         Swal.fire("인증 성공", "이메일 인증이 완료되었습니다.", "success")

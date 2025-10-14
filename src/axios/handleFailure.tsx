@@ -1,6 +1,6 @@
 import Swal from "sweetalert2"
 import {apiPost} from "@/axios/requests/post/apiPost";
-import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_HOME, PG_LOGIN} from "@/app/constants/constants";
+import {EP_LOGIN, EP_REFRESH_ACCESS_TOKEN, PG_LOGIN} from "@/app/constants/constants";
 import {useAuthState} from "@/app/login/auth/useAuthState";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {apiPatch} from "@/axios/requests/patch/apiPatch";
@@ -8,13 +8,13 @@ import {toast} from "react-toastify";
 import {apiDelete} from "@/axios/requests/delete/apiDelete";
 import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
 import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
-import {router} from "next/client";
 
 interface OriginalRequest {
     method: 'POST' | 'GET' | 'PATCH' | 'PUT' | 'DELETE',
     endPoint: string,
     params?: Record<string, unknown>,
     body?: object,
+    signal?: AbortSignal,
     onSuccess?: (response: AxiosResponseInterface) => void,
     overwriteDefaultOnFail?: boolean,
     onFail?: (error: AxiosErrorInterface) => void,
@@ -114,13 +114,14 @@ const handleRefreshAccessToken = (originalRequest: OriginalRequest) => {
 
 // 액세스 토큰 재발급 후 원래 요청 다시 전송
 const retryOriginalRequest = (originalRequest: OriginalRequest) => {
-    const {method, endPoint, body, params, onSuccess, overwriteDefaultOnFail, onFail} = originalRequest;
+    const {method, endPoint, body, params, signal, onSuccess, overwriteDefaultOnFail, onFail} = originalRequest;
 
     switch (method){
         case "POST":{
             apiPost({
                 endPoint: endPoint,
                 body: body,
+                signal: signal,
                 onSuccess: onSuccess,
                 overwriteDefaultOnFail: overwriteDefaultOnFail,
                 onFail: onFail,
@@ -132,6 +133,7 @@ const retryOriginalRequest = (originalRequest: OriginalRequest) => {
             apiGet({
                 endPoint: endPoint,
                 params: params,
+                signal: signal,
                 onSuccess: onSuccess,
                 overwriteDefaultOnFail: overwriteDefaultOnFail,
                 onFail: onFail,

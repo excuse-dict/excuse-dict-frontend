@@ -1,5 +1,5 @@
 import css from './VerificationModalContent.module.css'
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import Swal from "sweetalert2";
 import LoadingWidget from "@/global_components/loading/LoadingWidget";
@@ -10,8 +10,8 @@ import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_CHECK_EMAIL_AVAILABILITY} from "@/app/constants/constants";
 import {useTextLoading} from "@/global_components/loading/hooks/useTextLoading";
 
-export default function VerificationModalContent({emailVerification, onSuccess}: {
-    emailVerification: ReturnType<typeof useEmailVerification>
+export default function VerificationModalContent({emailVerificationHook, onSuccess}: {
+    emailVerificationHook: ReturnType<typeof useEmailVerification>
     onSuccess: (value: unknown) => void,
 }) {
 
@@ -24,13 +24,16 @@ export default function VerificationModalContent({emailVerification, onSuccess}:
         smtpRequest,
         verifyEndpoint,
         timeToResend,
+        codeAbortRef,
         onViolation,
-    } = emailVerification;
+    } = emailVerificationHook;
 
     const codeLength = 6;
     const emptyCodes = new Array(codeLength).fill('');
     const [codes, setCodes] = useState<string[]>(emptyCodes);
     const [isInitialSend, setInitialSend] = useState(true);
+
+    const emailCheckAbortRef = useRef<AbortController | null>(null);
 
     // 모달 열릴 때 자동으로 이메일 체크 및 코드 전송 요청
     useEffect(() => {
@@ -38,26 +41,48 @@ export default function VerificationModalContent({emailVerification, onSuccess}:
 
         if (isInitialSend) setInitialSend(false);
 
+        // 모달 언마운트 시 보냈던 요청 취소 및 상태 정리
+        return () => {
+            if(emailCheckAbortRef.current){
+                emailCheckAbortRef.current.abort();
+                emailCheckAbortRef.current = null;
+            }
+            if(codeAbortRef.current){
+                codeAbortRef.current.abort();
+                codeAbortRef.current = null;
+            }
+        }
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const checkEmailAvailabilityAndSendVerificationCode = async () => {
+
+        // 기존 요청 취소
+        if(emailCheckAbortRef.current) emailCheckAbortRef.current.abort();
+        emailCheckAbortRef.current = new AbortController();
+
         setCheckingAvailability(true);
+
         // 모달 상태 초기화
-        resetContent();
+        setTimeLeft(-1);
+        setCodes(emptyCodes);
 
         // 이메일 중복 확인
         apiGet({
             endPoint: EP_CHECK_EMAIL_AVAILABILITY,
             params: {email: emailInput},
+            signal: emailCheckAbortRef.current.signal,
             onSuccess: () => {
                 // 사용 가능 이메일 -> 인증 메일 전송
                 setCheckingAvailability(false);
-                smtpRequest();
+                resetContent();
+                if(!emailCheckAbortRef.current?.signal.aborted) smtpRequest();
             },
             onFail: () => {
                 // 사용 불가 이메일
-                if (onViolation) onViolation();
+                setCheckingAvailability(false);
+                if (!emailCheckAbortRef.current?.signal.aborted && onViolation) onViolation();
             },
             overwriteDefaultOnFail: false,
         });

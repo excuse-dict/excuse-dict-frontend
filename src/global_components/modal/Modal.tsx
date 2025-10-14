@@ -1,9 +1,10 @@
 import css from "./Modal.module.css"
 import ModalContent from "./content/ModalContent";
 
-export default function Modal({isOpen, setOpen, children }: {
+export default function Modal({isOpen, setOpen, onClose, children }: {
     isOpen: boolean,
-    setOpen: (value: boolean) => void
+    setOpen: (value: boolean) => void,
+    onClose?: () => void,
     children?: React.ReactElement<typeof ModalContent> // 모달 내용물 ModalContent로 랩핑 강제
 }) {
 
@@ -14,7 +15,10 @@ export default function Modal({isOpen, setOpen, children }: {
             <div className={css.modal_container}>
                 <button 
                     className={css.modal_close}
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                        if(onClose) onClose();
+                        setOpen(false);
+                    }}
                 >×</button>
                 {children}
             </div>

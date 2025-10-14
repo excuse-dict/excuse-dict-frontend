@@ -5,9 +5,10 @@ import axios from "axios";
 import {AxiosErrorInterface} from "@/axios/interfaces/ErrorInterface";
 import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
 
-export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false}: {
+export const apiPost = async ({endPoint, body, signal, onSuccess, onFail, overwriteDefaultOnFail = true, isRetry = false}: {
     endPoint: string,
     body?: object,
+    signal?: AbortSignal,
     onSuccess?: (value: AxiosResponseInterface) => void,
     onFail?: (error: AxiosErrorInterface) => void,
     overwriteDefaultOnFail?: boolean,
@@ -30,16 +31,24 @@ export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefau
             body ?? {},
             {
                 headers,
-                withCredentials: true   // 쿠키 포함
+                withCredentials: true,   // 쿠키 포함
+                ...(signal && { signal })
             });
 
         // 요청 성공
         console.log("POST 요청 성공: ", response);
-        onSuccess?.(response);
 
+        onSuccess?.(response);
         return response; // 응답 리턴
 
     } catch (error: unknown) { // 오류 발생
+
+        if (axios.isCancel(error)) {
+            console.log("POST 요청 취소됨: " + endPoint);
+            onFail?.(error as AxiosErrorInterface);
+            return null;
+        }
+
         handleError({
             isRetry: isRetry,
             error: error as AxiosErrorInterface,
@@ -49,6 +58,7 @@ export const apiPost = async ({endPoint, body, onSuccess, onFail, overwriteDefau
                 method: "POST",
                 endPoint: endPoint,
                 body: body,
+                signal: signal,
                 onSuccess: onSuccess,
                 overwriteDefaultOnFail: overwriteDefaultOnFail,
                 onFail: onFail,
