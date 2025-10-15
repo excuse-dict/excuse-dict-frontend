@@ -13,7 +13,7 @@ export default function EmailInput({ emailVerificationHook, setModalOpen }: {
     const {
         emailInput,
         setEmailInput,
-        isEmailSending, setEmailSending,
+        isEmailSending,
         isEmailVerified,
         timeToResend,
     } = emailVerificationHook;

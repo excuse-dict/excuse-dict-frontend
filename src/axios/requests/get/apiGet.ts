@@ -35,6 +35,8 @@ export const apiGet = async ({ endPoint, params, signal, onSuccess, onFail, over
             }
         );
 
+        if(signal?.aborted) return response;
+
         // 성공
         console.log("GET 요청 성공: ", response);
 

@@ -9,6 +9,7 @@ import {useEffect, useRef, useState} from "react";
 import {useRecaptcha} from "@/app/recaptcha/useRecaptcha";
 import {toast} from "react-toastify";
 import {AxiosResponseInterface} from "@/axios/interfaces/ResponseInterface";
+import {atLeastOneTask} from "next/dist/lib/scheduler";
 
 export function useEmailVerification({purpose, onViolation}: {
     purpose: string,
@@ -77,25 +78,31 @@ export function useEmailVerification({purpose, onViolation}: {
         // 이메일 전송 시작
         setEmailSending(true);
 
-        await sendVerificationCode({
-            email: emailInput,
-            purpose: purpose,
-            recaptchaToken: recaptchaToken,
-            signal: codeAbortRef.current.signal,
-            onSuccess: (response: AxiosResponseInterface) => {
-                setEmailSending(false); // 이메일 전송 완료!
-                setSendingSucceed(true);
-                setTimeLeft(calculateTimeLeft(response.data.data.expiryTime));
-                setTimeToResend(VERIFICATION_CODE_COOLDOWN);
-            },
-            onFail: () => {
-                setEmailSending(false);
-                setSendingSucceed(false);
-                setTimeLeft(-1);
-                setTimeToResend(0);
-                if(onViolation) onViolation();
-            },
-        });
+        try{
+            await sendVerificationCode({
+                email: emailInput,
+                purpose: purpose,
+                recaptchaToken: recaptchaToken,
+                signal: codeAbortRef.current.signal,
+                onSuccess: (response: AxiosResponseInterface) => {
+                    // abort된 요청은 상태를 변경하지 말아야 함
+                    // 상태 초기화는 밑에 finally로 일괄 관리해야 함
+                    if(codeAbortRef.current?.signal.aborted) return;
+                    setSendingSucceed(true);
+                    setTimeLeft(calculateTimeLeft(response.data.data.expiryTime));
+                    setTimeToResend(VERIFICATION_CODE_COOLDOWN);
+                },
+                onFail: () => {
+                    if(codeAbortRef.current?.signal.aborted) return;
+                    setSendingSucceed(false);
+                    setTimeLeft(-1);
+                    setTimeToResend(0);
+                    if(onViolation) onViolation();
+                },
+            });
+        } finally {
+            setEmailSending(false);
+        }
     }
 
     // 메일 만료시간을 받아 남은 시간을 초 수로 계산
@@ -124,12 +131,12 @@ export function useEmailVerification({purpose, onViolation}: {
     const cancelRequest = () => {
         if(codeAbortRef.current){
             codeAbortRef.current.abort();
-            codeAbortRef.current = null;
+            //codeAbortRef.current = null;
         }
 
         if(emailCheckAbortRef.current){
             emailCheckAbortRef.current.abort();
-            emailCheckAbortRef.current = null;
+            //emailCheckAbortRef.current = null;
         }
 
         // 이건 그대로 두고 보내놓은 요청이 완료되면 콜백이 false로 바꾸게 하는 게 맞음

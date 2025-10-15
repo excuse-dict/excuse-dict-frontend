@@ -35,6 +35,8 @@ export const apiPost = async ({endPoint, body, signal, onSuccess, onFail, overwr
                 ...(signal && { signal })
             });
 
+        if(signal?.aborted) return response;
+
         // 요청 성공
         console.log("POST 요청 성공: ", response);
 
