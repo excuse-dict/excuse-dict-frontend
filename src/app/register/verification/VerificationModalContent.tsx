@@ -111,6 +111,10 @@ export default function VerificationModalContent({emailVerificationHook, onSucce
                 verificationCode: code,
             },
             onSuccess: onSuccess,
+            onFail: (error) => {
+                if(error.code in ['VERIFICATION_BLOCKED', 'VERIFICATION_ATTEMPTS_RAN_OUT'] && onViolation) onViolation();
+            },
+            overwriteDefaultOnFail: false,
         });
     }
 
