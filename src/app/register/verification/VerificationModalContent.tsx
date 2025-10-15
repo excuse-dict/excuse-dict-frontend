@@ -112,7 +112,7 @@ export default function VerificationModalContent({emailVerificationHook, onSucce
             },
             onSuccess: onSuccess,
             onFail: (error) => {
-                if(error.code in ['VERIFICATION_BLOCKED', 'VERIFICATION_ATTEMPTS_RAN_OUT'] && onViolation) onViolation();
+                if(['VERIFICATION_BLOCKED', 'VERIFICATION_ATTEMPTS_RAN_OUT'].includes(error.response.data.code) && onViolation) onViolation();
             },
             overwriteDefaultOnFail: false,
         });
@@ -182,6 +182,7 @@ export default function VerificationModalContent({emailVerificationHook, onSucce
                                 <button
                                     className={css.modal_confirm_button}
                                     onClick={() => submitCode()}
+                                    disabled={isEmailSending || !isSendingSucceed}
                                 >확인
                                 </button>
                             </div>
