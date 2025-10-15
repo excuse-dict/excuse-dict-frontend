@@ -18,7 +18,7 @@ export function useEmailVerification({purpose, onViolation}: {
     const [isCheckingAvailability, setCheckingAvailability] = useState(false);
     const [emailInput, setEmailInput] = useState('');
     const [isEmailVerified, setEmailVerified] = useState(false);
-    const [isEmailSending, setEmailSending] = useState(true);
+    const [isEmailSending, setEmailSending] = useState(false);
     const [isSendingSucceed, setSendingSucceed] = useState<boolean | null>(null);
     const [timeLeft, setTimeLeft] = useState(-1);
     const [timeToResend, setTimeToResend] = useState(0);
