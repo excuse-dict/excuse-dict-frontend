@@ -15,6 +15,7 @@ export const EP_REFRESH_ACCESS_TOKEN = "/api/v1/auth/refresh";
 export const EP_RESET_PASSWORD = "/api/v1/members/passwords/reset";
 export const EP_REPLIES = (commentId: number) => `/api/v1/posts/comments/${commentId}/replies`;
 export const EP_POST = "/api/v1/posts";
+export const EP_POST_HIGHLIGHTED = (postId: number) => `/api/v1/posts/${postId}/page`;
 export const EP_TAGS = "/api/v1/posts/tags"
 export const EP_UPDATE_OR_DELETE_COMMENT = (commentId: number) => `/api/v1/posts/comments/${commentId}`;
 export const EP_UPDATE_OR_DELETE_POST = (postId: number) => `/api/v1/posts/${postId}`;

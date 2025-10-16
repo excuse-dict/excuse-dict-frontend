@@ -1,6 +1,7 @@
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import PostCarouselCard from "@/global_components/carousel/PostCarouselCard";
 import LoadingCarouselCard from "@/global_components/carousel/LoadingCarouselCard";
+import {PG_EXCUSES, PG_HALL_OF_FAME, PG_WEEKLY_TOP} from "@/app/constants/constants";
 
 export type PostType = 'POST' | 'WEEKLY_TOP' | 'HALL_OF_FAME';
 
@@ -14,6 +15,19 @@ export default function Carousel<T extends PostInterface>({
     isLoading?: boolean
 }){
 
+    const getPostBoardUrl = (postType: PostType) => {
+        switch (postType){
+            case "POST":
+                return PG_EXCUSES;
+            case "WEEKLY_TOP":
+                return PG_WEEKLY_TOP
+            case "HALL_OF_FAME":
+                return PG_HALL_OF_FAME;
+            default:
+                return PG_EXCUSES;
+        }
+    }
+
     return (
         <div className="flex overflow-x-scroll w-full mt-2 mb-2 justify-between">
             {isLoading ? (
@@ -23,18 +37,7 @@ export default function Carousel<T extends PostInterface>({
                 ))
             ) : (
                 // 로딩 끝나면 실제 데이터
-                posts.map((post) => {
-                    switch (postType){
-                        case "POST":
-                            return <PostCarouselCard post={post} key={post.postId} />
-                        case "WEEKLY_TOP":
-                            return <PostCarouselCard post={post} key={post.postId} />
-                        case "HALL_OF_FAME":
-                            return <PostCarouselCard post={post} key={post.postId} />
-                        default:
-                            return <PostCarouselCard post={post} key={post.postId} />
-                    }
-                })
+                posts.map((post) =>  <PostCarouselCard post={post} key={post.postId} url={getPostBoardUrl(postType)} />)
             )}
         </div>
     );

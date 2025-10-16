@@ -2,10 +2,14 @@ import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import css from "./carousel.module.css";
 import {WeeklyTopPostInterface} from "@/app/weekly-top/interface/WeeklyTopPostInterface";
 import {HallOfFamePostInterface} from "@/app/hall-of-fame/interface/HallOfFamePostInterface";
+import {useRouter} from "next/navigation";
 
-export default function PostCarouselCard<T extends PostInterface>({ post }: {
+export default function PostCarouselCard<T extends PostInterface>({ post, url }: {
     post: T,
+    url: string,
 }){
+
+    const router = useRouter();
 
     function isWeeklyTop(post: PostInterface): post is WeeklyTopPostInterface {
         return 'hotScore' in post;
@@ -15,8 +19,15 @@ export default function PostCarouselCard<T extends PostInterface>({ post }: {
         return 'rank' in post;
     }
 
+    const handleNavigate = (postId: number) => {
+        router.push(url + `?highlight=${postId}`);
+    }
+
     return (
-        <div className={css.card}>
+        <div
+            className={css.card}
+            onClick={() => handleNavigate(post.postId)}
+        >
             <div className={css.content}>
                 <p className={css.situation}>{post.excuse.situation}</p>
                 <p className={css.excuse}>{post.excuse.excuse}</p>

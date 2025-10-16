@@ -438,3 +438,22 @@ a:hover {
 .simple-scroll::-webkit-scrollbar-thumb:hover {
   background: var(--purple-grey-black);
 }
+
+/*하이라이트 스타일 효과*/
+@keyframes highlight-animation {
+  /* 첫 번째 바운스 */
+  50% { transform: translateY(0);}
+  57% { transform: translateY(-16px);}
+  64% { transform: translateY(0);}
+
+  /* 두 번째 바운스 */
+  71% { transform: translateY(-16px);}
+  78% { transform: translateY(0);}
+  100% { transform: translateY(0);}
+}
+
+.highlight-post {
+  animation: highlight-animation 1.5s ease;
+  box-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
+  border-radius: 0.5rem;
+}

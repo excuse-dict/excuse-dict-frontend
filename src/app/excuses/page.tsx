@@ -2,7 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import {apiGet} from "@/axios/requests/get/apiGet";
-import {EP_POST} from "@/app/constants/constants";
+import {EP_POST, EP_POST_HIGHLIGHTED} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
 import PostCard from "@/app/excuses/posts/components/PostCard";
 import PageContainer from "@/global_components/page/PageContainer";
@@ -12,8 +12,13 @@ import Searcher from "@/global_components/search/Searcher";
 import {useSearch} from "@/global_components/search/useSearch";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {useTagFilter} from "@/global_components/search/useTagFilter";
+import {useSearchParams} from "next/navigation";
+import {useHighlightPost} from "@/app/excuses/hooks/useHighlightPost";
 
 export default function Board() {
+
+    const searchParams = useSearchParams();
+
     const pageHook = usePage();
     const {currentPage, setPageInfo} = pageHook;
 
@@ -27,6 +32,10 @@ export default function Board() {
 
     const tagFilterHook = useTagFilter();
     const { includedTagKeys, excludedTagKeys } = tagFilterHook;
+
+    const { highlightedId, setHighlightedId, postRefs, highlightClassName } = useHighlightPost({
+        duration: 2000
+    });
 
     const sendGetPostsRequest = () => {
         setLoading(true);
@@ -44,15 +53,38 @@ export default function Board() {
                 setPageInfo(response?.data?.data?.pageInfo);
                 setLoading(false);
                 setLatestSearchType(currentSearchType);
+
+                setHighlightedId(null);
             }
         })
     }
 
+    const sendGetHighlightedPostPage = (postId: number) => {
+        setLoading(true);
+        apiGet({
+            endPoint: EP_POST_HIGHLIGHTED(postId),
+            onSuccess: (response) => {
+                setPosts(response?.data?.data?.page?.content);
+                setPageInfo(response?.data?.data?.pageInfo);
+                setLoading(false);
+
+                setHighlightedId(postId);
+            }
+        });
+    }
+
     useEffect(() => {
-        sendGetPostsRequest();
+        const highlightId = searchParams.get('highlight');
+
+        if(highlightId){
+            const highlightIdNumber = parseInt(highlightId);
+            sendGetHighlightedPostPage(highlightIdNumber);
+        }else{
+            sendGetPostsRequest();
+        }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage]);
+    }, [currentPage, searchParams]);
 
     if (isLoading) {
         return (
@@ -89,7 +121,12 @@ export default function Board() {
                 <div className="space-y-6 mb-8">
                     {posts.map((post, index) => (
                         <ReplyProvider key={index}>
-                            <PostCard postProp={post} postsHook={postsHook} searchHook={searchHook}></PostCard>
+                            <div
+                                ref={el => { postRefs.current[post.postId] = el; }}
+                                className={`transition-all duration-500 ${highlightedId === post.postId ? highlightClassName : ''}`}
+                            >
+                                <PostCard postProp={post} postsHook={postsHook} searchHook={searchHook} />
+                            </div>
                         </ReplyProvider>
                     ))}
                 </div>
