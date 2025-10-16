@@ -1,6 +1,6 @@
 'use client';
 
-import {useEffect, useState} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_POST, EP_POST_HIGHLIGHTED} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
@@ -16,8 +16,7 @@ import {useSearchParams} from "next/navigation";
 import {useHighlightPost} from "@/app/excuses/hooks/useHighlightPost";
 import {toast} from "react-toastify";
 
-export default function Board() {
-
+const BoardContent = () => {
     const searchParams = useSearchParams();
 
     const pageHook = usePage();
@@ -97,18 +96,6 @@ export default function Board() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage, searchParams]);
-
-    if (isLoading) {
-        return (
-            <div className="w-full max-w-4xl mx-auto flex items-center justify-center p-4 min-h-screen">
-                <div className="flex flex-col items-center space-y-4">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-                    <p className="text-gray-600">게시물을 불러오는 중...</p>
-                </div>
-            </div>
-        );
-    }
-
     return (
         <div className="flex mx-auto w-[45%]">
             <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
@@ -153,5 +140,20 @@ export default function Board() {
                 tagFilterHook={tagFilterHook}
             ></Searcher>
         </div>
+    );
+}
+
+export default function Board() {
+    return (
+        <Suspense fallback={
+            <div className="w-full max-w-4xl mx-auto flex items-center justify-center p-4 min-h-screen">
+                <div className="flex flex-col items-center space-y-4">
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <p className="text-gray-600">게시물을 불러오는 중...</p>
+                </div>
+            </div>
+        }>
+            <BoardContent />
+        </Suspense>
     );
 }
