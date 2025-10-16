@@ -15,6 +15,8 @@ import {useTagFilter} from "@/global_components/search/useTagFilter";
 import {useSearchParams} from "next/navigation";
 import {usePostHighlight} from "@/app/excuses/hooks/usePostHighlight";
 import {toast} from "react-toastify";
+import LoadingSpinner from "@/app/excuses/components/LoadingSpinner";
+import NoPosts from "@/app/excuses/components/NoPosts";
 
 const BoardContent = () => {
     const searchParams = useSearchParams();
@@ -131,6 +133,10 @@ const BoardContent = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentPage]);
 
+    if(isLoading) return <LoadingSpinner/>
+
+    if(posts.length === 0) return <NoPosts/>
+
     return (
         <div className="flex mx-auto w-[45%]">
             <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
@@ -141,15 +147,6 @@ const BoardContent = () => {
                 </div>
 
                 <div className="mt-8"></div>
-
-                {/* 게시물 없음 */}
-                {posts.length === 0 && !isLoading && (
-                    <div className="text-center py-16">
-                        <div className="text-6xl mb-4">📝</div>
-                        <h3 className="text-xl font-semibold text-gray-700 mb-2">게시물이 없습니다</h3>
-                        <p className="text-gray-500">첫 번째 게시물을 작성해보세요!</p>
-                    </div>
-                )}
 
                 {/* 게시물 목록 */}
                 <div className="space-y-6 mb-8">
@@ -180,14 +177,7 @@ const BoardContent = () => {
 
 export default function Board() {
     return (
-        <Suspense fallback={
-            <div className="w-full max-w-4xl mx-auto flex items-center justify-center p-4 min-h-screen">
-                <div className="flex flex-col items-center space-y-4">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-                    <p className="text-gray-600">게시물을 불러오는 중...</p>
-                </div>
-            </div>
-        }>
+        <Suspense fallback={<div/>}>
             <BoardContent />
         </Suspense>
     );
