@@ -40,14 +40,18 @@ export default function HallOfFamePost({postProp}: {
     const getLabelColor = (ranking: number) => {
         switch (ranking) {
             case 1:
-                return 'bg-amber-400'
+                return { bg: 'bg-amber-400' }
             case 2:
-                return 'bg-gray-400'
+                return { bg: 'bg-gray-400' }
             case 3:
-                return 'bg-[#CE8946]'
+                return { bg: 'bg-[#CE8946]' }
             default:
+                // 순위 내려갈 수록 점점 연해짐
                 const opacity = Math.max(0.2, 1 - (ranking - 4) * 0.01)
-                return `bg-blue-400 opacity-[${opacity}]` // 순위 내려갈 수록 점점 연해짐
+                return {
+                    bg: '',
+                    style: { backgroundColor: `rgba(96, 165, 250, ${opacity})` }
+                }
         }
     }
 
@@ -64,10 +68,15 @@ export default function HallOfFamePost({postProp}: {
         }
     }
 
+    const labelStyle = getLabelColor(post.rank);
+
     return (
         <div className="flex w-full">
             {/*순위 라벨*/}
-            <div className={`flex flex-col h-full items-center ${getLabelColor(post.rank)}`}>
+            <div
+                className={`flex flex-col flex-shrink-0 w-12 h-full items-center ${labelStyle.bg}`}
+                style={labelStyle.style}
+            >
                 {post.rank > 3 ? <div className="flex-1"></div>
                     : <div className="flex-1 flex w-full items-start justify-center">
                         <p className={`text-xl w-full text-center mt-1 border-t-4 border-b-4 ${getMedalBg(post.rank)}`}>
@@ -78,7 +87,7 @@ export default function HallOfFamePost({postProp}: {
                     <p className="font-bold text-xl">{`#${post.rank}`}</p>
                 </div>
             </div>
-            <div className={`w-full pt-1 ${getLabelColor(post.rank)}`}>
+            <div className={`w-full pt-1 ${labelStyle.bg}`}>
                 <article
                     className={`flex-1 rounded-l shadow-xl global-button pl-6 pr-4 pt-2 pb-2 !cursor-default !bg-white hover:shadow-lg transition-all duration-300 ${
                         isExpanded ? 'shadow-xl' : ''
