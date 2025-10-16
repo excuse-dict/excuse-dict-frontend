@@ -1,18 +1,41 @@
 'use client';
 
 import {usePage} from "@/global_components/page/usePage";
-import {useEffect} from "react";
+import {Suspense, useEffect} from "react";
 import {apiGet} from "@/axios/requests/get/apiGet";
 import {EP_HALL_OF_FAME} from "@/app/constants/constants";
 import {PostInterface} from "@/app/excuses/posts/interface/PostInterface";
 import HallOfFamePost from "@/app/excuses/posts/components/HallOfFamePost";
 import {usePosts} from "@/app/excuses/hooks/usePosts";
 import {HallOfFamePostInterface} from "@/app/hall-of-fame/interface/HallOfFamePostInterface";
+import {usePostHighlight} from "@/app/excuses/hooks/usePostHighlight";
+import {useSearchParams} from "next/navigation";
 
 export default function HallOfFamePage(){
 
     const { posts, setPosts } = usePosts<HallOfFamePostInterface>();
     const { currentPage } = usePage();
+
+    const searchParams = useSearchParams();
+
+    const {
+        highlightedId,
+        setHighlightedId,
+        postRefs,
+        highlightClassName,
+        clearHighlightQueryParam
+    } = usePostHighlight();
+
+    const highlightPost = () => {
+        const highlightId = searchParams.get('highlight');
+
+        if(highlightId){
+            const highlightIdNumber = parseInt(highlightId);
+
+            setHighlightedId(highlightIdNumber);
+            clearHighlightQueryParam();
+        }
+    }
 
     useEffect(() => {
         apiGet({
@@ -24,6 +47,8 @@ export default function HallOfFamePage(){
                         rank: index + 1,
                     } as HallOfFamePostInterface)
                 ));
+
+                highlightPost();
             }
         });
 
@@ -36,10 +61,12 @@ export default function HallOfFamePage(){
             <p className="font-light mt-4">레전드 미꾸라지 뱀장어들</p>
             <div className="bg-white">
                 {posts.map((post) => (
-                    <div className="flex" key={post.postId}>
-                        <HallOfFamePost
-                            postProp={post}
-                        ></HallOfFamePost>
+                    <div
+                        className={`flex ${highlightedId === post.postId ? highlightClassName : ''}`}
+                        key={post.postId}
+                        ref={el => { postRefs.current[post.postId] = el }}
+                    >
+                        <HallOfFamePost postProp={post}/>
                     </div>
                 ))}
             </div>

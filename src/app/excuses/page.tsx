@@ -13,7 +13,7 @@ import {useSearch} from "@/global_components/search/useSearch";
 import {apiPost} from "@/axios/requests/post/apiPost";
 import {useTagFilter} from "@/global_components/search/useTagFilter";
 import {useSearchParams} from "next/navigation";
-import {useHighlightPost} from "@/app/excuses/hooks/useHighlightPost";
+import {usePostHighlight} from "@/app/excuses/hooks/usePostHighlight";
 import {toast} from "react-toastify";
 
 const BoardContent = () => {
@@ -38,7 +38,13 @@ const BoardContent = () => {
     const tagFilterHook = useTagFilter();
     const { includedTagKeys, excludedTagKeys } = tagFilterHook;
 
-    const { highlightedId, setHighlightedId, postRefs, highlightClassName } = useHighlightPost();
+    const {
+        highlightedId,
+        setHighlightedId,
+        postRefs,
+        highlightClassName,
+        clearHighlightQueryParam
+    } = usePostHighlight();
 
     const sendGetPostsRequest = () => {
         setLoading(true);
@@ -74,12 +80,7 @@ const BoardContent = () => {
         window.history.replaceState({}, '', url.toString());
     }, [currentPage]);
 
-    // 하이라이트 게시물 지정 쿼리 파라미터 제거
-    const clearHighlightQueryParam = () => {
-        const url = new URL(window.location.href);
-        url.searchParams.delete('highlight');
-        window.history.replaceState({}, '', url.toString());
-    }
+
 
     const sendGetHighlightedPostPage = (postId: number) => {
         setLoading(true);
@@ -91,7 +92,6 @@ const BoardContent = () => {
                 setLoading(false);
 
                 setHighlightedId(postId);
-
             },
             onFail: (error) => {
                 setLoading(false);

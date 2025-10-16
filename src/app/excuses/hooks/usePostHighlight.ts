@@ -5,17 +5,10 @@ interface UseHighlightPostProps {
     scrollBlock?: ScrollLogicalPosition;
 }
 
-interface UseHighlightPostReturn {
-    highlightedId: number | null;
-    setHighlightedId: (id: number | null) => void;
-    postRefs: React.MutableRefObject<{[key: number]: HTMLDivElement | null}>;
-    highlightClassName: string;
-}
-
-export function useHighlightPost({
+export function usePostHighlight({
                                      scrollBehavior = 'smooth',
                                      scrollBlock = 'center'
-                                 }: UseHighlightPostProps = {}): UseHighlightPostReturn {
+                                 }: UseHighlightPostProps = {}) {
 
     const [highlightedId, setHighlightedId] = useState<number | null>(null);
 
@@ -54,10 +47,18 @@ export function useHighlightPost({
         }
     }, [highlightedId, scrollBehavior, scrollBlock, highlightClassName]);
 
+    // 하이라이트 게시물 지정 쿼리 파라미터 제거
+    const clearHighlightQueryParam = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('highlight');
+        window.history.replaceState({}, '', url.toString());
+    }
+
     return {
         highlightedId,
         setHighlightedId,
         postRefs,
-        highlightClassName
+        highlightClassName,
+        clearHighlightQueryParam,
     };
 }
