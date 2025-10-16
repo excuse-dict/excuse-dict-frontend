@@ -20,6 +20,9 @@ pipeline {
 
                     # next 관련 프로세스들 종료
                     pkill -f "next" || echo "No next processes found"
+
+                    # pm2 프로세스 정리
+                    sudo -u ubuntu pm2 delete excuse-dict-frontend || echo "No PM2 process to delete"
                 '''
             }
         }
@@ -51,7 +54,7 @@ pipeline {
                 ]) {
                     sh '''
                         export NEXT_PUBLIC_RECAPTCHA_SITE_KEY="${NEXT_PUBLIC_RECAPTCHA_SITE_KEY}"
-                        sudo -u ubuntu pm2 stop excuse-dict-frontend || true
+                        sudo -u ubuntu pm2 delete excuse-dict-frontend || true
                         sudo -u ubuntu pm2 start npm --name "excuse-dict-frontend" -- start
                     '''
                 }

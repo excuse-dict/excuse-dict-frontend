@@ -57,6 +57,13 @@ const BoardContent = () => {
         })
     }
 
+    // 하이라이트 게시물 지정 쿼리 파라미터 제거
+    const clearHighlightQueryParam = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('highlight');
+        window.history.replaceState({}, '', url.toString());
+    }
+
     const sendGetHighlightedPostPage = (postId: number) => {
         setLoading(true);
         apiGet({
@@ -67,16 +74,12 @@ const BoardContent = () => {
                 setLoading(false);
 
                 setHighlightedId(postId);
+
             },
             onFail: (error) => {
                 setLoading(false);
                 if(error.response.data.code == 'POST_NOT_FOUND'){
                     toast("해당 게시물을 찾을 수 없어 전체 게시물을 조회합니다.");
-
-                    // 쿼리 파라미터 제거
-                    const url = new URL(window.location.href);
-                    url.searchParams.delete('highlight');
-                    window.history.replaceState({}, '', url.toString());
 
                     sendGetPostsRequest();
                 }
@@ -84,18 +87,33 @@ const BoardContent = () => {
         });
     }
 
+    // 페이지 마운트 시 하이라이트 실행
     useEffect(() => {
         const highlightId = searchParams.get('highlight');
 
         if(highlightId){
             const highlightIdNumber = parseInt(highlightId);
             sendGetHighlightedPostPage(highlightIdNumber);
-        }else{
-            sendGetPostsRequest();
+
+            // 쿼리 파라미터 제거
+            clearHighlightQueryParam();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // 일반 검색은 페이지 변경 시마다
+    useEffect(() => {
+        const highlightId = searchParams.get('highlight');
+
+        // 최초 1회 (하이라이트 파라미터가)있을 땐 스킵
+        if(highlightId) return;
+
+        // 일반 조회 api 호출
+        sendGetPostsRequest();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentPage, searchParams]);
+    }, [currentPage]);
+
     return (
         <div className="flex mx-auto w-[45%]">
             <div className="flex flex-col w-full max-w-4xl mx-auto p-4">
@@ -118,8 +136,8 @@ const BoardContent = () => {
 
                 {/* 게시물 목록 */}
                 <div className="space-y-6 mb-8">
-                    {posts.map((post, index) => (
-                        <ReplyProvider key={index}>
+                    {posts.map((post) => (
+                        <ReplyProvider key={post.postId}>
                             <div
                                 ref={el => { postRefs.current[post.postId] = el; }}
                                 className={`transition-all duration-500 ${highlightedId === post.postId ? highlightClassName : ''}`}
