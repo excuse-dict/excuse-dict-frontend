@@ -19,7 +19,12 @@ import {toast} from "react-toastify";
 const BoardContent = () => {
     const searchParams = useSearchParams();
 
-    const pageHook = usePage();
+    const initialPage = (() => {
+        const pageFromUrl = searchParams.get('page');
+        return pageFromUrl ? parseInt(pageFromUrl) - 1 : 0;
+    })();
+
+    const pageHook = usePage(initialPage);
     const {currentPage, setPageInfo} = pageHook;
 
     const [isLoading, setLoading] = useState(true);
@@ -56,6 +61,18 @@ const BoardContent = () => {
             }
         })
     }
+
+    // 페이지 변경 시 url에 반영
+    useEffect(() => {
+        const url = new URL(window.location.href);
+
+        if (currentPage === 0) {
+            url.searchParams.delete('page');
+        } else {
+            url.searchParams.set('page', (currentPage + 1).toString());
+        }
+        window.history.replaceState({}, '', url.toString());
+    }, [currentPage]);
 
     // 하이라이트 게시물 지정 쿼리 파라미터 제거
     const clearHighlightQueryParam = () => {

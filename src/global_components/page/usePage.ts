@@ -8,9 +8,9 @@ export interface PageInfo {
     nextPageSize: number;
 }
 
-export const usePage = () => {
+export const usePage = (initialPage?: number) => {
     const [pageInfo, setPageInfo] = useState<PageInfo>({
-        currentPage: 0,
+        currentPage: initialPage || 0,
         totalPages: 0,
         totalElements: 0,
         hasNext: false,
