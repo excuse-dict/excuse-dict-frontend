@@ -14,6 +14,7 @@ import {apiPost} from "@/axios/requests/post/apiPost";
 import {useTagFilter} from "@/global_components/search/useTagFilter";
 import {useSearchParams} from "next/navigation";
 import {useHighlightPost} from "@/app/excuses/hooks/useHighlightPost";
+import {toast} from "react-toastify";
 
 export default function Board() {
 
@@ -33,9 +34,7 @@ export default function Board() {
     const tagFilterHook = useTagFilter();
     const { includedTagKeys, excludedTagKeys } = tagFilterHook;
 
-    const { highlightedId, setHighlightedId, postRefs, highlightClassName } = useHighlightPost({
-        duration: 2000
-    });
+    const { highlightedId, setHighlightedId, postRefs, highlightClassName } = useHighlightPost();
 
     const sendGetPostsRequest = () => {
         setLoading(true);
@@ -69,6 +68,19 @@ export default function Board() {
                 setLoading(false);
 
                 setHighlightedId(postId);
+            },
+            onFail: (error) => {
+                setLoading(false);
+                if(error.response.data.code == 'POST_NOT_FOUND'){
+                    toast("해당 게시물을 찾을 수 없어 전체 게시물을 조회합니다.");
+
+                    // 쿼리 파라미터 제거
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('highlight');
+                    window.history.replaceState({}, '', url.toString());
+
+                    sendGetPostsRequest();
+                }
             }
         });
     }

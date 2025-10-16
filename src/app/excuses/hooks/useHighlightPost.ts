@@ -1,7 +1,6 @@
 import {useEffect, useRef, useState} from "react";
 
 interface UseHighlightPostProps {
-    duration?: number; // 지속 시간(밀리초)
     scrollBehavior?: ScrollBehavior;
     scrollBlock?: ScrollLogicalPosition;
 }
@@ -14,7 +13,6 @@ interface UseHighlightPostReturn {
 }
 
 export function useHighlightPost({
-                                     duration = 3000,
                                      scrollBehavior = 'smooth',
                                      scrollBlock = 'center'
                                  }: UseHighlightPostProps = {}): UseHighlightPostReturn {
@@ -54,7 +52,7 @@ export function useHighlightPost({
                 element?.classList.remove(highlightClassName);
             };
         }
-    }, [highlightedId, duration, scrollBehavior, scrollBlock, highlightClassName]);
+    }, [highlightedId, scrollBehavior, scrollBlock, highlightClassName]);
 
     return {
         highlightedId,
