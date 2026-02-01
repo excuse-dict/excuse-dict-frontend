@@ -1,0 +1,71 @@
+name: Deploy Frontend
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'npm'
+
+      - name: Install & Build
+        env:
+          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+        run: |
+          npm install
+          npx next build --no-lint
+
+      - name: Deploy to Server
+        uses: appleboy/scp-action@v1
+        with:
+          host: 134.185.112.18
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          source: ".next/, package.json, package-lock.json, next.config.*, public/"
+          target: "/home/ubuntu/excuse-dict-frontend/"
+
+      - name: Restart App
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 134.185.112.18
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            cd /home/ubuntu/excuse-dict-frontend
+
+            # 기존 프로세스 종료
+            PID=$(lsof -t -i:3000) || true
+            if [ ! -z "$PID" ]; then
+                kill -9 $PID
+                sleep 2
+            fi
+            pm2 delete excuse-dict-frontend || true
+
+            # 의존성 설치 및 앱 시작
+            npm install --production
+            pm2 start npm --name "excuse-dict-frontend" -- start
+            pm2 save
+
+      - name: Health Check
+        uses: appleboy/ssh-action@v1
+        with:
+          host: 134.185.112.18
+          username: ubuntu
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          script: |
+            sleep 10
+            curl -f http://localhost:3000 || {
+                echo "Health check failed!"
+                pm2 logs excuse-dict-frontend --lines 20 || true
+                exit 1
+            }
+            echo "✅ App is running successfully!"
