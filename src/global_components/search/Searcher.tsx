@@ -10,7 +10,7 @@ export default function Searcher({ requestHandler, searchHook, tagFilterHook }: 
 }){
 
     return (
-        <div className="fixed top-1/2 -translate-y-1/2 right-8 w-1/4 min-w-80 border-2 border-purple-400 rounded-lg overflow-hidden bg-white">
+        <div className="fixed top-1/2 -translate-y-1/2 right-8 w-1/4 min-w-80 border-2 border-purple-400 rounded-lg bg-white">
             {/*검색창*/}
             <SearchInputContainer
                 searchHook={searchHook}

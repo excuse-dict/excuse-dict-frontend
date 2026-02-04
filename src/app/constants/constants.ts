@@ -7,6 +7,7 @@ export const EP_GENERATE_EXCUSE_FOR_MEMBER = "/api/v1/excuses/generate/members";
 export const EP_GENERATE_EXCUSE_FOR_GUESTS = "/api/v1/excuses/generate/guests";
 export const EP_GUEST_TOKEN = "/api/v1/guests/tokens";
 export const EP_HALL_OF_FAME = "/api/v1/posts/hall-of-fame";
+export const EP_HOT_KEYWORDS = "/api/v1/posts/hot-keywords";
 export const EP_MEMBERS = "/api/v1/members";
 export const EP_NICKNAME_CHECK = "/api/v1/members/nicknames/check-availability";
 export const EP_LOGIN = "/api/v1/auth/login";
