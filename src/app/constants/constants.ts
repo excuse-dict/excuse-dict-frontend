@@ -29,6 +29,9 @@ export const EP_VOTE_TO_COMMENT = (commentId: number) => `/api/v1/posts/comments
 export const EP_VOTE_TO_REPLY = (replyId: number) => `/api/v1/posts/comments/replies/${replyId}/votes`;
 export const EP_WEEKLY_TOP = "/api/v1/posts/weekly-top";
 
+// Local Storage 키
+export const LS_RECENT_SEARCHES = "recentSearches";
+
 // 페이지 주소
 export const PG_EXCUSES = "/excuses";
 export const PG_GENERATOR = "/generator";

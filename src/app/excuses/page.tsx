@@ -2,7 +2,7 @@
 
 import {Suspense, useEffect, useState} from 'react';
 import {apiGet} from "@/axios/requests/get/apiGet";
-import {EP_POST, EP_POST_HIGHLIGHTED} from "@/app/constants/constants";
+import {EP_POST, EP_POST_HIGHLIGHTED, LS_RECENT_SEARCHES} from "@/app/constants/constants";
 import {usePage} from "@/global_components/page/usePage";
 import PostCard from "@/app/excuses/posts/components/PostCard";
 import PageContainer from "@/global_components/page/PageContainer";
@@ -17,6 +17,7 @@ import {usePostHighlight} from "@/app/excuses/hooks/usePostHighlight";
 import {toast} from "react-toastify";
 import LoadingSpinner from "@/app/excuses/components/LoadingSpinner";
 import NoPosts from "@/app/excuses/components/NoPosts";
+import {useHotKeywords} from "@/global_components/search/useHotKeywords";
 
 const BoardContent = () => {
     const searchParams = useSearchParams();
@@ -39,6 +40,9 @@ const BoardContent = () => {
 
     const tagFilterHook = useTagFilter();
     const { includedTagKeys, excludedTagKeys } = tagFilterHook;
+
+    const keywordHook = useHotKeywords();
+    const { addRecentSearch } = keywordHook;
 
     const {
         highlightedId,
@@ -66,6 +70,8 @@ const BoardContent = () => {
                 setLatestSearchType(currentSearchType);
 
                 setHighlightedId(null);
+
+                addRecentSearch(searchInput);
             }
         })
     }
@@ -169,6 +175,7 @@ const BoardContent = () => {
             <Searcher
                 requestHandler={sendGetPostsRequest}
                 searchHook={searchHook}
+                keywordHook={keywordHook}
                 tagFilterHook={tagFilterHook}
             ></Searcher>
         </div>

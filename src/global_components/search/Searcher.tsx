@@ -2,10 +2,12 @@ import {useSearch} from "@/global_components/search/useSearch";
 import SearchInputContainer from "@/global_components/search/SearchInputContainer";
 import TagFilter from "@/global_components/search/TagFilter";
 import {useTagFilter} from "@/global_components/search/useTagFilter";
+import {useHotKeywords} from "@/global_components/search/useHotKeywords";
 
-export default function Searcher({ requestHandler, searchHook, tagFilterHook }: {
+export default function Searcher({ requestHandler, searchHook, keywordHook, tagFilterHook }: {
     requestHandler: () => void,
     searchHook: ReturnType<typeof useSearch>,
+    keywordHook: ReturnType<typeof useHotKeywords>,
     tagFilterHook: ReturnType<typeof useTagFilter>,
 }){
 
@@ -14,6 +16,7 @@ export default function Searcher({ requestHandler, searchHook, tagFilterHook }: 
             {/*검색창*/}
             <SearchInputContainer
                 searchHook={searchHook}
+                keywordHook={keywordHook}
                 requestHandler={requestHandler}
             ></SearchInputContainer>
 

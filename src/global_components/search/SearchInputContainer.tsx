@@ -1,15 +1,18 @@
 import {SearchType, SearchTypeKey, useSearch} from "@/global_components/search/useSearch";
-import {useEffect, useRef, useState} from "react";
+import {useEffect} from "react";
 import {useHotKeywords} from "@/global_components/search/useHotKeywords";
+import SearchKeywordContainer from "@/global_components/search/SearchKeywordContainer";
+import * as sea from "node:sea";
 
-export default function SearchInputContainer({searchHook, requestHandler}:{
+export default function SearchInputContainer({searchHook, keywordHook, requestHandler}:{
     searchHook: ReturnType<typeof useSearch>,
+    keywordHook: ReturnType<typeof useHotKeywords>
     requestHandler: () => void,
 }){
 
     const { searchInput, setSearchInput, currentSearchType, setCurrentSearchType } = searchHook;
 
-    const { isFocused, setIsFocused, containerRef, hotKeywords } = useHotKeywords();
+    const { setIsFocused, containerRef } = keywordHook;
 
     // 외부 클릭 감지
     useEffect(() => {
@@ -22,12 +25,6 @@ export default function SearchInputContainer({searchHook, requestHandler}:{
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
-
-    const handlePopularSearchClick = (search: string) => {
-        setSearchInput(search);
-        //requestHandler();
-        setIsFocused(false);
-    };
 
     return (
         <div className="relative" ref={containerRef}>
@@ -57,29 +54,11 @@ export default function SearchInputContainer({searchHook, requestHandler}:{
                     🔎︎
                 </button>
             </div>
-            {/* 인기 검색어 드롭다운 */}
-            {isFocused && hotKeywords.length > 0 && (
-                <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-b-lg shadow-lg z-50">
-                    <div className="p-3">
-                        <h3 className="text-sm font-semibold text-gray-600 mb-2">🔥 인기 검색어</h3>
-                        <ul className="space-y-1">
-                            {hotKeywords.map((hotSearch, index) => (
-                                <li
-                                    key={index}
-                                    className="flex items-center justify-between px-3 py-2 hover:bg-purple-50 rounded cursor-pointer transition-colors"
-                                    onClick={() => handlePopularSearchClick(hotSearch.keyword)}
-                                >
-                                    <div className="flex items-center gap-2">
-                                        <span className="text-purple-500 font-semibold text-sm w-5">{index + 1}</span>
-                                        <span className="text-gray-700">{hotSearch.keyword}</span>
-                                    </div>
-                                    <span className="text-gray-500 text-sm">{hotSearch.count}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                </div>
-            )}
+            {/* 검색어 드롭다운 */}
+            <SearchKeywordContainer
+                searchHook={searchHook}
+                keywordHook={keywordHook}
+            ></SearchKeywordContainer>
         </div>
     );
 }
