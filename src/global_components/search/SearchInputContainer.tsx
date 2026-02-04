@@ -2,7 +2,7 @@ import {SearchType, SearchTypeKey, useSearch} from "@/global_components/search/u
 import {useEffect} from "react";
 import {useHotKeywords} from "@/global_components/search/useHotKeywords";
 import SearchKeywordContainer from "@/global_components/search/SearchKeywordContainer";
-import * as sea from "node:sea";
+import {handleKeyDown} from "@/lib/KeyDownHelper";
 
 export default function SearchInputContainer({searchHook, keywordHook, requestHandler}:{
     searchHook: ReturnType<typeof useSearch>,
@@ -46,6 +46,7 @@ export default function SearchInputContainer({searchHook, keywordHook, requestHa
                     value={searchInput}
                     onChange={(e) => setSearchInput(e.target.value)}
                     onFocus={() => setIsFocused(true)}
+                    onKeyDown={(e) => handleKeyDown(e, "Enter", requestHandler)}
                 />
                 <button
                     className="px-6 py-2 bg-purple-400 hover:bg-purple-500 text-white text-xl transition-colors"

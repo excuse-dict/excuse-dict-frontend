@@ -20,9 +20,6 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
         setIsFocused(false);
     };
 
-    console.log("hotKeywords: ", hotKeywords);
-    console.log("recentSearches: ", recentSearches);
-
     if(!shouldDisplay()) return null;
 
     return (
@@ -38,7 +35,7 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
                             onClick={() => handleKeywordClick(hotSearch.keyword)}
                         >
                             <div className="flex items-center gap-2">
-                                <span className="text-purple-500 font-semibold text-sm w-5">{index + 1}</span>
+                                <span className="text-purple-500 font-semibold text-sm w-6 flex-shrink-0">{index + 1}</span>
                                 <span className="text-gray-700">{hotSearch.keyword}</span>
                             </div>
                             <span className="text-gray-500 text-sm">{hotSearch.count}</span>
@@ -49,7 +46,7 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
 
             {/* 나의 최근 검색어*/}
             {recentSearches.length > 0 && (
-                <div className="p-3 border-b border-gray-200">
+                <div className="p-3 border-t border-gray-200">
                     <div className="flex justify-between items-center mb-2">
                         <h3 className="text-sm font-semibold text-gray-600">최근 검색어</h3>
                         <button
@@ -61,11 +58,23 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
                     </div>
                     <ul className="space-y-1">
                         {recentSearches.map((search, index) => (
-                            <li key={index} className="flex justify-between items-center">
-                            <span onClick={() => handleKeywordClick(search)}>
-                                🕐 {search}
-                            </span>
-                                <button onClick={() => removeRecentSearch(index)}>×</button>
+                            <li
+                                key={index}
+                                className="flex items-center justify-between px-3 py-2 hover:bg-gray-50 rounded cursor-pointer transition-colors group"
+                            >
+                                <div className="flex items-center gap-2 flex-1" onClick={() => handleKeywordClick(search)}>
+                                    <span className="w-6 opacity-60">🕐</span>
+                                    <span className="text-gray-700">{search}</span>
+                                </div>
+                                <button
+                                    className="text-gray-400 hover:text-red-500 text-xl font-light transition-colors"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        removeRecentSearch(index);
+                                    }}
+                                >
+                                    ×
+                                </button>
                             </li>
                         ))}
                     </ul>
