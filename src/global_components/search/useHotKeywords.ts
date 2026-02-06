@@ -5,6 +5,7 @@ import {EP_HOT_KEYWORDS, EP_OVERVIEW, LS_RECENT_SEARCHES} from "@/app/constants/
 export interface HotKeyword {
     keyword: string;
     count: number;
+    rankChange: number | null;
 }
 
 export const useHotKeywords = () => {

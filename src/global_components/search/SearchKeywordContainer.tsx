@@ -31,14 +31,23 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
                     {hotKeywords.map((hotSearch, index) => (
                         <li
                             key={index}
-                            className="flex items-center justify-between px-3 py-2 hover:bg-purple-50 rounded cursor-pointer transition-colors"
+                            className="flex items-center px-3 py-2 hover:bg-purple-50 rounded cursor-pointer transition-colors"
                             onClick={() => handleKeywordClick(hotSearch.keyword)}
                         >
-                            <div className="flex items-center gap-2">
-                                <span className="text-purple-500 font-semibold text-sm w-6 flex-shrink-0">{index + 1}</span>
-                                <span className="text-gray-700">{hotSearch.keyword}</span>
+                            <div className="flex gap-2">
+                                <span className="text-purple-500 font-semibold text-sm flex-shrink-0">{index + 1}</span>
+                                {hotSearch.rankChange === null ? (
+                                    <span className="text-xs text-orange-500 px-1.5 py-0.5 rounded font-semibold w-8">new</span>
+                                ) : hotSearch.rankChange > 0 ? (
+                                    <span className="text-xs text-red-500 font-semibold w-8">↑{hotSearch.rankChange}</span>
+                                ) : hotSearch.rankChange < 0 ? (
+                                    <span className="text-xs text-blue-500 font-semibold w-8">↓{Math.abs(hotSearch.rankChange)}</span>
+                                ) : (
+                                    <span className="text-xs text-gray-400 w-8">-</span>
+                                )}
                             </div>
-                            <span className="text-gray-500 text-sm">{hotSearch.count}</span>
+                            <span className="text-gray-700 ml-4 flex-1">{hotSearch.keyword}</span>
+                            <span className="text-gray-500 text-sm ml-auto">{hotSearch.count}</span>
                         </li>
                     ))}
                 </ul>
