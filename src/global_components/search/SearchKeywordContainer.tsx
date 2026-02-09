@@ -23,7 +23,7 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
     if(!shouldDisplay()) return null;
 
     return (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-b-lg shadow-lg z-50">
+        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-b-lg shadow-lg z-50 max-h-96 overflow-y-auto">
             {/*인기 검색어*/}
             <div className="p-3">
                 <h3 className="text-sm font-semibold text-gray-600 mb-2">🔥 인기 검색어</h3>
@@ -34,17 +34,19 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
                             className="flex items-center px-3 py-2 hover:bg-purple-50 rounded cursor-pointer transition-colors"
                             onClick={() => handleKeywordClick(hotSearch.keyword)}
                         >
-                            <div className="flex gap-2">
-                                <span className="text-purple-500 font-semibold text-sm flex-shrink-0">{index + 1}</span>
-                                {hotSearch.rankChange === null ? (
-                                    <span className="text-xs text-orange-500 px-1.5 py-0.5 rounded font-semibold w-8">new</span>
-                                ) : hotSearch.rankChange > 0 ? (
-                                    <span className="text-xs text-red-500 font-semibold w-8">↑{hotSearch.rankChange}</span>
-                                ) : hotSearch.rankChange < 0 ? (
-                                    <span className="text-xs text-blue-500 font-semibold w-8">↓{Math.abs(hotSearch.rankChange)}</span>
-                                ) : (
-                                    <span className="text-xs text-gray-400 w-8">-</span>
-                                )}
+                            <div className="flex items-center gap-2">
+                                <span className="text-purple-500 font-semibold text-sm flex-shrink-0 w-4 text-right">{index + 1}</span>
+                                <div className="w-8 flex items-center justify-center">
+                                    {hotSearch.rankChange === null ? (
+                                        <span className="text-xs text-orange-500 px-1.5 py-0.5 rounded font-semibold">new</span>
+                                    ) : hotSearch.rankChange > 0 ? (
+                                        <span className="text-xs text-red-500 font-semibold">▲ {hotSearch.rankChange}</span>
+                                    ) : hotSearch.rankChange < 0 ? (
+                                        <span className="text-xs text-blue-500 font-semibold">▼ {Math.abs(hotSearch.rankChange)}</span>
+                                    ) : (
+                                        <span className="text-xs text-gray-400 font-bold">ㅡ</span>
+                                    )}
+                                </div>
                             </div>
                             <span className="text-gray-700 ml-4 flex-1">{hotSearch.keyword}</span>
                             <span className="text-gray-500 text-sm ml-auto">{hotSearch.count}</span>
