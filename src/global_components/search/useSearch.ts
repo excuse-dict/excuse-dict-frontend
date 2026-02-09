@@ -11,7 +11,7 @@ export type SearchTypeKey = typeof SearchType[keyof typeof SearchType]['key'];
 
 export const useSearch = () => {
     const [searchInput, setSearchInput] = useState('');
-    const [currentSearchType, setCurrentSearchType] = useState<SearchTypeKey>(SearchType.SITUATION.key);
+    const [currentSearchType, setCurrentSearchType] = useState<SearchTypeKey>(SearchType.SITUATION_AND_EXCUSE.key);
     const [latestSearchType, setLatestSearchType] = useState<SearchTypeKey | null>(null);
 
     return {

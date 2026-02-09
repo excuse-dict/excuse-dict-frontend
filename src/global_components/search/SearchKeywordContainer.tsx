@@ -68,7 +68,7 @@ export default function SearchKeywordContainer({ searchHook, keywordHook }: {
                         </button>
                     </div>
                     <ul className="space-y-1">
-                        {recentSearches.map((search, index) => (
+                        {recentSearches.slice(0, 10).map((search, index) => (
                             <li
                                 key={index}
                                 className="flex items-center justify-between px-3 py-2 hover:bg-gray-50 rounded cursor-pointer transition-colors group"
