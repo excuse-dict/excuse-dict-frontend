@@ -14,7 +14,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 20
           cache: 'npm'
 
       - name: Install & Build
@@ -27,18 +27,20 @@ jobs:
       - name: Deploy to Server
         uses: appleboy/scp-action@v1
         with:
-          host: 134.185.112.18
-          username: ubuntu
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: ".next/, package.json, package-lock.json, next.config.*, public/"
           target: "/home/ubuntu/excuse-dict-frontend/"
 
       - name: Restart App
         uses: appleboy/ssh-action@v1
         with:
-          host: 134.185.112.18
-          username: ubuntu
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             cd /home/ubuntu/excuse-dict-frontend
 
@@ -58,9 +60,10 @@ jobs:
       - name: Health Check
         uses: appleboy/ssh-action@v1
         with:
-          host: 134.185.112.18
-          username: ubuntu
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             sleep 10
             curl -f http://localhost:3000 || {
