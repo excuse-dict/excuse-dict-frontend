@@ -42,6 +42,9 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
             cd /home/ubuntu/excuse-dict-frontend
 
             # 기존 프로세스 종료
@@ -53,7 +56,7 @@ jobs:
             pm2 delete excuse-dict-frontend || true
 
             # 의존성 설치 및 앱 시작
-            npm ci --production --ignore-scripts
+            npm ci --omit=dev --ignore-scripts
             pm2 start npm --name "excuse-dict-frontend" -- start
             pm2 save
 
@@ -65,6 +68,9 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
             sleep 10
             curl -f http://localhost:3000 || {
                 echo "Health check failed!"
