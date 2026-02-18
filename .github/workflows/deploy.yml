@@ -53,7 +53,7 @@ jobs:
             pm2 delete excuse-dict-frontend || true
 
             # 의존성 설치 및 앱 시작
-            npm install --production
+            npm ci --production --ignore-scripts
             pm2 start npm --name "excuse-dict-frontend" -- start
             pm2 save
 
