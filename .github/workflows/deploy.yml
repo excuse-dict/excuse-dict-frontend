@@ -17,12 +17,32 @@ jobs:
           node-version: 20
           cache: 'npm'
 
-      - name: Install & Build
-        env:
-          NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${{ secrets.NEXT_PUBLIC_RECAPTCHA_SITE_KEY }}
+      - name: Install
+        run: npm ci
+
+      - name: Security Gate
         run: |
-          npm install
-          npx next build --no-lint
+          # Next.js 최소 패치 버전 확인 (보안 릴리스 기준)
+          node -e '
+            const min = [15, 5, 29];
+            const v = require("next/package.json").version;
+            const cur = v.split("-")[0].split(".").map(Number);
+            console.log("next version:", v);
+            for (let i = 0; i < 3; i++) {
+              if (cur[i] > min[i]) process.exit(0);
+              if (cur[i] < min[i]) { console.error("next " + v + " < " + min.join(".")); process.exit(1); }
+            }
+          '
+          # 운영 의존성 high 이상 취약점이 있으면 배포 중단
+          npm audit --omit=dev --audit-level=high
+          # 사이트 키 플레이스홀더가 남아 있으면 배포 중단
+          if grep -q "REPLACE_WITH" .env.production; then
+            echo ".env.production에 플레이스홀더가 남아 있습니다." && exit 1
+          fi
+
+      - name: Build
+        # NEXT_PUBLIC_* 값은 .env.production에서 빌드 시점에 주입됨
+        run: npx next build --no-lint
 
       - name: Deploy to Server
         uses: appleboy/scp-action@v1
