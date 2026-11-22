@@ -75,6 +75,9 @@ jobs:
             fi
             pm2 delete excuse-dict-frontend || true
 
+            # 이전 배포에서 남은 TS 설정 파일 제거 (런타임 typescript 의존 방지)
+            rm -f next.config.ts
+
             # 의존성 설치 및 앱 시작
             npm ci --omit=dev --ignore-scripts
             # 루프백에만 바인딩 (외부 접근은 nginx 경유)
